@@ -1,0 +1,39 @@
+.h1userprofile{
+    font-family: 'Times New Roman', Times, serif;
+    color: blue;
+    font-weight: bold;
+    font-size:xx-large;
+    margin-top: 10px;    
+    margin-right: 850px;
+}
+
+.user-profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    font-size: 18px;
+  }
+  
+  .employee-name {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+  
+  .employee-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 0.5;
+  }
+  .contentuserpro{
+    background-color: white;
+    width: 70%;
+    border-radius: 10px;
+    padding-left: 60px;
+    font-size: medium;
+   padding-bottom: 10px;
+  }
+  .h2userprofile{
+   text-align: left;
+  }

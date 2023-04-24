@@ -1,0 +1,12 @@
+.h1hrinfo{
+    font-family: 'Times New Roman', Times, serif;
+    color: blue;
+    font-weight: bold;
+    font-size:xx-large; 
+    margin-right: 840px;
+
+}
+.ant-table-cell{
+    padding-left: 10px;
+    text-align: center;
+}
