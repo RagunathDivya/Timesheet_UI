@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Card, Statistic, Select, Button, message } from "antd";
+import { Card, Statistic, Select, Button, message, Progress } from "antd";
 import axios from "axios";
+import { Bar, Chart, Line } from "react-chartjs-2";
 
 const { Option } = Select;
 
@@ -9,8 +10,14 @@ export function Dashboards() {
   const [month, setMonth] = useState("3");
   const [tableData, setTableData] = useState<{ x: any; y: any }[]>([]);
 
-  const fetchData = async () => {
-    const result = await axios({
+  const [progressData, setProgressData] = useState({
+    pending: 0,
+    approved: 0,
+    rejected: 0,
+  });
+
+  const fetchData = () => {
+    axios({
       method: "get",
       headers: {
         "Content-Type": "application/json",
@@ -20,8 +27,17 @@ export function Dashboards() {
       url: `/api/Admin/GetDashboard?year=${year}&Month_Id=${month}`,
     })
       .then((r: any) => {
-        setTableData(r.data);
-        console.log(r.data);
+        const data = r.data;
+        setTableData(data);
+
+        const pending = data.find((item: any) => item.x === "Pending")?.y || 0;
+        const approved =
+          data.find((item: any) => item.x === "Approved")?.y || 0;
+        const rejected =
+          data.find((item: any) => item.x === "Rejected")?.y || 0;
+
+        setProgressData({ pending, approved, rejected });
+
         message.success("Data fetched successfully");
       })
       .catch((error: any) => {
@@ -43,6 +59,15 @@ export function Dashboards() {
   const handleMonthChange = (value: any) => {
     setMonth(value);
   };
+  let valueStr = "";
+  if (tableData.length > 0) {
+    for (let i = 0; i < tableData.length; i++) {
+      valueStr += `${tableData[i].x}: ${tableData[i].y}, `;
+    }
+    valueStr = valueStr.slice(0, -2); // remove the last comma and space
+  } else {
+    valueStr = "N/A";
+  }
 
   return (
     <div>
@@ -79,14 +104,49 @@ export function Dashboards() {
       </Select>
       {/* <Button onClick={handleButtonClick}>Submit</Button> */}
       <Card>
-        <Statistic
-          title="Pending Items"
-          value={
-            tableData.length > 0
-              ? `${tableData[0].x}: ${tableData[0].y}`
-              : "N/A"
-          }
-        />
+        <Statistic title="Overall trend" value={valueStr} />
+        <div style={{ marginTop: 30 }}>
+          <label>Approved</label>
+          <div style={{ width: 170 }}>
+            <Progress
+              percent={Math.round(
+                (progressData.approved /
+                  (progressData.approved +
+                    progressData.rejected +
+                    progressData.pending)) *
+                  100
+              )}
+              size="small"
+              format={() => `${progressData.approved}`}
+            />
+            <label>Pending</label>
+            <Progress
+              percent={Math.round(
+                (progressData.pending /
+                  (progressData.approved +
+                    progressData.rejected +
+                    progressData.pending)) *
+                  100
+              )}
+              size="small"
+              status="active"
+              format={() => `${progressData.pending}`}
+            />
+            <label>Rejected</label>
+            <Progress
+              percent={Math.round(
+                (progressData.rejected /
+                  (progressData.approved +
+                    progressData.rejected +
+                    progressData.pending)) *
+                  100
+              )}
+              size="small"
+              status="exception"
+              format={() => `${progressData.rejected}`}
+            />
+          </div>
+        </div>
       </Card>
     </div>
   );

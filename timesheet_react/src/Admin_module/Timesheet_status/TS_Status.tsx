@@ -1,6 +1,7 @@
 import { CloseOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, Card, Input, Select, Table, message } from "antd";
+import { Button, Card, Input, Modal, Select, Table, message } from "antd";
 import axios from "axios";
+import moment from "moment";
 import { useEffect, useState } from "react";
 
 export function TS_Status() {
@@ -20,15 +21,17 @@ export function TS_Status() {
   const [totalHours, setTotalHours] = useState(0);
   const [daysWorked, setDaysWorked] = useState(0);
   const [empName, setEmpName] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const rowSelection = {
     onChange: (selectedRowKeys: any, selectedRows: any) => {
       setSelectedRowKeys(selectedRowKeys);
       setRowData(selectedRows);
-      console.log(selectedRows);
-      setLeavesTaken(selectedRows[0].noOfLeaveTaken);
-      setTotalHours(selectedRows[0].total_Hours);
-      setDaysWorked(selectedRows[0].noOfDaysWorked);
-      setEmpName(selectedRows[0].full_Name);
+      if (selectedRowKeys[0]) {
+        setLeavesTaken(selectedRows[0].noOfLeaveTaken);
+        setTotalHours(selectedRows[0].total_Hours);
+        setDaysWorked(selectedRows[0].noOfDaysWorked);
+        setEmpName(selectedRows[0].full_Name);
+      }
     },
     selectedRowKeys,
   };
@@ -99,6 +102,47 @@ export function TS_Status() {
       title: "status count",
       dataIndex: "statuscount",
       key: "statuscount",
+      align: "center" as AlignType,
+    },
+  ];
+  const statscols = [
+    {
+      title: "Sl.No",
+      dataIndex: "id",
+      key: "ids",
+      render: (value: any, item: any, index: any) =>
+        (page - 1) * pageSize + index + 1,
+      align: "center" as AlignType,
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      render: (date: any) => moment(date).format("DD-MM-YYYY"),
+      align: "center" as AlignType,
+    },
+    {
+      title: "Days",
+      dataIndex: "day",
+      key: "day",
+      align: "center" as AlignType,
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      align: "center" as AlignType,
+    },
+    {
+      title: "Project",
+      dataIndex: "project",
+      key: "project",
+      align: "center" as AlignType,
+    },
+    {
+      title: "Hours worked",
+      dataIndex: "duration",
+      key: "duration",
       align: "center" as AlignType,
     },
   ];
@@ -185,24 +229,27 @@ export function TS_Status() {
       dataIndex: "employee_Id",
       key: "view_timesheet",
       align: "center" as AlignType,
-      render: (employeeId: any) => (
-        <Button
-          disabled={
-            employeeId.timesheetSummary_Id === selectedRowKeys[0] &&
-            rowData.length === 1
-              ? false
-              : false
-          }
-          type="link"
-          onClick={() => {
-            
-            handleViewTimesheet(employeeId.employee_Id);
-            setShowTimesheet(true);
-          }}
-        >
-          View Timesheet
-        </Button>
-      ),
+      render: (employeeId: any) => {
+        return (
+          <>
+            <Button
+              disabled={
+                employeeId === selectedRowKeys[0] && rowData.length === 1
+                  ? false
+                  : true
+              }
+              type="link"
+              onClick={() => {
+                handleViewTimesheet(employeeId);
+                setShowTimesheet(true);
+                showModal();
+              }}
+            >
+              View Timesheet
+            </Button>
+          </>
+        );
+      },
     },
 
     {
@@ -238,8 +285,6 @@ export function TS_Status() {
     })
       .then((r: any) => {
         setEmpData(r.data);
-
-        console.log(r.data);
       })
       .catch((error: any) => {
         // message.error(error.message);
@@ -286,6 +331,7 @@ export function TS_Status() {
   const [timesheetData, setTimesheetData] = useState([]);
 
   const handleViewTimesheet = async (employeeId: any) => {
+    debugger;
     axios({
       method: "get",
       headers: {
@@ -346,14 +392,33 @@ export function TS_Status() {
     //   (employee) => employee.timesheetStatus === selectedMonth
     // );
     return (
-      <Table
-        rowKey={(record) => record.employee_Id}
-        dataSource={empData}
-        columns={empCols}
-        rowSelection={rowSelection}
-        pagination={false}
-      />
+      <Card
+        style={{
+          width: "100%",
+          marginTop: 16,
+          paddingTop: 35,
+          background:
+            "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
+        }}
+      >
+        <Button>Download</Button>
+        <Table
+          rowKey={(record) => record.employee_Id}
+          dataSource={empData}
+          columns={empCols}
+          rowSelection={rowSelection}
+          pagination={false}
+          scroll={{ x: "max-content" }}
+        />
+      </Card>
     );
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
   return (
     <>
@@ -372,7 +437,15 @@ export function TS_Status() {
               Timesheet Status ({selectedMonth} -{selectedYear} )
             </h2>
             {renderEmployeeTable()}
-            {showTimesheet ? (
+
+            <Modal
+              // title="Edit Details"
+              open={isModalOpen}
+              onCancel={handleCancel}
+              footer={null}
+              width={700}
+            >
+              {" "}
               <div>
                 <h2>
                   Timesheet Status ({selectedMonth} -{selectedYear}- {empName} )
@@ -383,8 +456,8 @@ export function TS_Status() {
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
-                        marginRight: 80,
-                        marginLeft: 80,
+                        // marginRight: 80,
+                        // marginLeft: 80,
                       }}
                     >
                       <div>Leaves Taken: {leavesTaken}</div>
@@ -393,12 +466,10 @@ export function TS_Status() {
                     </div>
                   }
                 >
-                  <Table dataSource={timesheetData} columns={empCols} />
+                  <Table dataSource={timesheetData} columns={statscols} />
                 </Card>
               </div>
-            ) : (
-              ""
-            )}
+            </Modal>
           </>
         )}
       </div>

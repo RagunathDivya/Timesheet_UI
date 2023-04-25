@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Avatar, Dropdown, Layout, Menu } from "antd";
+import { Avatar, Dropdown, Layout, Menu, message } from "antd";
 import {
   DesktopOutlined,
   SettingFilled,
@@ -17,12 +17,43 @@ import {
 } from "react-router-dom";
 import joy from "../Main_module/joy.png";
 import { Dashboards } from "./dashboard/dash";
+import axios from "axios";
 
 const { Header, Content, Sider } = Layout;
 
 export function AdminDashboard() {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState<Array<any>>([]);
+  const [userProfile, setUserProfile] = useState<EmployeeData | null>(null);
+  const mailId = localStorage.getItem("mailId");
+  interface EmployeeData {
+    employee_Name: string;
+    designation: string;
+    employee_ID: string;
+    email: string;
+    mobile_No: string;
+  }
+  useEffect(() => {
+    if (mailId) {
+      axios({
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        },
+        url: `/api/Employee/UserProfile?mail_id=${encodeURIComponent(mailId)}`,
+      })
+        .then((response: any) => {
+          console.log(response);
+          setUserProfile(response.data[0]);
+          console.log(response.data);
+        })
+        .catch((error: any) => {
+          message.error(error.message);
+        });
+    }
+  }, [mailId]);
   const onCollapse = (collapsed: any) => {
     setCollapsed(collapsed);
   };
@@ -147,7 +178,9 @@ export function AdminDashboard() {
                 "-webkit-linear-gradient(45deg,rgba(255, 192, 203, 0.7), rgba(135, 206, 235, 0.4) 100%)",
             }}
           >
-            <h1 style={{fontSize:30}}>Hello Admin 😊</h1>
+            <h1 style={{ fontSize: 30 }}>
+              Hello {userProfile?.employee_Name} 😊
+            </h1>
             <Dashboards />
           </Content>
         </Layout>
