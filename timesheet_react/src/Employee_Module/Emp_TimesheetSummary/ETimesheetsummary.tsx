@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const ETimeSummary = () => {
   const [tableData, setData] = useState<any[]>([]);
   const currentDate = new Date();
-  const employee_Id = sessionStorage.getItem("Employee_Id");
+  const employee_Id = localStorage.getItem("Employee_Id");
   const month = currentDate.getMonth() - 1;
   const year = currentDate.getFullYear();
   const [page, setPage] = useState(1);

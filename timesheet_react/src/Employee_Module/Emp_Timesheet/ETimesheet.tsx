@@ -18,6 +18,7 @@ import { UploadOutlined, DownloadOutlined } from "@ant-design/icons";
 import Duration from "./Duration";
 import Status from "./Status";
 import Project from "./Project";
+import "./ETimesheet.css";
 
 const setMessage = (statusCode: number, responseMessage: string) => {
   if (statusCode == 200) {
@@ -41,7 +42,7 @@ const dummyProject: Project[] = [];
 
 const projectOption = async (): Promise<void> => {
   const toke = sessionStorage.token;
-  const response = await axios.get("/api/Employee", {
+  const response = await axios.get("/api/Admin/GetAllProjects", {
     headers: {
       Authorization: `Bearer ${toke}`,
     },
@@ -60,7 +61,7 @@ function AddTimesheet() {
   const navig = () => {
     navigate("/#");
   };
-  const employee_Id = sessionStorage.getItem("Employee_Id");
+  const employee_Id = localStorage.getItem("Employee_Id");
   const month_name = [
     "January",
     "February",
@@ -446,7 +447,6 @@ function AddTimesheet() {
   };
   const downloadXL1 = async () => {
     await axios({
-      ///api/Employee/ExportExcel?id=15&monthid=3&year=4321&project_id=12
       url: `/api/Employee/ExportExcel?id=${employee_Id}&monthid=${
         month + 2
       }year=${year}&project_id=${excelNumber}`,
@@ -461,6 +461,47 @@ function AddTimesheet() {
       link.click();
     });
   };
+
+  const handleFileChange = (event: any) => {
+    setFile(event.target.files[0]);
+  };
+  const handleFileChange1 = (a: any) => {
+    setFile1(a.target.files[0]);
+  };
+  const uploadFiles = async () => {
+    const formData = new FormData();
+    formData.append("image", file as File);
+    const {
+      data: { imagePath },
+    } = await axios.post("/api/Employee/Image", formData);
+
+    const formData1 = new FormData();
+    formData1.append("Image", file1 as File);
+    const {
+      data: { imagePath: imagePath1 },
+    } = await axios.post("/api/Employee/Image", formData1);
+
+    return { imagePath, imagePath1 };
+  };
+  const dataToSave = async () => {
+    const { imagePath, imagePath1 } = await uploadFiles();
+    console.log(imagePath, imagePath1);
+    return {
+      imagePathUpload: imagePath,
+      imagePathTimesheet: imagePath1,
+    };
+  };
+  const handleFormSubmitUpdate = () => {
+    axios
+      .put("/api/Employee/ImageUpdate", dataToSave)
+      .then((response) => {
+        message.success("Image Updated successfully");
+      })
+      .catch((error) => {
+        message.error(error.message);
+      });
+  };
+
   const downloadXL2 = async () => {
     await axios({
       //  url: `https://timesheetjy.azurewebsites.net/api/Employee/ExportExcel?id=${1}&monthid=${month + 1}&year=${year}&project_id=${state2[0].project_Id}`,
@@ -477,9 +518,7 @@ function AddTimesheet() {
   };
   const downloadXL3 = async () => {
     await axios({
-      url: `/api/Employee/ExportExcel?id=${employee_Id}&monthid=${
-        month + 2
-      }&year=${year}&project_id=${excelNumber}`,
+      //url: `https://timesheetjy.azurewebsites.net/api/Employee/ExportExcel?id=${1}&monthid=${month + 1}&year=${year}&project_id=${state3[0].project_Id}`,
       method: "GET",
       responseType: "blob", // important
     }).then((response) => {
@@ -503,19 +542,12 @@ function AddTimesheet() {
   };
 
   interface TimesheetSummary {
-    timesheet_summary_Id: number;
     project_Id: number;
-    date: Date;
+    date: number;
     day: string;
     leave: boolean;
     duration_in_Hrs: number;
   }
-  const handleFileChange = (event: any) => {
-    setFile(event.target.files[0]);
-  };
-  const handleFileChange1 = (a: any) => {
-    setFile1(a.target.files[0]);
-  };
 
   const postData = async (values: any) => {
     let date: Date | null = null;
@@ -529,12 +561,11 @@ function AddTimesheet() {
 
     currentState.forEach((element: any) => {
       dummystate.push({
-        // project_Id: element.project,
         project_Id:
           element.status.toLowerCase() === "present" ||
           element.status.toLowerCase() === "wfh"
             ? element.project
-            : project,
+            : project, // assuming 'project' is declared somewhere
         date: element.date,
         day: element.day,
         leave:
@@ -542,17 +573,15 @@ function AddTimesheet() {
           element.status.toLowerCase() === "holiday"
             ? true
             : false,
-        // duration_in_Hrs: element.duration === null ? parseInt(0) : parseInt(element.duration),
         duration_in_Hrs:
           element.status.toLowerCase() === "present" ||
           element.status.toLowerCase() === "wfh"
-            ? element.duration
+            ? parseInt(element.duration || "0")
             : 0,
-        timesheet_summary_Id: 0,
       });
-      if (date != element.date) {
+
+      if (date !== element.date) {
         newState.push({
-          // project_Id: element.project,
           project_Id:
             element.status.toLowerCase() === "present" ||
             element.status.toLowerCase() === "wfh"
@@ -565,21 +594,20 @@ function AddTimesheet() {
             element.status.toLowerCase() === "holiday"
               ? true
               : false,
-          // duration_in_Hrs: element.duration === null ? parseInt(0) : parseInt(element.duration),
           duration_in_Hrs:
             element.status.toLowerCase() === "present" ||
             element.status.toLowerCase() === "wfh"
-              ? element.duration
+              ? parseInt(element.duration || "0")
               : 0,
-          timesheet_summary_Id: 0,
         });
+
         date = element.date;
         count = 1;
         return;
       }
-      if (date == element.date && count === 1) {
+
+      if (date === element.date && count === 1) {
         newState1.push({
-          // project_Id: element.project,
           project_Id:
             element.status.toLowerCase() === "present" ||
             element.status.toLowerCase() === "wfh"
@@ -592,21 +620,20 @@ function AddTimesheet() {
             element.status.toLowerCase() === "holiday"
               ? true
               : false,
-          // duration_in_Hrs: element.duration === null ? parseInt(0) : parseInt(element.duration),
           duration_in_Hrs:
             element.status.toLowerCase() === "present" ||
             element.status.toLowerCase() === "wfh"
-              ? element.duration
+              ? parseInt(element.duration || "0")
               : 0,
-          timesheet_summary_Id: 0,
         });
+
         date = element.date;
         count = 2;
         return;
       }
-      if (date == element.date && count == 2) {
+
+      if (date === element.date && count === 2) {
         newState2.push({
-          // project_Id: element.project,
           project_Id:
             element.status.toLowerCase() === "present" ||
             element.status.toLowerCase() === "wfh"
@@ -619,14 +646,13 @@ function AddTimesheet() {
             element.status.toLowerCase() === "holiday"
               ? true
               : false,
-          // duration_in_Hrs: element.duration === null ? parseInt(0) : parseInt(element.duration),
           duration_in_Hrs:
             element.status.toLowerCase() === "present" ||
             element.status.toLowerCase() === "wfh"
-              ? element.duration
+              ? parseInt(element.duration || "0")
               : 0,
-          timesheet_summary_Id: 0,
         });
+
         date = element.date;
         return;
       }
@@ -636,32 +662,15 @@ function AddTimesheet() {
     setState2(newState1);
     setState3(newState2);
 
-    const uploadFiles = async () => {
-      const formData = new FormData();
-      formData.append("image", file as File);
-      const {
-        data: { imagePath },
-      } = await axios.post("/api/Employee/Image", formData);
-
-      const formData1 = new FormData();
-      formData1.append("Image", file1 as File);
-      const {
-        data: { imagePath: imagePath1 },
-      } = await axios.post("/api/Employee/Image", formData1);
-
-      return { imagePath, imagePath1 };
-    };
-
     const dataToSave = async () => {
-      const { imagePath, imagePath1 } = await uploadFiles();
-      console.log(imagePath, imagePath1);
+      //   const { imagePath, imagePath1 } = await uploadFiles();
+      // console.log(imagePath,imagePath1)
       return {
         employee_Id: employee_Id,
+        Fiscal_Year_Id: month + 1,
         noOfdays_Worked: summary_data[0].no_of_days_worked,
         noOfLeave_Taken: summary_data[0].no_of_leaves_taken,
         total_Working_Hours: summary_data[0].total_duration,
-        imagePathUpload: imagePath,
-        imagePathTimesheet: imagePath1,
         addTimesheetDay: dummystate,
       };
     };
@@ -708,20 +717,27 @@ function AddTimesheet() {
 
   return (
     <Space>
-      <Card style={{ marginLeft: 75 }}>
+      <Card style={{ marginLeft: 100 }}>
         <h1
           style={{
             fontSize: 30,
             color: "blue",
             fontFamily: "Times New Roman, Times, serif",
-            marginLeft: -600,
+            // marginLeft: -600,
           }}
         >
           <b>{`${month_name[month]}`}-2023 </b>
         </h1>
         <br></br>
         <React.Fragment>
-          <div style={{ position: "relative", left: 200, top: -40 }}>
+          <div
+            style={{
+              position: "relative",
+              paddingLeft: "40%",
+              left: 150,
+              top: -130,
+            }}
+          >
             <Space>
               {/* <Upload {...props}>
                 <Button  name="imagePathUpload" icon={<UploadOutlined />} >
@@ -733,28 +749,70 @@ function AddTimesheet() {
                 Approval Image
                 </Button>  */}
               {/* </Upload> */}
-              <input
-                placeholder="Timesheet Image"
-                name="imagePathUpload"
-                type="file"
-                onChange={handleFileChange}
-                accept="image/*"
-              />
+              {/* <input placeholder="Timesheet Image" name="imagePathUpload" type="file"  onChange={handleFileChange} accept="image/*" />
+              
+              <input placeholder="Approval Image"  name= "imagePathTimesheet"  type="file" onChange={handleFileChange1} accept="image/*" /> */}
 
-              <input
-                placeholder="Approval Image"
-                name="imagePathTimesheet"
-                type="file"
-                onChange={handleFileChange1}
-                accept="image/*"
-              />
+              <Form onFinish={handleFormSubmitUpdate}>
+                <div className="naanu">
+                  <Form.Item
+                    name="pictures"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Image fild Required",
+                      },
+                    ]}
+                  >
+                    <Upload
+                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                      listType="picture"
+                    >
+                      <Button
+                        icon={<UploadOutlined />}
+                        onChange={handleFileChange}
+                      >
+                        Approvel Image
+                      </Button>
+                    </Upload>
+                  </Form.Item>
+                  <Form.Item
+                    name="pictures"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Image fild Required",
+                      },
+                    ]}
+                  >
+                    <Upload
+                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                      listType="picture"
+                      className="upload-list-inline"
+                    >
+                      <Button
+                        style={{ marginLeft: "20px" }}
+                        icon={<UploadOutlined />}
+                        onChange={handleFileChange1}
+                      >
+                        Timesheet Image
+                      </Button>
+                    </Upload>
+                  </Form.Item>
+                </div>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    Submit
+                  </Button>
+                </Form.Item>
+              </Form>
             </Space>
           </div>
 
-          <div style={{ paddingLeft: "200px" }}>
+          {/* <div style={{ paddingLeft: "200px" }}>
             <Space>
               {state1.length > 1 ? (
-                <Button type="primary" onClick={downloadXL3}>
+                <Button type="primary" onClick={downloadXL1}>
                   <DownloadOutlined /> Download XL1
                 </Button>
               ) : (
@@ -775,9 +833,8 @@ function AddTimesheet() {
                 ""
               )}
             </Space>
-          </div>
-
-          <div style={{ paddingLeft: "60%" }}>
+          </div> */}
+          <div style={{ paddingLeft: "70%", top: -130 }}>
             <Select
               disabled={isDisabled}
               style={{ width: 200 }}
@@ -789,7 +846,7 @@ function AddTimesheet() {
                 </Select.Option>
               ))}
             </Select>
-            <Button disabled={isDownload} onClick={downloadXL3}>
+            <Button disabled={isDownload} onClick={downloadXL1}>
               Download Excel
             </Button>
           </div>
@@ -838,18 +895,9 @@ function AddTimesheet() {
                 Cancel
               </Button>,
             ]}
-          >
-            {/* <UploadApTimesheet /> */}
-          </Modal>
+          ></Modal>
         </React.Fragment>
       </Card>
-      {/* <Popover content="Logout">
-        <Button
-          style={{ width: "5em", backgroundColor: "#f77c7c", marginTop: "5%" }}
-        >
-          <LogoutOutlined onClick={navig} />
-        </Button>
-      </Popover> */}
     </Space>
   );
 }
