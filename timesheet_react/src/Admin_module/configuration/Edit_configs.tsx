@@ -24,6 +24,7 @@ export function EditClient(props: any) {
   form.setFieldsValue(props.rowData[0]); // pass checked row values from props to fields
   const onFinishAdd = (values: any) => {
     onFinish(values, "/api/Admin/EditClient");
+    window.location.reload();
   };
   return (
     <>
@@ -53,6 +54,7 @@ export function EditProject(props: any) {
   form.setFieldsValue(rowData[0]); // pass checked row values from props to fields
   const onFinishAdd = (values: any) => {
     onFinish(values, "/api/Admin/EditProject");
+    window.location.reload();
   };
   return (
     <>
@@ -115,6 +117,7 @@ export function EditDesignation(props: any) {
   form.setFieldsValue(props.rowData[0]); // pass checked row values from props to fields
   const onFinishAdd = (values: any) => {
     onFinish(values, "/api/Admin/EditDesignation");
+    window.location.reload();
   };
   return (
     <>
@@ -144,6 +147,7 @@ export function EditEmpType(props: any) {
   form.setFieldsValue(props.rowData[0]); // pass checked row values from props to fields
   const onFinishAdd = (values: any) => {
     onFinish(values, "/api/Admin/EditEmployeetype");
+    window.location.reload();
   };
   return (
     <>
@@ -172,6 +176,7 @@ export function EditHrInfo(props: any) {
   form.setFieldsValue(props.rowData[0]); // pass checked row values from props to fields
   const onFinishAdd = (values: any) => {
     onFinish(values, "/api/Admin/EditHrContactInfo");
+    window.location.reload();
   };
   return (
     <>

@@ -118,34 +118,36 @@ export const Employee: React.FC = () => {
     onChange: (selectedKeys: any, selectedRows: any) => {
       setSelectedRowKeys(selectedKeys);
       setSelectedRows(selectedRows);
+      //console.log(selectedRows);
     },
   };
+  // console.log(selectedRows);
 
-  const showModals1 = (record: {
-    employee_Id: any;
-    full_Name: any;
-    employee_Type: any;
-    designation: any;
-    reporting_Manager1: any;
-    reportinng_Manager2: any;
-    joining_Date: any;
-    end_Date: any;
-    email: any;
-    contact_No: any;
-  }) => {
-    form.setFieldsValue({
-      employee_Id: record.employee_Id,
-      full_Name: record.full_Name,
-      employee_Type: record.employee_Type,
-      designation: record.designation,
-      reporting_Manager1: record.reporting_Manager1,
-      reportinng_Manager2: record.reportinng_Manager2,
-      joining_Date: momentjs(record.joining_Date),
-      end_Date: momentjs(record.end_Date),
-      email: record.email,
-      contact_No: record.contact_No,
-    });
-  };
+  // const showModals1 = (record: {
+  //   employee_Id: any;
+  //   full_Name: any;
+  //   employee_Type: any;
+  //   designation: any;
+  //   reporting_Manager1: any;
+  //   reportinng_Manager2: any;
+  //   joining_Date: any;
+  //   end_Date: any;
+  //   email: any;
+  //   contact_No: any;
+  // }) => {
+  //   form.setFieldsValue({
+  //     employee_Id: record.employee_Id,
+  //     full_Name: record.full_Name,
+  //     employee_Type: record.employee_Type,
+  //     designation: record.designation,
+  //     reporting_Manager1: record.reporting_Manager1,
+  //     reportinng_Manager2: record.reportinng_Manager2,
+  //     joining_Date: momentjs(record.joining_Date),
+  //     end_Date: momentjs(record.end_Date),
+  //     email: record.email,
+  //     contact_No: record.contact_No,
+  //   });
+  // };
 
   const columns: any = [
     {
@@ -154,64 +156,76 @@ export const Employee: React.FC = () => {
       key: "S.No",
       render: (_value: any, _item: any, index: any) =>
         (page - 1) * pageSize + index + 1,
+      align: "center",
     },
     {
       title: "Employee Code",
       dataIndex: "employee_code",
       key: "employee_code",
+      align: "center",
     },
     {
       title: "Employee ID",
       dataIndex: "employee_Id",
       key: "employee_Id",
+      align: "center",
     },
     {
       title: "Employee Name",
       dataIndex: "full_Name",
       key: "full_Name",
+      align: "center",
     },
     {
       title: "Type",
       dataIndex: "employee_Type",
       key: "employee_Type",
+      align: "center",
     },
     {
       title: "Designation",
       dataIndex: "designation",
       key: "designation",
+      align: "center",
     },
     {
       title: "Reporting Manager1",
       dataIndex: "reporting_Manager1",
       key: "reporting_Manager1",
+      align: "center",
     },
     {
       title: "Reporting Manager2",
       dataIndex: "reportinng_Manager2",
       key: "reportinng_Manager2",
+      align: "center",
     },
     {
       title: "Joining Date",
       dataIndex: "joining_Date",
       key: "joining_Date",
       render: (joining_Date: any) => moment(joining_Date).format("DD-MM-YYYY"),
+      align: "center",
     },
     {
       title: "End Date",
       dataIndex: "end_Date",
       key: "end_Date",
+      align: "center",
       render: (End_Date: any) => "",
       //moment(End_Date).format("DD-MM-YYYY"),
     },
     {
       title: "Mail Id",
-      dataIndex: "email",
-      key: "email",
+      dataIndex: "official_Email",
+      key: "official_Email",
+      align: "center",
     },
     {
       title: "Contact No",
       dataIndex: "contact_No",
       key: "contact_No",
+      align: "center",
     },
     {
       title: "",
@@ -234,6 +248,7 @@ export const Employee: React.FC = () => {
           </div>
         );
       },
+      align: "center",
     },
   ];
   const getData = (val: any) => {
@@ -285,8 +300,8 @@ export const Employee: React.FC = () => {
     },
     {
       title: "Mail Id",
-      dataIndex: "emailId",
-      key: "emailId",
+      dataIndex: "official_Email",
+      key: "official_Email",
     },
     {
       title: "Contact No",

@@ -383,7 +383,7 @@ export function Config() {
       url: urlT,
     })
       .then((r: any) => {
-         message.success("Data fetched successfully");
+        message.success("Data fetched successfully");
         setTableData(r.data);
 
         if (selectedTab === "GetClientIsActive") {
@@ -397,6 +397,18 @@ export function Config() {
           setClientData(clientTableData);
         } else {
           clientTableData = r.data;
+        }
+        if (selectedTab === "GetDesignationIsActive") {
+          designationData = r.data.map((item: any) => {
+            return {
+              key: item.designation_Id,
+              name: item.designation,
+              isActive: item.is_Active,
+            };
+          });
+          setDesigData(designationData);
+        } else {
+          designationData = r.data;
         }
       })
       .catch((error: any) => {

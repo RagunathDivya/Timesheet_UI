@@ -17,6 +17,7 @@ import axios from "axios";
 export function EditEmployee(props: any) {
   const [form] = Form.useForm();
   form.setFieldsValue(props.selectedRows[0]);
+
   const onupdate = (values: any) => {
     axios({
       method: "put",
@@ -141,7 +142,7 @@ export function EditEmployee(props: any) {
         >
           <Form.Item
             label="Employee Type "
-            name="employee_Type_Id"
+            name="employee_Type"
             rules={[
               {
                 required: true,
@@ -150,24 +151,24 @@ export function EditEmployee(props: any) {
             ]}
           >
             <Select style={{ width: 180 }}>
-              <Select.Option value="1">Internal</Select.Option>
-              <Select.Option value="2">External</Select.Option>
-              <Select.Option value="3">Consultancy</Select.Option>
+              <Select.Option value="Internal">Internal</Select.Option>
+              <Select.Option value="External">External</Select.Option>
+              <Select.Option value="Consultancy">Consultancy</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
             label="Role"
-            name="role_id"
+            name="role"
             rules={[{ required: true, message: "Please input your Role Id!" }]}
           >
             <Select style={{ width: 100 }}>
-              <Select.Option value="1">Admin</Select.Option>
-              <Select.Option value="2">Employee</Select.Option>
+              <Select.Option value="Admin">Admin</Select.Option>
+              <Select.Option value="Employee">Employee</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
             label="Designation "
-            name="designation_Id"
+            name="designation"
             rules={[
               {
                 required: true,
@@ -176,15 +177,23 @@ export function EditEmployee(props: any) {
             ]}
           >
             <Select style={{ width: 200 }}>
-              <Select.Option value="1">Manager</Select.Option>
-              <Select.Option value="2">HR Manager</Select.Option>
-              <Select.Option value="3">Senior software Developer</Select.Option>
-              <Select.Option value="4">Software Developer</Select.Option>
-              <Select.Option value="5">Software Tester</Select.Option>
-              <Select.Option value="6">
+              <Select.Option value="Manager">Manager</Select.Option>
+              <Select.Option value="HR Manager">HR Manager</Select.Option>
+              <Select.Option value="Senior software Developer">
+                Senior software Developer
+              </Select.Option>
+              <Select.Option value="Software Developer">
+                Software Developer
+              </Select.Option>
+              <Select.Option value="Software Tester">
+                Software Tester
+              </Select.Option>
+              <Select.Option value="Associate Software Engineer">
                 Associate Software Engineer
               </Select.Option>
-              <Select.Option value="7">Technical Staff</Select.Option>
+              <Select.Option value="Technical Staff">
+                Technical Staff
+              </Select.Option>
             </Select>
           </Form.Item>
         </div>

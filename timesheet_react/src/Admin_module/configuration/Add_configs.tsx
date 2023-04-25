@@ -31,6 +31,9 @@ export function AddClient() {
   };
   const onFinishAdd = (values: any) => {
     onFinish(values, "/api/Admin/AddClient");
+    handleCancel();
+    window.location.reload();
+    window.location.reload();
   };
   return (
     <div>
@@ -80,7 +83,7 @@ export function AddClient() {
 }
 export function AddProject(props: any) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { clientData } = props;
+  const { clientData, rowdata } = props;
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -89,6 +92,8 @@ export function AddProject(props: any) {
   };
   const onFinishAdd = (values: any) => {
     onFinish(values, "/api/Admin/AddProject");
+    handleCancel();
+    window.location.reload();
   };
   return (
     <div
@@ -186,6 +191,8 @@ export function AddDesignation() {
   };
   const onFinishAdd = (values: any) => {
     onFinish(values, "/api/Admin/AddDesignation");
+    handleCancel();
+    window.location.reload();
   };
   return (
     <div
@@ -249,6 +256,8 @@ export function AddEmpType() {
   };
   const onFinishAdd = (values: any) => {
     onFinish(values, "/api/Admin/AddEmployeeType");
+    handleCancel();
+    window.location.reload();
   };
   return (
     <div
@@ -312,6 +321,8 @@ export function AddHrInfo() {
   };
   const onFinishAdd = (values: any) => {
     onFinish(values, "/api/Admin/AddHrContactInfo");
+    handleCancel();
+    window.location.reload();
   };
   return (
     <div
