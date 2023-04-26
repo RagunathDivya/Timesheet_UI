@@ -1,48 +1,43 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  Form,
-  Input,
-  message,
-  Modal,
-  Select,
-  SelectProps,
-  Table,
-} from "antd";
-
+import { Button, Card, Input, message, Modal, Select, Table } from "antd";
 import axios from "axios";
-
-import momentjs from "moment";
 import moment from "moment";
 import { AddEmployee } from "./Add_emp";
 import { EditEmployee } from "./Edit_emp";
+import { AddEmpProject } from "./AddEmpProject";
 
 export const Employee: React.FC = () => {
   const [tableData, setData] = useState<Array<any>>([]);
   const [tableDatas, setDatas] = useState<Array<any>>([]);
 
-  const [isModalOpens, setIsModalOpens] = useState(false);
-  const [isTableModal, setIsTableModal] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [prevChangesModal, setPrevChangesModal] = useState(false);
+
+  const [addProjectModal, setAddProjectModal] = useState(false);
+  const [viewProjectModal, setViewProjectModal] = useState(false);
+
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [selectedOption, setSelectedOption] = useState(true);
   const [searchText, setSearchText] = useState("");
-  const options: SelectProps["options"] = [];
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedRows, setSelectedRows] = useState<{ isActive: boolean }[]>([]);
 
-  const showModals = () => {
-    setIsModalOpens(true);
+  const showEditModals = () => {
+    setEditModalOpen(true);
   };
-  const showTableModal = () => {
-    setIsTableModal(true);
-    getData(selectedRowKeys);
+  const showPrevChangesModal = () => {
+    setPrevChangesModal(true);
+    getPrevChangesData(selectedRowKeys);
+  };
+  const showAddProjectModal = () => {
+    setAddProjectModal(true);
+  };
+  const showViewProjectModal = () => {
+    setViewProjectModal(true);
   };
 
-  const [form] = Form.useForm();
-
-  const Tdata = (select: any) => {
+  const EmpData = (select: any) => {
     let urlT = "/api/Admin/GetEmployeeIsActive";
     if (select === true || select === false) {
       urlT = `/api/Admin/GetEmployeeIsActive?isActive=${select}`;
@@ -67,11 +62,11 @@ export const Employee: React.FC = () => {
 
   function handleOptionChange(value: any) {
     setSelectedOption(value);
-    Tdata(value);
+    EmpData(value);
   }
 
   useEffect(() => {
-    Tdata(selectedOption);
+    EmpData(selectedOption);
   }, []);
 
   const filteredData = tableData.filter((record: any) => {
@@ -112,42 +107,13 @@ export const Employee: React.FC = () => {
         message.error(error.message);
       });
   };
-
   const rowSelection = {
     selectedRowKeys,
     onChange: (selectedKeys: any, selectedRows: any) => {
       setSelectedRowKeys(selectedKeys);
       setSelectedRows(selectedRows);
-      //console.log(selectedRows);
     },
   };
-  // console.log(selectedRows);
-
-  // const showModals1 = (record: {
-  //   employee_Id: any;
-  //   full_Name: any;
-  //   employee_Type: any;
-  //   designation: any;
-  //   reporting_Manager1: any;
-  //   reportinng_Manager2: any;
-  //   joining_Date: any;
-  //   end_Date: any;
-  //   email: any;
-  //   contact_No: any;
-  // }) => {
-  //   form.setFieldsValue({
-  //     employee_Id: record.employee_Id,
-  //     full_Name: record.full_Name,
-  //     employee_Type: record.employee_Type,
-  //     designation: record.designation,
-  //     reporting_Manager1: record.reporting_Manager1,
-  //     reportinng_Manager2: record.reportinng_Manager2,
-  //     joining_Date: momentjs(record.joining_Date),
-  //     end_Date: momentjs(record.end_Date),
-  //     email: record.email,
-  //     contact_No: record.contact_No,
-  //   });
-  // };
 
   const columns: any = [
     {
@@ -242,7 +208,7 @@ export const Employee: React.FC = () => {
               display: "flex",
             }}
           >
-            <Button type="primary" onClick={showModals}>
+            <Button type="primary" onClick={showEditModals}>
               Edit
             </Button>
           </div>
@@ -251,7 +217,7 @@ export const Employee: React.FC = () => {
       align: "center",
     },
   ];
-  const getData = (val: any) => {
+  const getPrevChangesData = (val: any) => {
     axios({
       method: "get",
       headers: { "Content-Type": "application/json" },
@@ -341,6 +307,25 @@ export const Employee: React.FC = () => {
             alignItems: "center",
           }}
         >
+          <div
+            style={{
+              visibility:
+                selectedRowKeys.length === 1 &&
+                selectedRows.filter(
+                  (row: any) => row.employee_Id == selectedRowKeys[0]
+                )
+                  ? "visible"
+                  : "hidden",
+              display: "flex",
+            }}
+          >
+            <Button type="primary" onClick={showAddProjectModal}>
+              Add Project
+            </Button>
+            <Button type="primary" onClick={showViewProjectModal}>
+              View Project
+            </Button>
+          </div>
           <div
             hidden={
               selectedRows.filter((row: any) => row.is_Active == false)
@@ -445,8 +430,8 @@ export const Employee: React.FC = () => {
       </Card>
       <Modal
         title="Update Employee"
-        open={isModalOpens}
-        onCancel={() => setIsModalOpens(false)}
+        open={editModalOpen}
+        onCancel={() => setEditModalOpen(false)}
         footer={[]}
         width={1000}
         style={{
@@ -457,20 +442,29 @@ export const Employee: React.FC = () => {
         <Button
           type="link"
           block
-          onClick={showTableModal}
+          onClick={showPrevChangesModal}
           style={{ width: 100, fontWeight: 500 }}
         >
           View Previous Changes
         </Button>
       </Modal>
       <Modal
-        open={isTableModal}
-        onCancel={() => setIsTableModal(false)}
+        open={prevChangesModal}
+        onCancel={() => setPrevChangesModal(false)}
         footer={null}
         width={1000}
         centered
       >
         <Table dataSource={tableDatas} columns={columns1} />
+      </Modal>
+      <Modal
+        open={addProjectModal}
+        onCancel={() => setAddProjectModal(false)}
+        footer={null}
+        width={1000}
+        centered
+      >
+        <AddEmpProject />
       </Modal>
     </div>
   );
