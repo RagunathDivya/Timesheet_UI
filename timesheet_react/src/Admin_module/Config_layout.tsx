@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Avatar, Dropdown, Layout, Menu } from "antd";
 import {
   DesktopOutlined,
@@ -10,7 +10,6 @@ import joy from "../Main_module/joy.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdCard, faPeopleGroup } from "@fortawesome/free-solid-svg-icons";
 import { BrowserRouter as Router, Link, useNavigate } from "react-router-dom";
-
 import { Config } from "./configuration/configs";
 const { Header, Content, Sider } = Layout;
 
@@ -83,7 +82,7 @@ export function Configuration() {
               marginTop: 2,
               fontFamily: "Roboto",
               marginLeft: 15,
-              marginRight: 390, // Add margin to separate the image and text
+              marginRight: 390,
             }}
           >
             𝐉𝐨𝐲 𝐈𝐓 𝐒𝐨𝐥𝐮𝐭𝐢𝐨𝐧𝐬
@@ -98,7 +97,6 @@ export function Configuration() {
             style={{ marginTop: 0 }}
           >
             <div className="logo" />
-
             <Menu
               theme="dark"
               onClick={handleMenuClick}
@@ -126,7 +124,6 @@ export function Configuration() {
               </Menu.Item>
             </Menu>
           </Sider>
-
           <Header className="site-layout-background" style={{ padding: 0 }} />
           <Content
             style={{

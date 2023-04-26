@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Avatar, Dropdown, Layout, Menu } from "antd";
 import {
   DesktopOutlined,
@@ -83,7 +83,7 @@ export function EmployeeA() {
               marginTop: 2,
               fontFamily: "Roboto",
               marginLeft: 15,
-              marginRight: 390, // Add margin to separate the image and text
+              marginRight: 390,
             }}
           >
             𝐉𝐨𝐲 𝐈𝐓 𝐒𝐨𝐥𝐮𝐭𝐢𝐨𝐧𝐬

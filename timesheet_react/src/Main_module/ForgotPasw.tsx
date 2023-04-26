@@ -1,8 +1,6 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Modal, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import axios from "axios";
-import { useState } from "react";
-import { Link } from "react-router-dom";
 
 export function ForgotPassword() {
   const onFinish = (values: any) => {
@@ -39,10 +37,7 @@ export function ForgotPassword() {
             },
           ]}
         >
-          <Input
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Email"
-          />
+          <Input prefix={<UserOutlined />} placeholder="Email" />
         </Form.Item>
         <Form.Item
           name="password"
@@ -55,7 +50,6 @@ export function ForgotPassword() {
         >
           <Input.Password prefix={<LockOutlined />} placeholder="Password" />
         </Form.Item>
-
         <Form.Item>
           <Button type="primary" htmlType="submit">
             Set new password

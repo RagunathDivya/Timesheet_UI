@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Avatar, Dropdown, Layout, Menu } from "antd";
 import {
   DesktopOutlined,
@@ -16,9 +16,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import joy from "../Main_module/joy.png";
-import { Dashboards } from "./dashboard/dash";
 import { TS_Status } from "./Timesheet_status/TS_Status";
-
 const { Header, Content, Sider } = Layout;
 
 export function TimesheetStatus() {

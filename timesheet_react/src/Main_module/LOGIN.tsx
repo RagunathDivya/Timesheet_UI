@@ -1,10 +1,10 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Layout, Modal, message } from "antd";
-import { Content } from "antd/es/layout/layout";
+import { Button, Form, Input, Modal, message } from "antd";
 import axios from "axios";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ForgotPassword } from "./ForgotPasw";
+
 const LoginPage: React.FC = () => {
   const [AddProjectForm] = Form.useForm();
   const navigate = useNavigate();
@@ -108,7 +108,7 @@ const LoginPage: React.FC = () => {
           boxShadow: "5px 20px 50px #000",
         }}
       >
-        <div className="login">
+        <div>
           <Form
             onFinish={onFinish}
             form={AddProjectForm}
@@ -155,7 +155,6 @@ const LoginPage: React.FC = () => {
                 }}
               />
             </Form.Item>
-
             <Form.Item
               name="password"
               rules={[
@@ -200,7 +199,7 @@ const LoginPage: React.FC = () => {
           </Form>
           <Modal
             title="Forgot Password"
-            visible={showForgotPasswordModal}
+            open={showForgotPasswordModal}
             onCancel={handleCancel}
             footer={null}
           >

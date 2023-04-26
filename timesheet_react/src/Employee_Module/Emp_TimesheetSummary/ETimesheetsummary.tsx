@@ -2,7 +2,7 @@ import { Button, Card, Form, Modal, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./ETimesheetsummary.css";
-import{Buffer} from "buffer"
+import { Buffer } from "buffer";
 import Sider from "antd/es/layout/Sider";
 import { Link } from "react-router-dom";
 
@@ -12,6 +12,7 @@ const ETimeSummary = () => {
   const employee_Id = localStorage.getItem("Employee_Id");
   const month = currentDate.getMonth() - 1;
   const year = currentDate.getFullYear();
+  const [rowData, setRowData] = useState([]);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [showPopup, setShowPopup] = useState(false);
@@ -20,12 +21,19 @@ const ETimeSummary = () => {
   const [modalImageUrl, setModalImageUrl] = useState("");
   const [imgVisible, setImgVisible] = useState(false);
   const [imageData, setImageData] = useState("");
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const handleViewClick = (imagePathTimesheet: string) => {
     setPopupImageUrl(`/api/Employee/ImagePath?imagePath=${imagePathTimesheet}`);
     setShowPopup(true);
   };
-
+  const rowSelection = {
+    onChange: (selectedRowKeys: any, selectedRows: any) => {
+      setSelectedRowKeys(selectedRowKeys);
+      setRowData(selectedRows);
+    },
+    selectedRowKeys,
+  };
   const handlePopupClose = () => {
     setShowPopup(false);
     setPopupImageUrl("");
@@ -35,15 +43,6 @@ const ETimeSummary = () => {
     setShowModal(false);
     setModalImageUrl("");
   };
-  // const handleViewClick = (imagePathTimesheet: string) => {
-  //   setModalImageUrl(`/api/Employee/ImagePath?imagePath=${imagePathTimesheet}`);
-  //   setShowModal(true);
-  // };
-
-  // const handleModalCancel = () => {
-  //   setShowModal(false);
-  //   setModalImageUrl("");
-  // };
   const [columns, setColumns] = useState([
     {
       title: (
@@ -99,29 +98,32 @@ const ETimeSummary = () => {
         </center>
       ),
       dataIndex: "imagePathTimesheet",
-      key: "imagePathTimesheet",
-      render: (imagePathUpload: any) => {
+      key: "imagePathUpload",
+      render: (imagePathTimesheet: any, record: any) => {
+        console.log(record);
         return (
-          <div>
-            <Form onFinish={() => handleViewClick(imagePathUpload)}>
-              <Button type="primary" htmlType="submit">
-                View
-              </Button>
-            </Form>
-          </div>
+          <Button
+            type="link"
+            onClick={() => handleViewImage(record.imagePathTimesheet)}
+          >
+            View Image
+          </Button>
         );
       },
     },
     {
-      title: "View Image",
-      dataIndex: "employee_Id",
-      key: "view_image",
+      title: (
+        <center>
+          <b>Timesheet Image</b>
+        </center>
+      ),
+      dataIndex: "imagePathTimesheet",
+      key: "imagePathTimesheet",
 
-      render: (employeeId: any, record: any) => {
+      render: (imagePathTimesheet: any, record: any) => {
         console.log(record);
         return (
           <Button
-            //disabled={employeeId !== selectedRowKeys[0] || rowData.length !== 1}
             type="link"
             onClick={() => handleViewImage(record.imagePathTimesheet)}
           >
@@ -154,11 +156,8 @@ const ETimeSummary = () => {
   const handleViewImage = (imagePath: any) => {
     showImgModal();
     axios
-
       .get(
-        `/api/Employee/ImagePath?imagePath=${encodeURIComponent(
-          imagePath
-        )}`,
+        `/api/Employee/ImagePath?imagePath=${encodeURIComponent(imagePath)}`,
         {
           responseType: "arraybuffer",
         }

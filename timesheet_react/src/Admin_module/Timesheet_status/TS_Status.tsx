@@ -12,6 +12,8 @@ import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { Buffer } from "buffer";
+import { DownloadOutlined } from "@ant-design/icons";
+
 export function TS_Status() {
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
@@ -61,6 +63,17 @@ export function TS_Status() {
       dataIndex: "year",
       key: "year",
       align: "center" as AlignType,
+      render: (text: string, record: any) => (
+        <a
+          onClick={() => {
+            setSelectedYear(record.year);
+            setYear(record.year);
+          }}
+          style={{ fontWeight: 700 }}
+        >
+          {text}
+        </a>
+      ),
     },
   ];
   const monthCols = [
@@ -77,6 +90,17 @@ export function TS_Status() {
       dataIndex: "month",
       key: "month",
       align: "center" as AlignType,
+      render: (text: string, record: any) => (
+        <a
+          onClick={() => {
+            setSelectedMonth(record.month);
+            setMonth(record.monthID);
+          }}
+          style={{ fontWeight: 700 }}
+        >
+          {text}
+        </a>
+      ),
     },
     {
       title: "Total Timesheets",
@@ -222,6 +246,7 @@ export function TS_Status() {
                 handleViewTimesheet(employeeId);
                 showModal();
               }}
+              style={{ fontWeight: 800 }}
             >
               View Timesheet
             </Button>
@@ -255,12 +280,12 @@ export function TS_Status() {
       key: "view_image",
       align: "center" as AlignType,
       render: (employeeId: any, record: any) => {
-        console.log(record);
         return (
           <Button
             disabled={employeeId !== selectedRowKeys[0] || rowData.length !== 1}
             type="link"
             onClick={() => handleViewImage(record.imagePathTimesheet)}
+            style={{ fontWeight: 800 }}
           >
             View Image
           </Button>
@@ -303,10 +328,17 @@ export function TS_Status() {
     })
       .then((r: any) => {
         setMonthData(r.data);
+        setTotalTS(r.data[0].timeSheet_Count);
+        setApprovedTS(r.data[0].approved);
+        setPendingTS(r.data[0].pending);
+        setRejectedTS(r.data[0].rejected);
       })
       .catch((error: any) => {});
   };
-
+  const [totalTS, setTotalTS] = useState();
+  const [approvedTS, setApprovedTS] = useState();
+  const [pendingTS, setPendingTS] = useState();
+  const [rejectedTS, setRejectedTS] = useState();
   useEffect(() => {
     MonthData();
   }, [year]);
@@ -325,7 +357,7 @@ export function TS_Status() {
         setEmpData(r.data);
       })
       .catch((error: any) => {
-        // message.error(error.message);
+        message.error(error.message);
       });
   };
 
@@ -461,7 +493,6 @@ export function TS_Status() {
           "base64"
         );
         setImageData(`data:image/png;base64,${imageData}`);
-        console.log(imageData);
       })
       .catch((error) => console.log(error));
   };
@@ -495,15 +526,10 @@ export function TS_Status() {
         />
 
         <Table
+          bordered
           dataSource={filteredYearData}
           columns={yearCols}
           pagination={false}
-          onRow={(record: any) => ({
-            onClick: () => {
-              setSelectedYear(record.year);
-              setYear(record.year);
-            },
-          })}
         />
       </Card>
     );
@@ -540,15 +566,10 @@ export function TS_Status() {
           }}
         />
         <Table
+          bordered
           dataSource={filteredMonthData}
           columns={monthCols}
           pagination={false}
-          onRow={(record) => ({
-            onClick: () => {
-              setSelectedMonth(record.month);
-              setMonth(record.monthID);
-            },
-          })}
         />
       </Card>
     );
@@ -567,6 +588,20 @@ export function TS_Status() {
           background:
             "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
         }}
+        title={
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              fontWeight: 1000,
+            }}
+          >
+            <div>Total Timesheets: {totalTS}</div>
+            <div>Approved Timesheets: {approvedTS}</div>
+            <div>Rejected Timesheets: {rejectedTS}</div>
+            <div>Pending Timesheets: {pendingTS}</div>
+          </div>
+        }
       >
         <Input.Search
           value={searchTextEmp}
@@ -584,10 +619,23 @@ export function TS_Status() {
             fontWeight: "bold",
           }}
         />
-        <Button type="primary" onClick={handleDownload}>
+        <Button
+          type="primary"
+          onClick={handleDownload}
+          style={{
+            display: "flex",
+            float: "right",
+            background:
+              "-webkit-linear-gradient(45deg, rgba(9, 0, 159, 0.3), rgba(0, 255, 149, 0.3) 95%)",
+            color: "black",
+            fontWeight: "bold",
+          }}
+        >
           Download
+          <DownloadOutlined />
         </Button>
         <Table
+          bordered
           rowKey={(record) => record.employee_Id}
           dataSource={filteredEmpData}
           columns={empCols}
@@ -596,7 +644,6 @@ export function TS_Status() {
           scroll={{ x: "max-content" }}
         />
         <Modal
-          //title="Download Timesheet"
           open={modalVisible}
           onOk={handleImgOk}
           onCancel={handleNO}
@@ -632,7 +679,7 @@ export function TS_Status() {
       </Card>
     );
   };
-  console.log(imageData);
+
   return (
     <>
       <div>
@@ -690,6 +737,7 @@ export function TS_Status() {
                   }
                 >
                   <Table
+                    bordered
                     dataSource={timesheetData}
                     columns={statscols}
                     pagination={false}

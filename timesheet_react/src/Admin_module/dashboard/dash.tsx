@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Card, Statistic, Select, Button, message, Progress } from "antd";
+import { useState, useEffect } from "react";
+import { Card, Statistic, Select, message, Progress } from "antd";
 import axios from "axios";
-import { Bar, Chart, Line } from "react-chartjs-2";
-
 const { Option } = Select;
 
 export function Dashboards() {
@@ -49,9 +47,6 @@ export function Dashboards() {
     fetchData();
   }, [year, month]);
 
-  // const handleButtonClick = () => {
-  //   fetchData();
-  // };
   const handleYearChange = (value: any) => {
     setYear(value);
   };
@@ -64,7 +59,7 @@ export function Dashboards() {
     for (let i = 0; i < tableData.length; i++) {
       valueStr += `${tableData[i].x}: ${tableData[i].y}, `;
     }
-    valueStr = valueStr.slice(0, -2); // remove the last comma and space
+    valueStr = valueStr.slice(0, -2);
   } else {
     valueStr = "N/A";
   }

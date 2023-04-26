@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdCard, faPeopleGroup } from "@fortawesome/free-solid-svg-icons";
 import {
   BrowserRouter as Router,
-  Route,
   Link,
   Routes,
   useNavigate,

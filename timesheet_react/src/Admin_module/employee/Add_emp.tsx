@@ -17,6 +17,8 @@ export function AddEmployee() {
     })
       .then((r: any) => {
         message.success("Your record have been added successfully");
+        setIsModalOpen(false);
+        window.location.reload();
       })
       .catch((error: any) => {
         message.error(error.response.data);

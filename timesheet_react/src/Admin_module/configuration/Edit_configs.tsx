@@ -1,6 +1,7 @@
 import { Button, Form, Input, Select, message } from "antd";
 import axios from "axios";
 const { Option } = Select;
+
 const onFinish = (values: any, url: any) => {
   axios({
     method: "put",
@@ -13,7 +14,7 @@ const onFinish = (values: any, url: any) => {
     data: values,
   })
     .then((response) => {
-      message.success("Your records have been updated successfully");
+      message.success("Records updated successfully");
     })
     .catch((error) => {
       message.error(error.response.data);
@@ -21,7 +22,7 @@ const onFinish = (values: any, url: any) => {
 };
 export function EditClient(props: any) {
   const [form] = Form.useForm();
-  form.setFieldsValue(props.rowData[0]); // pass checked row values from props to fields
+  form.setFieldsValue(props.rowData[0]);
   const onFinishAdd = (values: any) => {
     onFinish(values, "/api/Admin/EditClient");
     window.location.reload();
@@ -35,7 +36,7 @@ export function EditClient(props: any) {
         <Form.Item
           label="Client Name"
           name="client_Name"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[{ required: true, message: "Please input client Name!" }]}
         >
           <Input />
         </Form.Item>
@@ -65,21 +66,21 @@ export function EditProject(props: any) {
         <Form.Item
           label="Project code"
           name="project_Code"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[{ required: true, message: "Please input project code!" }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="Project name"
           name="project_Name"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[{ required: true, message: "Please input project name!" }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="Client name"
           name="client_Id"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[{ required: true, message: "Please input Client name!" }]}
         >
           <Select>
             {clientData.map((client: any) => (
@@ -92,14 +93,18 @@ export function EditProject(props: any) {
         <Form.Item
           label="Start Date"
           name="project_Start_Date"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[
+            { required: true, message: "Please input project start date!" },
+          ]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="End Date"
           name="project_End_Date"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[
+            { required: true, message: "Please input project end date!" },
+          ]}
         >
           <Input />
         </Form.Item>
@@ -128,7 +133,7 @@ export function EditDesignation(props: any) {
         <Form.Item
           label="Designation Name"
           name="designation"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[{ required: true, message: "Please input Designation!" }]}
         >
           <Input />
         </Form.Item>
@@ -158,7 +163,7 @@ export function EditEmpType(props: any) {
         <Form.Item
           label="Name"
           name="employee_Type"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[{ required: true, message: "Please input employee type!" }]}
         >
           <Input />
         </Form.Item>
@@ -187,28 +192,32 @@ export function EditHrInfo(props: any) {
         <Form.Item
           label="First Name"
           name="first_Name"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[
+            { required: true, message: "Please input Admin first Name!" },
+          ]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="Last Name"
           name="last_Name"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[{ required: true, message: "Please input Admin Last Name!" }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="Email"
           name="hr_Email_Id"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[{ required: true, message: "Please input Admin Email!" }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="Contact number"
           name="hr_Contact_No"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[
+            { required: true, message: "Please input Admin contact number!" },
+          ]}
         >
           <Input />
         </Form.Item>

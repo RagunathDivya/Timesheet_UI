@@ -148,7 +148,9 @@ export function ViewEmpProject() {
       data: values,
     })
       .then((response) => {
-        message.success("Your record have been updated successfully");
+        message.success("Record have been updated successfully");
+        setEditModalOpen(false);
+        window.location.reload();
       })
       .catch((error) => {
         message.error(error.message);
@@ -170,7 +172,6 @@ export function ViewEmpProject() {
           fontWeight: 600,
         }}
       >
-        {" "}
         <Form
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
@@ -182,21 +183,21 @@ export function ViewEmpProject() {
           <Form.Item
             label="Employee Project ID"
             name="employee_Project_Id"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[{ required: true, message: "Please input EmpProject Id!" }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             label="Employee ID"
             name="employee_Id"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[{ required: true, message: "Please input Employee Id!" }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             label="Project ID"
             name="project_Id"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[{ required: true, message: "Please input project Id!" }]}
           >
             <Input />
           </Form.Item>
@@ -204,21 +205,25 @@ export function ViewEmpProject() {
           <Form.Item
             label="Project Start Date"
             name="start_Date"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[
+              { required: true, message: "Please input project start date!" },
+            ]}
           >
             <DatePicker />
           </Form.Item>
           <Form.Item
-            label="Project Completion Deadline"
+            label="Project end date"
             name="end_Date"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[
+              { required: true, message: "Please input project end date!" },
+            ]}
           >
             <DatePicker />
           </Form.Item>
           <Form.Item
             label="Location"
             name="location"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[{ required: true, message: "Please input location!" }]}
           >
             <Input />
           </Form.Item>

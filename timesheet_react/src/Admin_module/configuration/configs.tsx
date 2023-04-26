@@ -3,7 +3,7 @@ import { Button, Card, Input, Modal, Select, Table, Tabs, message } from "antd";
 import axios from "axios";
 import TabPane from "antd/es/tabs/TabPane";
 import moment from "moment";
-import { EditFilled, SearchOutlined } from "@ant-design/icons";
+import { EditFilled } from "@ant-design/icons";
 import {
   AddClient,
   AddDesignation,
@@ -31,7 +31,7 @@ export function Config() {
   const [searchText, setSearchText] = useState("");
   const [selectedOption, setSelectedOption] = useState(true);
   const [clientData, setClientData] = useState();
-  const [desigData, setDesigData] = useState();
+
   // Tabel columns
   const tableColumns: any = {
     GetClientIsActive: [
@@ -353,7 +353,6 @@ export function Config() {
 
   const columns = selectedTab ? tableColumns[selectedTab] : [];
   var clientTableData: any = [];
-  var designationData: any = [];
 
   const getData = (select: any) => {
     let urlT = `/api/Admin/${selectedTab}`;
@@ -387,18 +386,6 @@ export function Config() {
           setClientData(clientTableData);
         } else {
           clientTableData = r.data;
-        }
-        if (selectedTab === "GetDesignationIsActive") {
-          designationData = r.data.map((item: any) => {
-            return {
-              key: item.designation_Id,
-              name: item.designation,
-              isActive: item.is_Active,
-            };
-          });
-          setDesigData(designationData);
-        } else {
-          designationData = r.data;
         }
       })
       .catch((error: any) => {
@@ -617,6 +604,7 @@ export function Config() {
       </>
     );
   };
+
   //Edit Modal
   const showModal = () => {
     setIsModalOpen(true);
@@ -624,7 +612,6 @@ export function Config() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-
   var editActive: any =
     selectedTab === "GetClientIsActive"
       ? (editActive = "EditClientIsActive")
@@ -654,18 +641,8 @@ export function Config() {
       id: selectedRowKeys,
       is_Active: isActive,
     };
-
-    //const ids = selectedRowKeys;
     if (selectedRowKeys == null) {
       message.error("No selected row");
-      return;
-    }
-    const hasCompletedRows =
-      rowData.filter((row: any) => row.is_Active === false).length > 0;
-    const active = !hasCompletedRows;
-
-    if (isActive === false && !active) {
-      message.error("Cannot deactivate inactive user");
       return;
     }
     axios({
@@ -712,7 +689,6 @@ export function Config() {
         style={{
           width: "100%",
           marginTop: 16,
-          //background: "rgba(235, 235, 235,0.6)",
           background:
             "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
         }}

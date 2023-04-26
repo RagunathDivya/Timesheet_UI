@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Avatar, Dropdown, Layout, Menu } from "antd";
 import {
   DesktopOutlined,
@@ -10,8 +10,6 @@ import joy from "../Main_module/joy.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdCard, faPeopleGroup } from "@fortawesome/free-solid-svg-icons";
 import { BrowserRouter as Router, Link, useNavigate } from "react-router-dom";
-
-import { Config } from "./configuration/configs";
 import { UserProfiles } from "./UserProfile/UserProfile";
 const { Header, Content, Sider } = Layout;
 
@@ -127,7 +125,6 @@ export function UserProfile() {
               </Menu.Item>
             </Menu>
           </Sider>
-
           <Header className="site-layout-background" style={{ padding: 0 }} />
           <Content
             style={{
@@ -138,7 +135,7 @@ export function UserProfile() {
                 "-webkit-linear-gradient(45deg,rgba(255, 192, 203, 0.7), rgba(135, 206, 235, 0.4) 100%)",
             }}
           >
-           <UserProfiles/>
+            <UserProfiles />
           </Content>
         </Layout>
       </Layout>

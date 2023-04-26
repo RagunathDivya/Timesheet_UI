@@ -1,7 +1,8 @@
 import { Button, DatePicker, Form, Input, message, Modal, Select } from "antd";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 const { Option } = Select;
+
 const onFinish = (values: any, url: any) => {
   console.log(values);
   axios({
@@ -15,12 +16,13 @@ const onFinish = (values: any, url: any) => {
     data: values,
   })
     .then((r: any) => {
-      message.success("Ok Your records are Posted Successfully");
+      message.success("Ok! Records are Added Successfully");
     })
     .catch((error: any) => {
       message.error(error.response.data);
     });
 };
+
 export function AddClient() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -67,7 +69,7 @@ export function AddClient() {
           <Form.Item
             label="Client name"
             name="client_Name"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[{ required: true, message: "Please input Client Name!" }]}
           >
             <Input />
           </Form.Item>
@@ -81,6 +83,7 @@ export function AddClient() {
     </div>
   );
 }
+
 export function AddProject(props: any) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { clientData, rowdata } = props;
@@ -133,21 +136,26 @@ export function AddProject(props: any) {
           <Form.Item
             label="Project code"
             name="Project_Code"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[{ required: true, message: "Please input project code !" }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             label="Project name"
             name="project_Name"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[{ required: true, message: "Please input project Name!" }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             label="Client name"
             name="client_Id"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[
+              {
+                required: true,
+                message: "Please select client for this project!",
+              },
+            ]}
           >
             <Select>
               {clientData.map((client: any) => (
@@ -160,14 +168,18 @@ export function AddProject(props: any) {
           <Form.Item
             label="Start Date"
             name="project_Start_Date"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[
+              { required: true, message: "Please specify project start date!" },
+            ]}
           >
             <DatePicker />
           </Form.Item>
           <Form.Item
             label="End Date"
             name="project_End_Date"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[
+              { required: true, message: "Please specify project end date!" },
+            ]}
           >
             <DatePicker />
           </Form.Item>
@@ -181,6 +193,7 @@ export function AddProject(props: any) {
     </div>
   );
 }
+
 export function AddDesignation() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -232,7 +245,7 @@ export function AddDesignation() {
           <Form.Item
             label="Designation name"
             name="designation"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[{ required: true, message: "Please input Designation !" }]}
           >
             <Input />
           </Form.Item>
@@ -297,7 +310,7 @@ export function AddEmpType() {
           <Form.Item
             label="Employee type name"
             name="employee_Type"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[{ required: true, message: "Please input Employee type!" }]}
           >
             <Input />
           </Form.Item>
@@ -362,7 +375,7 @@ export function AddHrInfo() {
           <Form.Item
             label="HR Email "
             name="hr_Email_Id"
-            rules={[{ required: true, message: "Please input your Name!" }]}
+            rules={[{ required: true, message: "Please input HR Email!" }]}
           >
             <Input />
           </Form.Item>

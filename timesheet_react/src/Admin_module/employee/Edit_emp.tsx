@@ -1,16 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Modal,
-  Select,
-  SelectProps,
-  Space,
-  Table,
-} from "antd";
+import { useEffect, useState } from "react";
+import { Button, DatePicker, Form, Input, message, Select } from "antd";
 
 import axios from "axios";
 
@@ -30,7 +19,8 @@ export function EditEmployee(props: any) {
       data: values,
     })
       .then((response) => {
-        message.success("Your record have been updated successfully");
+        message.success("Record have been updated successfully");
+        window.location.reload();
       })
       .catch((error) => {
         message.error(error.message);
@@ -269,7 +259,7 @@ export function EditEmployee(props: any) {
           </Form.Item>
           <Form.Item
             label="Alternate Mail"
-            name="alternate_Email"
+            name="official_Email"
             rules={[
               {
                 required: false,
@@ -290,7 +280,6 @@ export function EditEmployee(props: any) {
           </Form.Item>
         </div>
         <Form.Item
-          //wrapperCol={{ offset: 8, span: 16 }}
           style={{ display: "flex", justifyContent: "center", marginTop: 50 }}
         >
           <Button type="primary" htmlType="submit">

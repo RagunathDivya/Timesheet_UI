@@ -9,13 +9,10 @@ import { AddEmpProject, ViewEmpProject } from "./AddEmpProject";
 export const Employee: React.FC = () => {
   const [tableData, setData] = useState<Array<any>>([]);
   const [tableDatas, setDatas] = useState<Array<any>>([]);
-
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [prevChangesModal, setPrevChangesModal] = useState(false);
-
   const [addProjectModal, setAddProjectModal] = useState(false);
   const [viewProjectModal, setViewProjectModal] = useState(false);
-
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const pageSizeOptions = [3, 5, 10, 20];
@@ -83,13 +80,6 @@ export const Employee: React.FC = () => {
 
     if (selectedRowKeys == null) {
       message.error("No selected row");
-      return;
-    }
-    const hasCompletedRows =
-      tableData.filter((row: any) => row.is_Active === false).length > 0;
-    const active = !hasCompletedRows;
-    if (isActive === false && !active) {
-      message.error("Cannot deactivate inactive user");
       return;
     }
     axios({
@@ -226,7 +216,7 @@ export const Employee: React.FC = () => {
     })
       .then((r: any) => {
         setDatas(r.data);
-        message.success("Data fetched successfully ");
+        //message.success("Data fetched successfully ");
       })
       .catch((error: any) => {
         message.error(error.message);
@@ -294,11 +284,45 @@ export const Employee: React.FC = () => {
           width: "100%",
           marginTop: 16,
           paddingTop: 35,
-          //background: "rgba(235, 235, 235,0.6)",
           background:
             "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
         }}
       >
+        <div
+          style={{
+            display: "flex",
+            float: "right",
+          }}
+        >
+          <Button
+            type="primary"
+            onClick={showAddProjectModal}
+            style={{
+              display: "flex",
+              float: "right",
+              background:
+                "-webkit-linear-gradient(45deg, rgba(9, 0, 159, 0.3), rgba(0, 255, 149, 0.3) 95%)",
+              color: "black",
+              fontWeight: "bold",
+            }}
+          >
+            Add Project
+          </Button>
+          <Button
+            type="primary"
+            onClick={showViewProjectModal}
+            style={{
+              display: "flex",
+              float: "right",
+              background:
+                "-webkit-linear-gradient(45deg, rgba(9, 0, 159, 0.3), rgba(0, 255, 149, 0.3) 95%)",
+              color: "black",
+              fontWeight: "bold",
+            }}
+          >
+            View Project
+          </Button>
+        </div>
         <AddEmployee />
         <div
           style={{
@@ -308,25 +332,6 @@ export const Employee: React.FC = () => {
             alignItems: "center",
           }}
         >
-          <div
-            style={{
-              visibility:
-                selectedRowKeys.length === 1 &&
-                selectedRows.filter(
-                  (row: any) => row.employee_Id == selectedRowKeys[0]
-                )
-                  ? "visible"
-                  : "hidden",
-              display: "flex",
-            }}
-          >
-            <Button type="primary" onClick={showAddProjectModal}>
-              Add Project
-            </Button>
-            <Button type="primary" onClick={showViewProjectModal}>
-              View Project
-            </Button>
-          </div>
           <div
             hidden={
               selectedRows.filter((row: any) => row.is_Active == false)
@@ -368,12 +373,13 @@ export const Employee: React.FC = () => {
             </Button>
           </div>
         </div>
+
         <Input.Search
           value={searchText}
           onChange={(e: any) => setSearchText(e.target.value)}
           placeholder="Search"
           style={{
-            width: 100,
+            width: 120,
             display: "flex",
             float: "left",
             textAlign: "center",

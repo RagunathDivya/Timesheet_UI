@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
-import { Avatar, Dropdown, Layout, Menu } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { Layout } from "antd";
 
 import {
   BrowserRouter as Router,
   Route,
-  Link,
   Routes,
   BrowserRouter,
   Navigate,
   useNavigate,
 } from "react-router-dom";
 
-//import LoginPage from "./LOGIN";
 import { AdminDashboard } from "../Admin_module/dash_layout";
 import { Configuration } from "../Admin_module/Config_layout";
 import { EmployeeA } from "../Admin_module/Emp_layout";
@@ -25,15 +22,13 @@ import { EmpTimesheet } from "../Employee_Module/Timesheet_layout";
 import { TimeSheetSummary } from "../Employee_Module/TimesheetSummary_Layout";
 import { HRContactInfo } from "../Employee_Module/HR_Contact_layout";
 import { EUserProfile } from "../Employee_Module/EUser_prof_layout";
-
-const { Header, Content, Sider } = Layout;
+const { Content } = Layout;
 
 const Home = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem("isAuthenticated") === "true"
   );
   const navigate = useNavigate();
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
