@@ -11,7 +11,7 @@ import {
 import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
-
+import { Buffer } from "buffer";
 export function TS_Status() {
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
@@ -29,6 +29,8 @@ export function TS_Status() {
   const [daysWorked, setDaysWorked] = useState(0);
   const [empName, setEmpName] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [imgVisible, setImgVisible] = useState(false);
+  const [imageData, setImageData] = useState("");
 
   const rowSelection = {
     onChange: (selectedRowKeys: any, selectedRows: any) => {
@@ -77,15 +79,27 @@ export function TS_Status() {
       align: "center" as AlignType,
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
+      title: "Total Timesheets",
+      dataIndex: "timeSheet_Count",
+      key: "timeSheet_Count",
       align: "center" as AlignType,
     },
     {
-      title: "status count",
-      dataIndex: "statuscount",
-      key: "statuscount",
+      title: "Approved Timesheets",
+      dataIndex: "approved",
+      key: "approved",
+      align: "center" as AlignType,
+    },
+    {
+      title: "Rejected Timesheets",
+      dataIndex: "rejected",
+      key: "rejected",
+      align: "center" as AlignType,
+    },
+    {
+      title: "Pending Timesheets",
+      dataIndex: "pending",
+      key: "pending",
       align: "center" as AlignType,
     },
   ];
@@ -235,6 +249,24 @@ export function TS_Status() {
         </Select>
       ),
     },
+    {
+      title: "View Image",
+      dataIndex: "employee_Id",
+      key: "view_image",
+      align: "center" as AlignType,
+      render: (employeeId: any, record: any) => {
+        console.log(record);
+        return (
+          <Button
+            disabled={employeeId !== selectedRowKeys[0] || rowData.length !== 1}
+            type="link"
+            onClick={() => handleViewImage(record.imagePathTimesheet)}
+          >
+            View Image
+          </Button>
+        );
+      },
+    },
   ];
   const YearData = async () => {
     axios({
@@ -311,7 +343,6 @@ export function TS_Status() {
     const editTimeSheetModelById = [
       { employee_id: employeeId, month_Id: month, year: year },
     ];
-    debugger;
     const data = {
       timesheet_Status: newStatus,
       editTimeSheetModelById: editTimeSheetModelById,
@@ -342,7 +373,6 @@ export function TS_Status() {
     setIsModalOpen(false);
   };
   const handleViewTimesheet = async (employeeId: any) => {
-    debugger;
     axios({
       method: "get",
       headers: {
@@ -368,7 +398,7 @@ export function TS_Status() {
 
   const handleYes = async () => {
     try {
-      const url = `https://localhost:7122/api/Admin?year=2023&Fiscial_Year_Id=3`;
+      const url = `https://localhost:7122/api/Admin/ExportTimesheetByMonthToExcel?year=${year}&Fiscial_Year_Id=${month}`;
       const response = await axios.get(url, {
         responseType: "blob", // important: we're expecting a binary response
       });
@@ -380,9 +410,7 @@ export function TS_Status() {
       link.click();
       link.remove();
       setModalVisible(false);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleNO = () => {
@@ -393,6 +421,7 @@ export function TS_Status() {
   const [searchTextYear, setSearchTextYear] = useState("");
   const [searchTextMonth, setSearchTextMonth] = useState("");
   const [searchTextEmp, setSearchTextEmp] = useState("");
+
   const filteredYearData = yearData.filter((record: any) => {
     const values = Object.values(record).join(" ").toLowerCase();
     return values.includes(searchTextYear.toLowerCase());
@@ -405,6 +434,39 @@ export function TS_Status() {
     const values = Object.values(record).join(" ").toLowerCase();
     return values.includes(searchTextEmp.toLowerCase());
   });
+
+  const showImgModal = () => {
+    setImgVisible(true);
+  };
+
+  const handleImgOk = () => {
+    setImgVisible(false);
+  };
+
+  const handleImgCancel = () => {
+    setImgVisible(false);
+  };
+  const handleViewImage = (imagePath: any) => {
+    showImgModal();
+    axios
+
+      .get(
+        `https://localhost:7122/api/Employee/ImagePath?imagePath=${encodeURIComponent(
+          imagePath
+        )}`,
+        {
+          responseType: "arraybuffer",
+        }
+      )
+      .then((response) => {
+        const imageData = Buffer.from(response.data, "binary").toString(
+          "base64"
+        );
+        setImageData(`data:image/png;base64,${imageData}`);
+        console.log(imageData);
+      })
+      .catch((error) => console.log(error));
+  };
 
   const renderYearTable = () => {
     return (
@@ -538,7 +600,7 @@ export function TS_Status() {
         <Modal
           //title="Download Timesheet"
           open={modalVisible}
-          onOk={handleYes}
+          onOk={handleImgOk}
           onCancel={handleNO}
           footer={[
             <div style={{ display: "flex", justifyContent: "space-evenly" }}>
@@ -561,10 +623,19 @@ export function TS_Status() {
             Do you want to download timesheet for the month?
           </p>
         </Modal>
+        <Modal
+          open={imgVisible}
+          onCancel={handleImgCancel}
+          footer={null}
+          style={{ padding: "2000px 2000px 2000px 2000px" }}
+          width={1000000}
+        >
+          <img src={imageData} alt="Employee Image" />
+        </Modal>
       </Card>
     );
   };
-
+  console.log(imageData);
   return (
     <>
       <div>
