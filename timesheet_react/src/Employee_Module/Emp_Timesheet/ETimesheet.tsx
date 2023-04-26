@@ -52,7 +52,7 @@ const projectOption = async (): Promise<void> => {
       value: element.project_Id,
       label: element.project_Name,
     });
-    console.log(element.project_Id);
+    //console.log(element.project_Id);
   });
 };
 
@@ -90,6 +90,7 @@ function AddTimesheet() {
   const [file1, setFile1] = useState<File | null>(null);
   const month = currentDate.getMonth() - 1;
   const year = currentDate.getFullYear();
+
   const Day_list = [
     "Sunday",
     "Monday",
@@ -143,6 +144,7 @@ function AddTimesheet() {
   const [totalDuration, setTotalDuration] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
   const [isDownload, setIsDownload] = useState(true);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     var count = 0;
@@ -461,47 +463,6 @@ function AddTimesheet() {
       link.click();
     });
   };
-
-  const handleFileChange = (event: any) => {
-    setFile(event.target.files[0]);
-  };
-  const handleFileChange1 = (a: any) => {
-    setFile1(a.target.files[0]);
-  };
-  const uploadFiles = async () => {
-    const formData = new FormData();
-    formData.append("image", file as File);
-    const {
-      data: { imagePath },
-    } = await axios.post("/api/Employee/Image", formData);
-
-    const formData1 = new FormData();
-    formData1.append("Image", file1 as File);
-    const {
-      data: { imagePath: imagePath1 },
-    } = await axios.post("/api/Employee/Image", formData1);
-
-    return { imagePath, imagePath1 };
-  };
-  const dataToSave = async () => {
-    const { imagePath, imagePath1 } = await uploadFiles();
-    console.log(imagePath, imagePath1);
-    return {
-      imagePathUpload: imagePath,
-      imagePathTimesheet: imagePath1,
-    };
-  };
-  const handleFormSubmitUpdate = () => {
-    axios
-      .put("/api/Employee/ImageUpdate", dataToSave)
-      .then((response) => {
-        message.success("Image Updated successfully");
-      })
-      .catch((error) => {
-        message.error(error.message);
-      });
-  };
-
   const downloadXL2 = async () => {
     await axios({
       //  url: `https://timesheetjy.azurewebsites.net/api/Employee/ExportExcel?id=${1}&monthid=${month + 1}&year=${year}&project_id=${state2[0].project_Id}`,
@@ -548,7 +509,55 @@ function AddTimesheet() {
     leave: boolean;
     duration_in_Hrs: number;
   }
+  const handleFileChange = (event: any) => {
+    setFile(event.target.files[0]);
+  };
+  const handleFileChange1 = (a: any) => {
+    setFile1(a.target.files[0]);
+  };
+  // const uploadFiles = async () => {
+  //   const formData = new FormData();
+  //   formData.append("image", file as File);
+  //   const { data: { imagePathUpload:imagePath } } = await axios.post("/api/Employee/Image", formData);
 
+  //   const formData1 = new FormData();
+  //   formData1.append("Image", file1 as File);
+  //   const { data: { imagePathTimesheet: imagePath1 } } = await axios.post("/api/Employee/Image", formData1);
+
+  //   return { imagePath, imagePath1 };
+  // }
+  // const dataToSave = async () => {
+  //     const { imagePath, imagePath1 } = await uploadFiles();
+  //   console.log(imagePath,imagePath1)
+  //     return {
+  //       imagePathUpload:imagePath,
+  //       imagePathTimesheet:imagePath1
+  //     };
+  //   };
+
+  const handleFormSubmit = async (values: any) => {
+    try {
+      const formData = new FormData();
+      formData.append("image", file as File);
+      const {
+        data: { imagePath },
+      } = await axios.post("/api/Employee/Image", formData);
+      console.log(imagePath);
+      const formData1 = new FormData();
+      formData1.append("Image", file1 as File);
+      const response = await axios.post("/api/Employee/Image", formData1);
+      console.log(response.data.imagePath);
+      const dataToSave = {
+        ImagePathTimesheet: imagePath,
+        ImagePathUpload: response.data.imagePath,
+      };
+      // Call your API with the form data
+      await axios.put("/api/Employee/ImageUpdate", dataToSave);
+      message.success("Row added successfully");
+    } catch (error: any) {
+      message.error(error.message);
+    }
+  };
   const postData = async (values: any) => {
     let date: Date | null = null;
 
@@ -714,7 +723,10 @@ function AddTimesheet() {
   function setFiles(arg0: never[]) {
     throw new Error("Function not implemented.");
   }
-
+  const handleUploadError = (error: any) => {
+    // Handle upload error
+    message.error("Upload failed: " + error);
+  };
   return (
     <Space>
       <Card style={{ marginLeft: 100 }}>
@@ -734,106 +746,58 @@ function AddTimesheet() {
             style={{
               position: "relative",
               paddingLeft: "40%",
-              left: 150,
+              left: 30,
               top: -130,
             }}
           >
-            <Space>
-              {/* <Upload {...props}>
-                <Button  name="imagePathUpload" icon={<UploadOutlined />} >
-                Approval Image
-                </Button> 
-              </Upload> */}
-              {/* <Upload {...props}> */}
-              {/* <Button onClick={handleFileChange} icon={<UploadOutlined />} name= "imagePathTimesheet" >
-                Approval Image
-                </Button>  */}
-              {/* </Upload> */}
-              {/* <input placeholder="Timesheet Image" name="imagePathUpload" type="file"  onChange={handleFileChange} accept="image/*" />
-              
-              <input placeholder="Approval Image"  name= "imagePathTimesheet"  type="file" onChange={handleFileChange1} accept="image/*" /> */}
-
-              <Form onFinish={handleFormSubmitUpdate}>
-                <div className="naanu">
+            <React.Fragment>
+              <Space>
+                <Form layout="vertical" onFinish={handleFormSubmit}>
                   <Form.Item
-                    name="pictures"
+                    name="imagePathTimesheet"
                     rules={[
                       {
                         required: true,
-                        message: "Image fild Required",
+                        message: "Please input your Upload Image!",
                       },
                     ]}
                   >
-                    <Upload
-                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                      listType="picture"
-                    >
-                      <Button
-                        icon={<UploadOutlined />}
-                        onChange={handleFileChange}
-                      >
-                        Approvel Image
-                      </Button>
-                    </Upload>
+                    <Input
+                      placeholder="Timesheet Image"
+                      name="imagePathTimesheet"
+                      type="file"
+                      onChange={handleFileChange}
+                      accept="image/*"
+                    />
                   </Form.Item>
                   <Form.Item
-                    name="pictures"
+                    name="imagePathUpload"
                     rules={[
                       {
                         required: true,
-                        message: "Image fild Required",
+                        message: "Please input your Approval Image!",
                       },
                     ]}
                   >
-                    <Upload
-                      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                      listType="picture"
-                      className="upload-list-inline"
-                    >
-                      <Button
-                        style={{ marginLeft: "20px" }}
-                        icon={<UploadOutlined />}
-                        onChange={handleFileChange1}
-                      >
-                        Timesheet Image
-                      </Button>
-                    </Upload>
+                    <Input
+                      placeholder="Approval Image"
+                      name="imagePathUpload"
+                      type="file"
+                      onChange={handleFileChange1}
+                      accept="image/*"
+                    />
                   </Form.Item>
-                </div>
-                <Form.Item>
                   <Button type="primary" htmlType="submit">
                     Submit
                   </Button>
-                </Form.Item>
-              </Form>
-            </Space>
+                </Form>
+              </Space>
+            </React.Fragment>
           </div>
 
-          {/* <div style={{ paddingLeft: "200px" }}>
-            <Space>
-              {state1.length > 1 ? (
-                <Button type="primary" onClick={downloadXL1}>
-                  <DownloadOutlined /> Download XL1
-                </Button>
-              ) : (
-                ""
-              )}
-              {state2.length > 1 ? (
-                <Button type="primary" onClick={downloadXL2}>
-                  <DownloadOutlined /> Download XL2
-                </Button>
-              ) : (
-                ""
-              )}
-              {state3.length > 1 ? (
-                <Button type="primary" onClick={downloadXL3}>
-                  <DownloadOutlined /> Download XL3
-                </Button>
-              ) : (
-                ""
-              )}
-            </Space>
-          </div> */}
+          <div style={{ paddingLeft: "200px" }}>
+            <Space></Space>
+          </div>
           <div style={{ paddingLeft: "70%", top: -130 }}>
             <Select
               disabled={isDisabled}
@@ -869,33 +833,6 @@ function AddTimesheet() {
               </Button>
             </Form>
           </div>
-          <Modal
-            visible={isModalVisible}
-            onOk={handleOk}
-            onCancel={handleCancel}
-            footer={[
-              <Button
-                onClick={() => {
-                  setFiles([]);
-                  setIsModalVisible(!isModalVisible);
-                }}
-                danger
-              >
-                cancel
-              </Button>,
-            ]}
-          ></Modal>
-
-          <Modal
-            visible={modal}
-            onOk={handleOk1}
-            onCancel={handleCancel1}
-            footer={[
-              <Button danger onClick={handleCancel1}>
-                Cancel
-              </Button>,
-            ]}
-          ></Modal>
         </React.Fragment>
       </Card>
     </Space>
