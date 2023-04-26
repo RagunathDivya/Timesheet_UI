@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, DatePicker, Form, Input, message, Modal, Select } from "antd";
 
 import axios from "axios";
@@ -22,6 +22,39 @@ export function AddEmployee() {
         message.error(error.response.data);
       });
   };
+  const [designations, setDesignations] = useState<Designation[]>([]);
+  interface Designation {
+    designation_Id: number;
+    designation: string;
+    is_Active: boolean;
+    create_Date: string;
+    modified_Date: string | null;
+  }
+  useEffect(() => {
+    const fetchDesignations = async () => {
+      const response = await axios.get("/api/Admin/GetAllDesignations");
+      setDesignations(response.data);
+    };
+    fetchDesignations();
+  }, []);
+  interface EmployeeType {
+    employee_Type_Id: number;
+    employee_Type: string;
+    is_Active: boolean;
+    create_Date: string;
+    modified_Date: string | null;
+  }
+  useEffect(() => {
+    const fetchEmployeeTypes = async () => {
+      const response = await axios.get<EmployeeType[]>(
+        "/api/Admin/GetAllEmplyoeeTypes"
+      );
+      setEmployeeTypes(response.data);
+    };
+    fetchEmployeeTypes();
+  }, []);
+
+  const [employeeTypes, setEmployeeTypes] = useState<EmployeeType[]>([]);
   return (
     <>
       <Button
@@ -105,14 +138,19 @@ export function AddEmployee() {
               rules={[
                 {
                   required: true,
-                  message: "Please input your Employee Type Id!",
+                  message: "Please select an Employee Type!",
                 },
               ]}
             >
               <Select style={{ width: 185 }}>
-                <Select.Option value="1">Internal</Select.Option>
-                <Select.Option value="2">External</Select.Option>
-                <Select.Option value="3">Consultancy</Select.Option>
+                {employeeTypes.map((employeeType) => (
+                  <Select.Option
+                    key={employeeType.employee_Type_Id}
+                    value={employeeType.employee_Type_Id}
+                  >
+                    {employeeType.employee_Type}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
             <Form.Item
@@ -123,17 +161,14 @@ export function AddEmployee() {
               ]}
             >
               <Select style={{ width: 200 }}>
-                <Select.Option value="1">Manager</Select.Option>
-                <Select.Option value="2">HR Manager</Select.Option>
-                <Select.Option value="3">
-                  Senior software Developer
-                </Select.Option>
-                <Select.Option value="4">Software Developer</Select.Option>
-                <Select.Option value="5">Software Tester</Select.Option>
-                <Select.Option value="6">
-                  Associate Software Engineer
-                </Select.Option>
-                <Select.Option value="7">Technical Staff</Select.Option>
+                {designations.map((designation) => (
+                  <Select.Option
+                    key={designation.designation_Id}
+                    value={designation.designation_Id}
+                  >
+                    {designation.designation}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
           </div>
@@ -174,9 +209,11 @@ export function AddEmployee() {
               ]}
             >
               <Select style={{ width: 200 }}>
-                <Select.Option value="Sweta P">Sweta P</Select.Option>
-                <Select.Option value="Sadiq S">Sadiq S</Select.Option>
-                <Select.Option value="Anjana G">Anjana G</Select.Option>
+                <Select.Option value="Manuj Kumar B">
+                  Manuj Kumar B
+                </Select.Option>
+                <Select.Option value="Appusamy S">Appusamy S</Select.Option>
+                <Select.Option value="Rabik S">Rabik S</Select.Option>
               </Select>
             </Form.Item>
           </div>

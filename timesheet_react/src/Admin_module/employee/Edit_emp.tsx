@@ -36,6 +36,40 @@ export function EditEmployee(props: any) {
         message.error(error.message);
       });
   };
+  const [designations, setDesignations] = useState<Designation[]>([]);
+  interface Designation {
+    designation_Id: number;
+    designation: string;
+    is_Active: boolean;
+    create_Date: string;
+    modified_Date: string | null;
+  }
+  useEffect(() => {
+    const fetchDesignations = async () => {
+      const response = await axios.get("/api/Admin/GetAllDesignations");
+      setDesignations(response.data);
+    };
+    fetchDesignations();
+  }, []);
+
+  interface EmployeeType {
+    employee_Type_Id: number;
+    employee_Type: string;
+    is_Active: boolean;
+    create_Date: string;
+    modified_Date: string | null;
+  }
+  const [employeeTypes, setEmployeeTypes] = useState<EmployeeType[]>([]);
+  useEffect(() => {
+    const fetchEmployeeTypes = async () => {
+      const response = await axios.get<EmployeeType[]>(
+        "/api/Admin/GetAllEmplyoeeTypes"
+      );
+      setEmployeeTypes(response.data);
+    };
+    fetchEmployeeTypes();
+  }, []);
+
   return (
     <>
       <Form
@@ -141,19 +175,24 @@ export function EditEmployee(props: any) {
           }}
         >
           <Form.Item
-            label="Employee Type "
+            label="Employee Type"
             name="employee_Type"
             rules={[
               {
                 required: true,
-                message: "Please input your Employee Type Id!",
+                message: "Please select an Employee Type!",
               },
             ]}
           >
-            <Select style={{ width: 180 }}>
-              <Select.Option value="Internal">Internal</Select.Option>
-              <Select.Option value="External">External</Select.Option>
-              <Select.Option value="Consultancy">Consultancy</Select.Option>
+            <Select style={{ width: 185 }}>
+              {employeeTypes.map((employeeType) => (
+                <Select.Option
+                  key={employeeType.employee_Type}
+                  value={employeeType.employee_Type}
+                >
+                  {employeeType.employee_Type}
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item
@@ -167,33 +206,21 @@ export function EditEmployee(props: any) {
             </Select>
           </Form.Item>
           <Form.Item
-            label="Designation "
+            label="Designation"
             name="designation"
             rules={[
-              {
-                required: true,
-                message: "Please input your Designation Id!",
-              },
+              { required: true, message: "Please input your Designation !" },
             ]}
           >
             <Select style={{ width: 200 }}>
-              <Select.Option value="Manager">Manager</Select.Option>
-              <Select.Option value="HR Manager">HR Manager</Select.Option>
-              <Select.Option value="Senior software Developer">
-                Senior software Developer
-              </Select.Option>
-              <Select.Option value="Software Developer">
-                Software Developer
-              </Select.Option>
-              <Select.Option value="Software Tester">
-                Software Tester
-              </Select.Option>
-              <Select.Option value="Associate Software Engineer">
-                Associate Software Engineer
-              </Select.Option>
-              <Select.Option value="Technical Staff">
-                Technical Staff
-              </Select.Option>
+              {designations.map((designation) => (
+                <Select.Option
+                  key={designation.designation_Id}
+                  value={designation.designation_Id}
+                >
+                  {designation.designation}
+                </Select.Option>
+              ))}
             </Select>
           </Form.Item>
         </div>

@@ -398,7 +398,7 @@ export function TS_Status() {
 
   const handleYes = async () => {
     try {
-      const url = `https://localhost:7122/api/Admin/ExportTimesheetByMonthToExcel?year=${year}&Fiscial_Year_Id=${month}`;
+      const url = `/api/Admin/ExportTimesheetByMonthToExcel?year=${year}&Fiscial_Year_Id=${month}`;
       const response = await axios.get(url, {
         responseType: "blob", // important: we're expecting a binary response
       });
@@ -451,9 +451,7 @@ export function TS_Status() {
     axios
 
       .get(
-        `https://localhost:7122/api/Employee/ImagePath?imagePath=${encodeURIComponent(
-          imagePath
-        )}`,
+        `/api/Employee/ImagePath?imagePath=${encodeURIComponent(imagePath)}`,
         {
           responseType: "arraybuffer",
         }
@@ -627,10 +625,9 @@ export function TS_Status() {
           open={imgVisible}
           onCancel={handleImgCancel}
           footer={null}
-         
           width={850}
         >
-          <img src={imageData} alt="Employee Image" style={{width:790}}/>
+          <img src={imageData} alt="Employee Image" style={{ width: 790 }} />
         </Modal>
       </Card>
     );

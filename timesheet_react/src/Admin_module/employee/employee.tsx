@@ -4,7 +4,7 @@ import axios from "axios";
 import moment from "moment";
 import { AddEmployee } from "./Add_emp";
 import { EditEmployee } from "./Edit_emp";
-import { AddEmpProject } from "./AddEmpProject";
+import { AddEmpProject, ViewEmpProject } from "./AddEmpProject";
 
 export const Employee: React.FC = () => {
   const [tableData, setData] = useState<Array<any>>([]);
@@ -18,6 +18,7 @@ export const Employee: React.FC = () => {
 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+  const pageSizeOptions = [3, 5, 10, 20];
   const [selectedOption, setSelectedOption] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -416,13 +417,9 @@ export const Employee: React.FC = () => {
           pagination={{
             current: page,
             pageSize,
-            total: tableData.length,
-            showTotal: (total, range) =>
-              `${range[0]}-${range[1]} of ${total} items`,
-            onChange: (current, pageSize) => {
-              setPage(current);
-              setPageSize(pageSize || 10);
-            },
+            showTotal: (total: any) => `Total ${total} items`,
+            showSizeChanger: true,
+            pageSizeOptions,
           }}
           style={{ width: 4500, fontWeight: 600, marginTop: 8 }}
           scroll={{ x: "max-content" }}
@@ -465,6 +462,15 @@ export const Employee: React.FC = () => {
         centered
       >
         <AddEmpProject />
+      </Modal>
+      <Modal
+        open={viewProjectModal}
+        onCancel={() => setViewProjectModal(false)}
+        footer={null}
+        width={1000}
+        centered
+      >
+        <ViewEmpProject />
       </Modal>
     </div>
   );
