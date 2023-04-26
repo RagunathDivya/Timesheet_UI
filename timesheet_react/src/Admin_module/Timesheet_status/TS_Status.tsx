@@ -627,10 +627,10 @@ export function TS_Status() {
           open={imgVisible}
           onCancel={handleImgCancel}
           footer={null}
-          style={{ padding: "2000px 2000px 2000px 2000px" }}
-          width={1000000}
+         
+          width={850}
         >
-          <img src={imageData} alt="Employee Image" />
+          <img src={imageData} alt="Employee Image" style={{width:790}}/>
         </Modal>
       </Card>
     );
