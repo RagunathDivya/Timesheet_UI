@@ -1,5 +1,13 @@
-import { CloseOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, Card, Input, Modal, Select, Table, message } from "antd";
+import {
+  Badge,
+  Button,
+  Card,
+  Input,
+  Modal,
+  Select,
+  Table,
+  message,
+} from "antd";
 import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -14,7 +22,6 @@ export function TS_Status() {
   const [month, setMonth] = useState();
   const [page, setPage]: any = useState(1);
   const [pageSize, setPageSize] = useState(5);
-  const [newStatus, setNewStatus] = useState("");
   const [rowData, setRowData] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [leavesTaken, setLeavesTaken] = useState(0);
@@ -22,6 +29,7 @@ export function TS_Status() {
   const [daysWorked, setDaysWorked] = useState(0);
   const [empName, setEmpName] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const rowSelection = {
     onChange: (selectedRowKeys: any, selectedRows: any) => {
       setSelectedRowKeys(selectedRowKeys);
@@ -35,6 +43,7 @@ export function TS_Status() {
     },
     selectedRowKeys,
   };
+
   type AlignType = "left" | "center" | "right" | undefined;
   const yearCols = [
     {
@@ -52,31 +61,6 @@ export function TS_Status() {
       align: "center" as AlignType,
     },
   ];
-
-  const YearData = async () => {
-    axios({
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-      },
-      url: "/api/Admin/GetTimeSheetStatus",
-    })
-      .then((r: any) => {
-        setYearData(r.data);
-        //setYear(r.data[0].year);
-        message.success("Data fetched successfully");
-      })
-      .catch((error: any) => {
-        message.error(error.message);
-      });
-  };
-
-  useEffect(() => {
-    YearData();
-  }, []);
-
   const monthCols = [
     {
       title: "Sl.No",
@@ -105,6 +89,7 @@ export function TS_Status() {
       align: "center" as AlignType,
     },
   ];
+
   const statscols = [
     {
       title: "Sl.No",
@@ -146,26 +131,6 @@ export function TS_Status() {
       align: "center" as AlignType,
     },
   ];
-  const MonthData = async () => {
-    axios({
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-      },
-      url: `/api/Admin/GetTimeSheetStatusStatusByYear?year=${year}`,
-    })
-      .then((r: any) => {
-        setMonthData(r.data);
-        // setMonth(r.data[0].monthID);
-      })
-      .catch((error: any) => {});
-  };
-
-  useEffect(() => {
-    MonthData();
-  }, [year]);
 
   const empCols = [
     {
@@ -241,7 +206,6 @@ export function TS_Status() {
               type="link"
               onClick={() => {
                 handleViewTimesheet(employeeId);
-                setShowTimesheet(true);
                 showModal();
               }}
             >
@@ -261,7 +225,7 @@ export function TS_Status() {
         <Select
           defaultValue={status}
           onChange={(newStatus: any) =>
-            handleTimesheetStatus(record.employee_Id, newStatus)
+            updateTimesheetStatus(record.employee_Id, newStatus)
           }
           disabled={status === "Approved"}
         >
@@ -272,6 +236,48 @@ export function TS_Status() {
       ),
     },
   ];
+  const YearData = async () => {
+    axios({
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+      url: "/api/Admin/GetTimeSheetStatus",
+    })
+      .then((r: any) => {
+        setYearData(r.data);
+        message.success("Data fetched successfully");
+      })
+      .catch((error: any) => {
+        message.error(error.message);
+      });
+  };
+
+  useEffect(() => {
+    YearData();
+  }, []);
+
+  const MonthData = async () => {
+    axios({
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+      url: `/api/Admin/GetTimeSheetStatusStatusByYear?year=${year}`,
+    })
+      .then((r: any) => {
+        setMonthData(r.data);
+      })
+      .catch((error: any) => {});
+  };
+
+  useEffect(() => {
+    MonthData();
+  }, [year]);
 
   const EmpData = async () => {
     axios({
@@ -295,7 +301,8 @@ export function TS_Status() {
     EmpData();
   }, [year, month]);
 
-  const handleTimesheetStatus = (employeeId: number, newStatus: any) => {
+  // approve or reject timesheet
+  const updateTimesheetStatus = (employeeId: number, newStatus: any) => {
     const ids = selectedRowKeys;
     if (!ids || ids.length === 0) {
       message.error("First select the rows you wish to undo");
@@ -326,10 +333,14 @@ export function TS_Status() {
         message.error(error.message);
       });
   };
-
-  const [showTimesheet, setShowTimesheet] = useState(false);
+  // For ViewTimesheet
   const [timesheetData, setTimesheetData] = useState([]);
-
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   const handleViewTimesheet = async (employeeId: any) => {
     debugger;
     axios({
@@ -348,22 +359,93 @@ export function TS_Status() {
         // message.error(error.message);
       });
   };
-  const handleClose = () => {
-    // Handle close event
+
+  //download Timesheets of that month
+  const [modalVisible, setModalVisible] = useState(false);
+  const handleDownload = async () => {
+    setModalVisible(true);
   };
+
+  const handleYes = async () => {
+    try {
+      const url = `https://localhost:7122/api/Admin?year=2023&Fiscial_Year_Id=3`;
+      const response = await axios.get(url, {
+        responseType: "blob", // important: we're expecting a binary response
+      });
+      const downloadUrl = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.setAttribute("download", "filename.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setModalVisible(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleNO = () => {
+    setModalVisible(false);
+  };
+
+  //Search
+  const [searchTextYear, setSearchTextYear] = useState("");
+  const [searchTextMonth, setSearchTextMonth] = useState("");
+  const [searchTextEmp, setSearchTextEmp] = useState("");
+  const filteredYearData = yearData.filter((record: any) => {
+    const values = Object.values(record).join(" ").toLowerCase();
+    return values.includes(searchTextYear.toLowerCase());
+  });
+  const filteredMonthData = monthData.filter((record: any) => {
+    const values = Object.values(record).join(" ").toLowerCase();
+    return values.includes(searchTextMonth.toLowerCase());
+  });
+  const filteredEmpData = empData.filter((record: any) => {
+    const values = Object.values(record).join(" ").toLowerCase();
+    return values.includes(searchTextEmp.toLowerCase());
+  });
+
   const renderYearTable = () => {
     return (
-      <Table
-        dataSource={yearData}
-        columns={yearCols}
-        pagination={false}
-        onRow={(record: any) => ({
-          onClick: () => {
-            setSelectedYear(record.year);
-            setYear(record.year);
-          },
-        })}
-      />
+      <Card
+        style={{
+          width: "100%",
+          marginTop: 16,
+          paddingTop: 10,
+          background:
+            "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
+        }}
+      >
+        <Input.Search
+          value={searchTextYear}
+          onChange={(e: any) => setSearchTextYear(e.target.value)}
+          placeholder="Search"
+          style={{
+            width: 110,
+            textAlign: "center",
+            marginRight: 5,
+            borderRadius: 4,
+            padding: 3,
+            background:
+              "-webkit-linear-gradient(45deg, rgba(9, 0, 159, 0.9), rgba(0, 255, 149, 0.5) 105%)",
+            color: "black",
+            fontWeight: "bold",
+          }}
+        />
+
+        <Table
+          dataSource={filteredYearData}
+          columns={yearCols}
+          pagination={false}
+          onRow={(record: any) => ({
+            onClick: () => {
+              setSelectedYear(record.year);
+              setYear(record.year);
+            },
+          })}
+        />
+      </Card>
     );
   };
 
@@ -372,21 +454,46 @@ export function TS_Status() {
     //   month.month.includes(selectedYear)
     // );
     return (
-      <Table
-        dataSource={monthData}
-        columns={monthCols}
-        pagination={false}
-        onRow={(record) => ({
-          onClick: () => {
-            setSelectedMonth(record.month);
-            setMonth(record.monthID);
-          },
-        })}
-      />
+      <Card
+        style={{
+          width: "100%",
+          marginTop: 16,
+          paddingTop: 10,
+          background:
+            "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
+        }}
+      >
+        <Input.Search
+          value={searchTextMonth}
+          onChange={(e: any) => setSearchTextMonth(e.target.value)}
+          placeholder="Search"
+          style={{
+            width: 110,
+            textAlign: "center",
+            marginRight: 5,
+            borderRadius: 4,
+            padding: 3,
+            background:
+              "-webkit-linear-gradient(45deg, rgba(9, 0, 159, 0.9), rgba(0, 255, 149, 0.5) 105%)",
+            color: "black",
+            fontWeight: "bold",
+          }}
+        />
+        <Table
+          dataSource={filteredMonthData}
+          columns={monthCols}
+          pagination={false}
+          onRow={(record) => ({
+            onClick: () => {
+              setSelectedMonth(record.month);
+              setMonth(record.monthID);
+            },
+          })}
+        />
+      </Card>
     );
   };
 
-  // Render the employee table for the selected month
   const renderEmployeeTable = () => {
     // const filteredEmployeeData = empData.filter(
     //   (employee) => employee.timesheetStatus === selectedMonth
@@ -396,30 +503,68 @@ export function TS_Status() {
         style={{
           width: "100%",
           marginTop: 16,
-          paddingTop: 35,
+          paddingTop: 10,
           background:
             "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
         }}
       >
-        <Button>Download</Button>
+        <Input.Search
+          value={searchTextEmp}
+          onChange={(e: any) => setSearchTextEmp(e.target.value)}
+          placeholder="Search"
+          style={{
+            width: 110,
+            textAlign: "center",
+            marginRight: 5,
+            borderRadius: 4,
+            padding: 3,
+            background:
+              "-webkit-linear-gradient(45deg, rgba(9, 0, 159, 0.9), rgba(0, 255, 149, 0.5) 105%)",
+            color: "black",
+            fontWeight: "bold",
+          }}
+        />
+        <Button type="primary" onClick={handleDownload}>
+          Download
+        </Button>
         <Table
           rowKey={(record) => record.employee_Id}
-          dataSource={empData}
+          dataSource={filteredEmpData}
           columns={empCols}
           rowSelection={rowSelection}
           pagination={false}
           scroll={{ x: "max-content" }}
         />
+        <Modal
+          //title="Download Timesheet"
+          open={modalVisible}
+          onOk={handleYes}
+          onCancel={handleNO}
+          footer={[
+            <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+              <Button key="ok" type="primary" onClick={handleYes}>
+                Yes
+              </Button>
+              <Button key="cancel" onClick={handleNO}>
+                No
+              </Button>
+            </div>,
+          ]}
+        >
+          <p
+            style={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              fontWeight: 500,
+            }}
+          >
+            Do you want to download timesheet for the month?
+          </p>
+        </Modal>
       </Card>
     );
   };
 
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
   return (
     <>
       <div>
@@ -439,13 +584,25 @@ export function TS_Status() {
             {renderEmployeeTable()}
 
             <Modal
-              // title="Edit Details"
               open={isModalOpen}
               onCancel={handleCancel}
-              footer={null}
+              footer={
+                <div
+                  style={{
+                    display: "flex",
+                    fontWeight: 600,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Badge color="green" text="P-Present" />
+                  <Badge color="red" text="L-Leave" />
+                  <Badge color="blue" text="H-Holiday" />
+                  <Badge color="#f50" text="WFH-Work From Home" />
+                  <Button onClick={handleCancel}>Cancel</Button>
+                </div>
+              }
               width={700}
             >
-              {" "}
               <div>
                 <h2>
                   Timesheet Status ({selectedMonth} -{selectedYear}- {empName} )
@@ -456,8 +613,6 @@ export function TS_Status() {
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
-                        // marginRight: 80,
-                        // marginLeft: 80,
                       }}
                     >
                       <div>Leaves Taken: {leavesTaken}</div>
@@ -466,7 +621,11 @@ export function TS_Status() {
                     </div>
                   }
                 >
-                  <Table dataSource={timesheetData} columns={statscols} />
+                  <Table
+                    dataSource={timesheetData}
+                    columns={statscols}
+                    pagination={false}
+                  />
                 </Card>
               </div>
             </Modal>
