@@ -1,20 +1,14 @@
 import {
-  Modal,
   Space,
   Table,
   Card,
-  Popover,
-  UploadProps,
-  Upload,
   Form,
 } from "antd";
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import axios from "axios";
 import { DeleteOutlined, FileExcelOutlined, PlusCircleOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 import { Select, Input, Button, message, Layout } from "antd";
-import { UploadOutlined, DownloadOutlined } from "@ant-design/icons";
 import Duration from "./Duration";
 import Status from "./Status";
 import Project from "./Project";
@@ -37,29 +31,23 @@ interface Project {
   value: number;
   label: string;
 }
-
 const dummyProject: Project[] = [];
-
-const projectOption = async (): Promise<void> => {
-  const toke = sessionStorage.token;
-  const response = await axios.get("/api/Admin/GetAllProjects", {
-    headers: {
-      Authorization: `Bearer ${toke}`,
-    },
-  });
-  response.data.forEach((element: any) => {
-    dummyProject.push({
-      value: element.project_Id,
-      label: element.project_Name,
-    });
-    //console.log(element.project_Id);
-  });
-};
-
 function AddTimesheet() {
-  const navigate = useNavigate();
-  const navig = () => {
-    navigate("/#");
+  const [selectedOption, setSelectedOption] = useState<Project[]>([]);
+  const projectOption = async (): Promise<void> => {
+    const toke = sessionStorage.token;
+    const response = await axios.get("/api/Admin/GetAllProjects", {
+      headers: {
+        Authorization: `Bearer ${toke}`,
+      },
+    });
+    response.data.forEach((element: any) => {
+      dummyProject.push({
+        value: element.project_Id,
+        label: element.project_Name,
+      });
+      setSelectedOption(dummyProject); 
+    });
   };
   const employee_Id = localStorage.getItem("Employee_Id");
   const month_name = [
@@ -76,12 +64,10 @@ function AddTimesheet() {
     "November",
     "December",
   ];
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [modal, setModal] = useState(false);
   const [project, setProject] = useState([]);
   const currentDate = new Date();
   const { Sider } = Layout;
-  const [selectedOption, setSelectedOption] = useState([]);
   const [excelNumber, setExcelNumber] = useState();
   const [state1, setState1] = useState<TimesheetSummary[]>([]);
   const [state2, setState2] = useState<TimesheetSummary[]>([]);
@@ -90,6 +76,7 @@ function AddTimesheet() {
   const [file1, setFile1] = useState<File | null>(null);
   const month = currentDate.getMonth() - 1;
   const year = currentDate.getFullYear();
+  
 
   const Day_list = [
     "Sunday",
@@ -104,7 +91,6 @@ function AddTimesheet() {
   useEffect(() => {
     if (singleRun === 1) {
       projectOption();
-      // setSingleRun(!singleRun);
       singleRun = 2;
     }
   }, []);
@@ -143,8 +129,6 @@ function AddTimesheet() {
   const [leavesTaken, setLeavesTaken] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
-  const [isDownload, setIsDownload] = useState(true);
-  const [form] = Form.useForm();
 
   useEffect(() => {
     var count = 0;
@@ -354,18 +338,6 @@ function AddTimesheet() {
     },
   ];
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
   const saveCurrentState = (newRecord: any) => {
     const presentState = [...newRecord];
     setCurrentState(presentState);
@@ -447,39 +419,12 @@ function AddTimesheet() {
     });
     setTotalDuration(Number(totalHrs));
   };
+  
   const downloadXL1 = async () => {
     await axios({
       url: `/api/Employee/ExportExcel?id=${employee_Id}&monthid=${
         month + 2
-      }year=${year}&project_id=${excelNumber}`,
-      method: "GET",
-      responseType: "blob", // important
-    }).then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "Timeheet.xlsx"); //or any other extension
-      document.body.appendChild(link);
-      link.click();
-    });
-  };
-  const downloadXL2 = async () => {
-    await axios({
-      //  url: `https://timesheetjy.azurewebsites.net/api/Employee/ExportExcel?id=${1}&monthid=${month + 1}&year=${year}&project_id=${state2[0].project_Id}`,
-      method: "GET",
-      responseType: "blob", // important
-    }).then((response) => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "Timeheet.xlsx"); //or any other extension
-      document.body.appendChild(link);
-      link.click();
-    });
-  };
-  const downloadXL3 = async () => {
-    await axios({
-      //url: `https://timesheetjy.azurewebsites.net/api/Employee/ExportExcel?id=${1}&monthid=${month + 1}&year=${year}&project_id=${state3[0].project_Id}`,
+      }&year=${year}&project_id=${excelNumber}`,
       method: "GET",
       responseType: "blob", // important
     }).then((response) => {
@@ -492,16 +437,7 @@ function AddTimesheet() {
     });
   };
 
-  const showModal1 = () => {
-    setModal(true);
-  };
-  const handleOk1 = () => {
-    setModal(false);
-  };
-  const handleCancel1 = () => {
-    setModal(false);
-  };
-
+  
   interface TimesheetSummary {
     project_Id: number;
     date: number;
@@ -515,26 +451,7 @@ function AddTimesheet() {
   const handleFileChange1 = (a: any) => {
     setFile1(a.target.files[0]);
   };
-  // const uploadFiles = async () => {
-  //   const formData = new FormData();
-  //   formData.append("image", file as File);
-  //   const { data: { imagePathUpload:imagePath } } = await axios.post("/api/Employee/Image", formData);
-
-  //   const formData1 = new FormData();
-  //   formData1.append("Image", file1 as File);
-  //   const { data: { imagePathTimesheet: imagePath1 } } = await axios.post("/api/Employee/Image", formData1);
-
-  //   return { imagePath, imagePath1 };
-  // }
-  // const dataToSave = async () => {
-  //     const { imagePath, imagePath1 } = await uploadFiles();
-  //   console.log(imagePath,imagePath1)
-  //     return {
-  //       imagePathUpload:imagePath,
-  //       imagePathTimesheet:imagePath1
-  //     };
-  //   };
-
+  
   const handleFormSubmit = async (values: any) => {
     try {
       const formData = new FormData();
@@ -574,7 +491,7 @@ function AddTimesheet() {
           element.status.toLowerCase() === "present" ||
           element.status.toLowerCase() === "wfh"
             ? element.project
-            : project, // assuming 'project' is declared somewhere
+            : project, 
         date: element.date,
         day: element.day,
         leave:
@@ -672,8 +589,6 @@ function AddTimesheet() {
     setState3(newState2);
 
     const dataToSave = async () => {
-      //   const { imagePath, imagePath1 } = await uploadFiles();
-      // console.log(imagePath,imagePath1)
       return {
         employee_Id: employee_Id,
         Fiscal_Year_Id: month + 1,
@@ -702,7 +617,6 @@ function AddTimesheet() {
             },
           }
         );
-        // setSelectedOption(data.data);
         var projectIds = data.data;
         var index = projectIds.indexOf(project);
         projectIds.splice(index, 1);
@@ -715,28 +629,17 @@ function AddTimesheet() {
   };
 
   const excelDownload = (value: any) => {
-    setIsDownload(false);
     setExcelNumber(value);
-    debugger;
   };
 
-  function setFiles(arg0: never[]) {
-    throw new Error("Function not implemented.");
-  }
-  const handleUploadError = (error: any) => {
-    // Handle upload error
-    message.error("Upload failed: " + error);
-  };
   return (
     <div>
     <Space style={{ marginLeft:-20,width:1000}}>
-      
     <Card
         style={{
           width: 1000,
           marginTop: 16,
           paddingTop: 35,
-          //background: "rgba(235, 235, 235,0.6)",
           background:
             "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
         }}
@@ -815,23 +718,25 @@ function AddTimesheet() {
           <div style={{ paddingLeft: "200px" }}>
             <Space></Space>
           </div>
-          <div style={{ paddingLeft: "0%",marginTop:-160,marginBottom:10 }}>
-            <Select
-              //disabled={isDisabled}
-              style={{ width: 200 }}
-              onChange={(value) => excelDownload(value)}
-            >
-              {selectedOption.map((element: any) => (
-                <Select.Option value={element.project_Id}>
-                  {element.project_Name}
-                </Select.Option>
-              ))}
-            </Select>
-            <Button onClick={downloadXL1} style={{marginTop:-90,marginLeft:5,backgroundColor:"rgb(27, 214, 105)"}}>
-            <FileExcelOutlined style={{ color: 'black' }} />
-              Download Excel
-            </Button>
-          </div>
+          <div style={{ paddingLeft: "0%", marginTop: -160, marginBottom: 10 }}>
+      <Select
+        style={{ width: 200 }}
+        onChange={(value) => excelDownload(value)}
+      >
+        {selectedOption.map((project: Project) => (
+          <Select.Option key={project.value} value={project.value}>
+            {project.label}
+          </Select.Option>
+        ))}
+      </Select>
+      <Button
+        onClick={downloadXL1}
+        style={{ marginTop: -90, marginLeft: 5, backgroundColor: "rgb(27, 214, 105)" }}
+      >
+        <FileExcelOutlined style={{ color: "black" }} />
+        Download Excel
+      </Button>
+    </div>
 
           <Table
             columns={columns_summary}
@@ -857,5 +762,4 @@ function AddTimesheet() {
     </div>
   );
 }
-
 export default AddTimesheet;

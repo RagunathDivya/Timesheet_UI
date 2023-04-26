@@ -2,6 +2,7 @@ import { Button, Card, Form, Modal, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./ETimesheetsummary.css";
+import{Buffer} from "buffer"
 import Sider from "antd/es/layout/Sider";
 import { Link } from "react-router-dom";
 
@@ -17,17 +18,19 @@ const ETimeSummary = () => {
   const [popupImageUrl, setPopupImageUrl] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [modalImageUrl, setModalImageUrl] = useState("");
+  const [imgVisible, setImgVisible] = useState(false);
+  const [imageData, setImageData] = useState("");
 
   const handleViewClick = (imagePathTimesheet: string) => {
     setPopupImageUrl(`/api/Employee/ImagePath?imagePath=${imagePathTimesheet}`);
     setShowPopup(true);
   };
-  
+
   const handlePopupClose = () => {
     setShowPopup(false);
     setPopupImageUrl("");
   };
-  
+
   const handleModalClose = () => {
     setShowModal(false);
     setModalImageUrl("");
@@ -100,73 +103,33 @@ const ETimeSummary = () => {
       render: (imagePathUpload: any) => {
         return (
           <div>
-            <Form onFinish={() =>handleViewClick(imagePathUpload)}>
-              <Button type="primary" htmlType="submit">View</Button>
+            <Form onFinish={() => handleViewClick(imagePathUpload)}>
+              <Button type="primary" htmlType="submit">
+                View
+              </Button>
             </Form>
           </div>
         );
       },
     },
-      // {
-      //   title: (
-      //     <center>
-      //       <b>Uploaded Image</b>
-      //     </center>
-      //   ),
-      //   dataIndex: "imagePathTimesheet",
-      //   key: "imagePathTimesheet",
-      //   render: (imagePathTimesheet: any) => {
-      //     return (
-      //       <div>
-      //         <Button type="primary" onClick={() => handleViewClick(imagePathTimesheet)}>
-      //           View
-      //         </Button>
-      //         <Modal
-      //           title="Timesheet Image"
-      //           visible={showModal}
-      //           onCancel={handleModalCancel}
-      //           footer={[
-      //             <Button key="back" onClick={handleModalCancel}>
-      //               Close
-      //             </Button>,
-      //           ]}
-      //         >
-      //           <img src={modalImageUrl} alt="Example Image" />
-      //         </Modal>
-      //       </div>
-      //     );
-      //   },
-      // },
-    // {
-    //   title: (
-    //     <center>
-    //       <b>Uploaded Image</b>
-    //     </center>
-    //   ),
-    //   dataIndex: "imagePathUpload",
-    //   key: "imagePathUpload",
-    //   render: (imagePathTimesheet: any) => {
-    //     return (
-    //       <div>
-    //         <Button type="primary" onClick={() => handleViewClick(imagePathTimesheet)}>
-    //           View
-    //         </Button>
-    //         <Modal
-    //           title="Timesheet Image"
-    //           visible={showModal}
-    //           onCancel={handleModalCancel}
-    //           footer={[
-    //             <Button key="back" onClick={handleModalCancel}>
-    //               Close
-    //             </Button>,
-    //           ]}
-    //         >
-    //           <img src={modalImageUrl} alt="Example Image" />
-    //         </Modal>
-    //       </div>
-    //     );
-    //   },
-    // },
+    {
+      title: "View Image",
+      dataIndex: "employee_Id",
+      key: "view_image",
+
+      render: (employeeId: any, record: any) => {
+        console.log(record);
+        return (
+          <Button
+            //disabled={employeeId !== selectedRowKeys[0] || rowData.length !== 1}
+            type="link"
+            onClick={() => handleViewImage(record.imagePathTimesheet)}
+          >
+            View Image
+          </Button>
+        );
+      },
+    },
     {
       title: (
         <center>
@@ -177,6 +140,38 @@ const ETimeSummary = () => {
       key: "status",
     },
   ]);
+  const showImgModal = () => {
+    setImgVisible(true);
+  };
+
+  const handleImgOk = () => {
+    setImgVisible(false);
+  };
+
+  const handleImgCancel = () => {
+    setImgVisible(false);
+  };
+  const handleViewImage = (imagePath: any) => {
+    showImgModal();
+    axios
+
+      .get(
+        `/api/Employee/ImagePath?imagePath=${encodeURIComponent(
+          imagePath
+        )}`,
+        {
+          responseType: "arraybuffer",
+        }
+      )
+      .then((response) => {
+        const imageData = Buffer.from(response.data, "binary").toString(
+          "base64"
+        );
+        setImageData(`data:image/png;base64,${imageData}`);
+        console.log(imageData);
+      })
+      .catch((error) => console.log(error));
+  };
 
   useEffect(() => {
     getData();
@@ -189,7 +184,7 @@ const ETimeSummary = () => {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-      }, 
+      },
       url: `/api/Employee/ViewTimeSheet?Employee_Id=${employee_Id}&year=${new Date().getFullYear()}`,
     })
       .then((r: any) => {
@@ -204,13 +199,16 @@ const ETimeSummary = () => {
 
   return (
     <div>
-      <h1  style={{
+      <h1
+        style={{
           fontSize: 25,
           background: "-webkit-linear-gradient(45deg, #09009f, #00ff95 20%)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
         }}
-      >Timesheet Summary</h1>
+      >
+        Timesheet Summary
+      </h1>
       <Card
         style={{
           width: "100%",
@@ -221,7 +219,15 @@ const ETimeSummary = () => {
             "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
         }}
       >
-      <Table bordered columns={columns} dataSource={tableData}></Table>
+        <Table bordered columns={columns} dataSource={tableData}></Table>
+        <Modal
+          open={imgVisible}
+          onCancel={handleImgCancel}
+          footer={null}
+          width={850}
+        >
+          <img src={imageData} alt="Employee Image" style={{ width: 790 }} />
+        </Modal>
       </Card>
     </div>
   );
