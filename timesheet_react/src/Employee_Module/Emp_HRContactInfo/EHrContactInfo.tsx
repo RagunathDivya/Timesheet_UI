@@ -1,4 +1,4 @@
-import { Table, message } from "antd";
+import { Card, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./EHrContactInfo.css";
@@ -73,8 +73,25 @@ const [pageSize, setPageSize] = useState(5);
   };
   return (
     <div>
-      <h1 className="h1hrinfo">HR Contact Info</h1>
+      <h1  style={{
+          fontSize: 25,
+          background: "-webkit-linear-gradient(45deg, #09009f, #00ff95 20%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >HR Contact Info</h1>
+       <Card
+        style={{
+          width: "100%",
+          marginTop: 16,
+          paddingTop: 35,
+          //background: "rgba(235, 235, 235,0.6)",
+          background:
+            "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
+        }}
+      >
       <Table bordered columns={columns} dataSource={tableData} pagination={false}></Table>
+      </Card>
     </div>
   );
 };

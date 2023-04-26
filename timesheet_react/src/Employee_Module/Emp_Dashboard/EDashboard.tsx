@@ -4,24 +4,26 @@ import {
   CheckOutlined,
   CloseCircleOutlined,
   CloseOutlined,
+  FrownOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
 import { Input, Popover, Space } from "antd";
+import { UserProfile } from "../../Admin_module/User_prof_layout";
 
 const EDashboard = () => {
   const month_name = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
+    "January",
+    "February",
+    "March",
+    "April",
     "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modal, setModal] = useState(false);
@@ -65,9 +67,9 @@ const EDashboard = () => {
 console.log(data.status)
   if (data.status == "Approved") {
     return (
-      <div>
-        <div style={{ marginTop: 160 }}>
-          <h1 id="xy" style={{ color: "lightskyblue", marginLeft: -65 }}>
+      <div style={{marginLeft:-140}}>
+        <div style={{ marginTop: 130 }}>
+        <h1 id="xy" style={{ color: "blue",fontSize:40, marginLeft: 135, textShadow: "2px 2px pink" }}>
             <center>
               Timesheet {`${month_name[month]}`} - {year} status
             </center>
@@ -83,7 +85,8 @@ console.log(data.status)
               marginLeft: 408,
               fontSize: 90,
               color: "green",
-              position: "fixed",
+              marginBottom:-6,
+              //position: "fixed",
             }}
           />
         </div>
@@ -107,9 +110,9 @@ console.log(data.status)
     );
   } else if (data.status == "Rejected") {
     return (
-      <div>
-        <div style={{ marginTop: 160 }}>
-          <h1 id="xy" style={{ color: "lightskyblue", marginLeft: -65 }}>
+      <div style={{marginLeft:-140}}>
+        <div style={{ marginTop: 130 }}>
+        <h1 id="xy" style={{ color: "blue",fontSize:40, marginLeft: 135,textShadow: "2px 2px pink"}}>
             <center>
               Timesheet {`${month_name[month]}`} - {year} status
             </center>
@@ -122,10 +125,11 @@ console.log(data.status)
           <CloseCircleOutlined
             style={{
               marginTop: -75,
-              marginLeft: 780,
+              marginLeft: 800,
               fontSize: 60,
+              marginBottom:3,
               color: "red",
-              position: "fixed",
+              //position: "fixed",
             }}
           />
         </div>
@@ -149,9 +153,9 @@ console.log(data.status)
     );
   } else if (data.status == "Pending") {
     return (
-      <div>
-        <div style={{ marginTop: 160 }}>
-          <h1 id="xy" style={{ color: "lightskyblue", marginLeft: -65 }}>
+      <div style={{marginLeft:-140}}>
+        <div style={{ marginTop: 130 }}>
+        <h1 id="xy" style={{ color: "blue",fontSize:40, marginLeft: 135,textShadow: "2px 2px pink"}}>
             <center>
               Timesheet {`${month_name[month]}`} - {year} status
             </center>
@@ -161,13 +165,15 @@ console.log(data.status)
         <br />
         <br />
         <div>
-          <CheckOutlined
+        <FrownOutlined 
+          // <CheckOutlined
             style={{
               marginTop: -90,
-              marginLeft: 588,
-              fontSize: 90,
+              marginLeft: 598,
+              fontSize: 70,
+              marginBottom:6,
               color: "skyblue",
-              position: "fixed",
+              //position: "fixed",
             }}
           />
         </div>
@@ -191,10 +197,10 @@ console.log(data.status)
     );
   } else if (data.status == undefined) {
     return (
-      <div>
-        <div style={{ marginTop: 160 }}>
+      <div style={{marginLeft:-140}}>
+        <div style={{ marginTop: 130 }}>
           {/* <h1 id="xy" style={{ color: 'lightskyblue', marginLeft: -65 }}><center>Timesheet {data.month} {data.year} status</center></h1> */}
-          <h1 id="xy" style={{ color: "lightskyblue", marginLeft: -65 }}>
+          <h1 id="xy" style={{ color: "blue",fontSize:40, marginLeft: 135,textShadow: "2px 2px pink" }}>
             <center>
               Timesheet {} - {} status
             </center>
@@ -210,7 +216,7 @@ console.log(data.status)
               marginLeft: 588,
               fontSize: 90,
               color: "skyblue",
-              position: "fixed",
+              //position: "fixed",
             }}
           />
         </div>
@@ -234,9 +240,9 @@ console.log(data.status)
     );
   } else {
     return (
-      <div>
-        <div style={{ marginTop: 160 }}>
-          <h1 id="xy" style={{ color: "lightskyblue", marginLeft: -65 }}>
+      <div style={{marginLeft:-140}}>
+        <div style={{ marginTop: 130 }}>
+        <h1 id="xy" style={{ color: "blue",fontSize:40, marginLeft: 135,textShadow: "2px 2px pink" }}>
             <center>
               Timesheet {`${month_name[month]}`} - {year} status
             </center>
@@ -252,7 +258,7 @@ console.log(data.status)
               marginLeft: 588,
               fontSize: 90,
               color: "skyblue",
-              position: "fixed",
+              //position: "fixed",
             }}
           />
         </div>

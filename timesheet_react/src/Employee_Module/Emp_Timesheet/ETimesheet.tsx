@@ -11,7 +11,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import axios from "axios";
-import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import { DeleteOutlined, FileExcelOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { Select, Input, Button, message, Layout } from "antd";
 import { UploadOutlined, DownloadOutlined } from "@ant-design/icons";
@@ -728,26 +728,41 @@ function AddTimesheet() {
     message.error("Upload failed: " + error);
   };
   return (
-    <Space>
-      <Card style={{ marginLeft: 100 }}>
-        <h1
-          style={{
-            fontSize: 30,
-            color: "blue",
-            fontFamily: "Times New Roman, Times, serif",
-            // marginLeft: -600,
-          }}
-        >
-          <b>{`${month_name[month]}`}-2023 </b>
-        </h1>
+    <div>
+    <Space style={{ marginLeft:-20,width:1000}}>
+      
+    <Card
+        style={{
+          width: 1000,
+          marginTop: 16,
+          paddingTop: 35,
+          //background: "rgba(235, 235, 235,0.6)",
+          background:
+            "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
+        }}
+      >
+       <h1  style={{
+          fontSize: 30,
+          marginTop:-30,
+          marginBottom:-10,
+          marginLeft:-10,
+          background: "-webkit-linear-gradient(45deg, #09009f, #00ff95 20%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >
+    <b>{`${month_name[month]}`}-2023 </b>
+  </h1>
         <br></br>
+       
         <React.Fragment>
           <div
             style={{
               position: "relative",
               paddingLeft: "40%",
-              left: 30,
-              top: -130,
+              left: 200,
+              top: -160,
+              marginTop:117,
             }}
           >
             <React.Fragment>
@@ -762,6 +777,7 @@ function AddTimesheet() {
                       },
                     ]}
                   >
+                    <label style={{color:"blue",fontSize:17,fontWeight:"bold"}}>Timesheet Image</label>
                     <Input
                       placeholder="Timesheet Image"
                       name="imagePathTimesheet"
@@ -779,6 +795,7 @@ function AddTimesheet() {
                       },
                     ]}
                   >
+                    <label style={{color:"blue",fontSize:17,fontWeight:"bold"}}>Approval Image</label>
                     <Input
                       placeholder="Approval Image"
                       name="imagePathUpload"
@@ -787,7 +804,7 @@ function AddTimesheet() {
                       accept="image/*"
                     />
                   </Form.Item>
-                  <Button type="primary" htmlType="submit">
+                  <Button type="primary" htmlType="submit" style={{marginLeft:100}}>
                     Submit
                   </Button>
                 </Form>
@@ -798,9 +815,9 @@ function AddTimesheet() {
           <div style={{ paddingLeft: "200px" }}>
             <Space></Space>
           </div>
-          <div style={{ paddingLeft: "70%", top: -130 }}>
+          <div style={{ paddingLeft: "0%",marginTop:-160,marginBottom:10 }}>
             <Select
-              disabled={isDisabled}
+              //disabled={isDisabled}
               style={{ width: 200 }}
               onChange={(value) => excelDownload(value)}
             >
@@ -810,7 +827,8 @@ function AddTimesheet() {
                 </Select.Option>
               ))}
             </Select>
-            <Button disabled={isDownload} onClick={downloadXL1}>
+            <Button onClick={downloadXL1} style={{marginTop:-90,marginLeft:5,backgroundColor:"rgb(27, 214, 105)"}}>
+            <FileExcelOutlined style={{ color: 'black' }} />
               Download Excel
             </Button>
           </div>
@@ -836,6 +854,7 @@ function AddTimesheet() {
         </React.Fragment>
       </Card>
     </Space>
+    </div>
   );
 }
 

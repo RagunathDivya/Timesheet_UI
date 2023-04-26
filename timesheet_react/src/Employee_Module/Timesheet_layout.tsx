@@ -143,6 +143,7 @@ export function EmpTimesheet() {
               height: "calc(100vh )",
               overflow: "scroll",
               padding: "0% 3% 30% 2% ",
+              paddingLeft:50,
               background:
                 "-webkit-linear-gradient(45deg,rgba(255, 192, 203, 0.7), rgba(135, 206, 235, 0.4) 100%)",
             }}

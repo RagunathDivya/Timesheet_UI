@@ -1,4 +1,4 @@
-import { Button, Form, Modal, Table, message } from "antd";
+import { Button, Card, Form, Modal, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./ETimesheetsummary.css";
@@ -204,8 +204,25 @@ const ETimeSummary = () => {
 
   return (
     <div>
-      <h1 className="h1summary">Timesheet Summary</h1>
+      <h1  style={{
+          fontSize: 25,
+          background: "-webkit-linear-gradient(45deg, #09009f, #00ff95 20%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+        }}
+      >Timesheet Summary</h1>
+      <Card
+        style={{
+          width: "100%",
+          marginTop: 16,
+          paddingTop: 35,
+          //background: "rgba(235, 235, 235,0.6)",
+          background:
+            "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
+        }}
+      >
       <Table bordered columns={columns} dataSource={tableData}></Table>
+      </Card>
     </div>
   );
 };
