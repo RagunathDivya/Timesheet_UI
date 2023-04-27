@@ -305,10 +305,10 @@ export function TS_Status() {
     })
       .then((r: any) => {
         setYearData(r.data);
-        message.success("Data fetched successfully");
+        //message.success("Data fetched successfully");
       })
       .catch((error: any) => {
-        message.error(error.message);
+       // message.error(error.message);
       });
   };
 
@@ -357,7 +357,7 @@ export function TS_Status() {
         setEmpData(r.data);
       })
       .catch((error: any) => {
-        message.error(error.message);
+       // message.error(error.message);
       });
   };
 
@@ -393,7 +393,7 @@ export function TS_Status() {
         message.success("Timesheet status updated");
       })
       .catch((error) => {
-        message.error(error.message);
+        //message.error(error.message);
       });
   };
   // For ViewTimesheet

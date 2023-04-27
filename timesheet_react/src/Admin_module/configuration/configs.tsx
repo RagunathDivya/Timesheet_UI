@@ -372,7 +372,7 @@ export function Config() {
       url: urlT,
     })
       .then((r: any) => {
-        message.success("Data fetched successfully");
+        // message.success("Data fetched successfully");
         setTableData(r.data);
 
         if (selectedTab === "GetClientIsActive") {

@@ -51,7 +51,7 @@ export const Employee: React.FC = () => {
     })
       .then((r: any) => {
         setData(r.data);
-        message.success("Value Loaded");
+       // message.success("Value Loaded");
       })
       .catch((error: any) => {
         message.error(error.message);
