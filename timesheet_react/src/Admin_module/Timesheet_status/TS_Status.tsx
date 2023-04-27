@@ -261,17 +261,19 @@ export function TS_Status() {
       key: "status",
       align: "center" as AlignType,
       render: (status: any, record: any) => (
-        <Select
-          defaultValue={status}
-          onChange={(newStatus: any) =>
-            updateTimesheetStatus(record.employee_Id, newStatus)
-          }
-          disabled={status === "Approved"}
-        >
-          <Select.Option value="Pending">Pending</Select.Option>
-          <Select.Option value="Approved">Approved</Select.Option>
-          <Select.Option value="Rejected">Rejected</Select.Option>
-        </Select>
+        <>
+          <Select
+            defaultValue={status}
+            onChange={(newStatus: any) =>
+              updateTimesheetStatus(record.employee_Id, newStatus)
+            }
+            disabled={status === "Approved"}
+          >
+            <Select.Option value="Pending">Pending</Select.Option>
+            <Select.Option value="Approved">Approved</Select.Option>
+            <Select.Option value="Rejected">Rejected</Select.Option>
+          </Select>
+        </>
       ),
     },
     {
@@ -308,7 +310,7 @@ export function TS_Status() {
         //message.success("Data fetched successfully");
       })
       .catch((error: any) => {
-       // message.error(error.message);
+        // message.error(error.message);
       });
   };
 
@@ -357,7 +359,7 @@ export function TS_Status() {
         setEmpData(r.data);
       })
       .catch((error: any) => {
-       // message.error(error.message);
+        // message.error(error.message);
       });
   };
 

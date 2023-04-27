@@ -519,17 +519,6 @@ export function Config() {
           placeholder="Filter table"
         >
           <Select.Option
-            value={undefined}
-            style={{
-              background:
-                "-webkit-linear-gradient(45deg, rgba(9, 0, 159, 0.3), rgba(0, 255, 149, 0.3) 95%)",
-              color: "black",
-              fontWeight: "bold",
-            }}
-          >
-            All
-          </Select.Option>
-          <Select.Option
             value={true}
             style={{
               background:
