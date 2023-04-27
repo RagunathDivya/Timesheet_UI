@@ -36,7 +36,7 @@ export function Dashboards() {
 
         setProgressData({ pending, approved, rejected });
 
-        message.success("Data fetched successfully");
+       // message.success("Data fetched successfully");
       })
       .catch((error: any) => {
         message.error("Select year and month");
