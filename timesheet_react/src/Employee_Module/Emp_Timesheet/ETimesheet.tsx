@@ -1,13 +1,12 @@
-import {
-  Space,
-  Table,
-  Card,
-  Form,
-} from "antd";
+import { Space, Table, Card, Form } from "antd";
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import axios from "axios";
-import { DeleteOutlined, FileExcelOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  FileExcelOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
 import { Select, Input, Button, message, Layout } from "antd";
 import Duration from "./Duration";
 import Status from "./Status";
@@ -46,7 +45,7 @@ function AddTimesheet() {
         value: element.project_Id,
         label: element.project_Name,
       });
-      setSelectedOption(dummyProject); 
+      setSelectedOption(dummyProject);
     });
   };
   const employee_Id = localStorage.getItem("Employee_Id");
@@ -76,7 +75,6 @@ function AddTimesheet() {
   const [file1, setFile1] = useState<File | null>(null);
   const month = currentDate.getMonth() - 1;
   const year = currentDate.getFullYear();
-  
 
   const Day_list = [
     "Sunday",
@@ -419,7 +417,7 @@ function AddTimesheet() {
     });
     setTotalDuration(Number(totalHrs));
   };
-  
+
   const downloadXL1 = async () => {
     await axios({
       url: `/api/Employee/ExportExcel?id=${employee_Id}&monthid=${
@@ -437,7 +435,6 @@ function AddTimesheet() {
     });
   };
 
-  
   interface TimesheetSummary {
     project_Id: number;
     date: number;
@@ -451,7 +448,7 @@ function AddTimesheet() {
   const handleFileChange1 = (a: any) => {
     setFile1(a.target.files[0]);
   };
-  
+
   const handleFormSubmit = async (values: any) => {
     try {
       const formData = new FormData();
@@ -491,7 +488,7 @@ function AddTimesheet() {
           element.status.toLowerCase() === "present" ||
           element.status.toLowerCase() === "wfh"
             ? element.project
-            : project, 
+            : project,
         date: element.date,
         day: element.day,
         leave:
@@ -634,131 +631,155 @@ function AddTimesheet() {
 
   return (
     <div>
-    <Space style={{ marginLeft:-20,width:1000}}>
-    <Card
-        style={{
-          width: 1000,
-          marginTop: 16,
-          paddingTop: 35,
-          background:
-            "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
-        }}
-      >
-       <h1  style={{
-          fontSize: 30,
-          marginTop:-30,
-          marginBottom:-10,
-          marginLeft:-10,
-          background: "-webkit-linear-gradient(45deg, #09009f, #00ff95 20%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-        }}
-      >
-    <b>{`${month_name[month]}`}-2023 </b>
-  </h1>
-        <br></br>
-       
-        <React.Fragment>
-          <div
+      <Space style={{ marginLeft: -20, width: 1000 }}>
+        <Card
+          style={{
+            width: 1000,
+            marginTop: 16,
+            paddingTop: 35,
+            background:
+              "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
+          }}
+        >
+          <h1
             style={{
-              position: "relative",
-              paddingLeft: "40%",
-              left: 200,
-              top: -160,
-              marginTop:117,
+              fontSize: 30,
+              marginTop: -30,
+              marginBottom: -10,
+              marginLeft: -10,
+              background:
+                "-webkit-linear-gradient(45deg, #09009f, #00ff95 20%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
             }}
           >
-            <React.Fragment>
-              <Space>
-                <Form layout="vertical" onFinish={handleFormSubmit}>
-                  <Form.Item
-                    name="imagePathTimesheet"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your Upload Image!",
-                      },
-                    ]}
-                  >
-                    <label style={{color:"blue",fontSize:17,fontWeight:"bold"}}>Timesheet Image</label>
-                    <Input
-                      placeholder="Timesheet Image"
+            <b>{`${month_name[month]}`}-2023 </b>
+          </h1>
+          <br></br>
+
+          <React.Fragment>
+            <div
+              style={{
+                position: "relative",
+                paddingLeft: "40%",
+                left: 200,
+                top: -160,
+                marginTop: 117,
+              }}
+            >
+              <React.Fragment>
+                <Space>
+                  <Form layout="vertical" onFinish={handleFormSubmit}>
+                    <Form.Item
+                      style={{
+                        color: "blue",
+                        fontSize: 17,
+                        fontWeight: "bold",
+                      }}
+                      label="Timesheet Image"
                       name="imagePathTimesheet"
-                      type="file"
-                      onChange={handleFileChange}
-                      accept="image/*"
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    name="imagePathUpload"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your Approval Image!",
-                      },
-                    ]}
-                  >
-                    <label style={{color:"blue",fontSize:17,fontWeight:"bold"}}>Approval Image</label>
-                    <Input
-                      placeholder="Approval Image"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your Upload Image!",
+                        },
+                      ]}
+                    >
+                      {/* <label style={{color:"blue",fontSize:17,fontWeight:"bold"}}>Timesheet Image</label> */}
+                      <Input
+                        placeholder="Timesheet Image"
+                        name="imagePathTimesheet"
+                        type="file"
+                        onChange={handleFileChange}
+                        accept="image/*"
+                      />
+                    </Form.Item>
+                    <Form.Item
+                      style={{
+                        color: "blue",
+                        fontSize: 17,
+                        fontWeight: "bold",
+                      }}
+                      label="Approval Image"
                       name="imagePathUpload"
-                      type="file"
-                      onChange={handleFileChange1}
-                      accept="image/*"
-                    />
-                  </Form.Item>
-                  <Button type="primary" htmlType="submit" style={{marginLeft:100}}>
-                    Submit
-                  </Button>
-                </Form>
-              </Space>
-            </React.Fragment>
-          </div>
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your Approval Image!",
+                        },
+                      ]}
+                    >
+                      {/* <label >Approval Image</label> */}
+                      <Input
+                        placeholder="Approval Image"
+                        name="imagePathUpload"
+                        type="file"
+                        onChange={handleFileChange1}
+                        accept="image/*"
+                      />
+                    </Form.Item>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      style={{ marginLeft: 100 }}
+                    >
+                      Submit
+                    </Button>
+                  </Form>
+                </Space>
+              </React.Fragment>
+            </div>
 
-          <div style={{ paddingLeft: "200px" }}>
-            <Space></Space>
-          </div>
-          <div style={{ paddingLeft: "0%", marginTop: -160, marginBottom: 10 }}>
-      <Select
-        style={{ width: 200 }}
-        onChange={(value) => excelDownload(value)}
-      >
-        {selectedOption.map((project: Project) => (
-          <Select.Option key={project.value} value={project.value}>
-            {project.label}
-          </Select.Option>
-        ))}
-      </Select>
-      <Button
-        onClick={downloadXL1}
-        style={{ marginTop: -90, marginLeft: 5, backgroundColor: "rgb(27, 214, 105)" }}
-      >
-        <FileExcelOutlined style={{ color: "black" }} />
-        Download Excel
-      </Button>
-    </div>
-
-          <Table
-            columns={columns_summary}
-            dataSource={summary_data}
-            pagination={false}
-          />
-          <Table
-            bordered
-            columns={columns}
-            dataSource={currentState}
-            pagination={false}
-          />
-          <div style={{ paddingLeft: "85%", paddingTop: 10 }}>
-            <Form layout="vertical" onFinish={postData}>
-              <Button type="primary" htmlType="submit" disabled={isDisabled}>
-                Submit
+            <div style={{ paddingLeft: "200px" }}>
+              <Space></Space>
+            </div>
+            <div
+              style={{ paddingLeft: "0%", marginTop: -160, marginBottom: 10 }}
+            >
+              <Select
+                style={{ width: 200 }}
+                onChange={(value) => excelDownload(value)}
+              >
+                {selectedOption.map((project: Project) => (
+                  <Select.Option key={project.value} value={project.value}>
+                    {project.label}
+                  </Select.Option>
+                ))}
+              </Select>
+              <Button
+                onClick={downloadXL1}
+                style={{
+                  marginTop: -90,
+                  marginLeft: 5,
+                  backgroundColor: "rgb(27, 214, 105)",
+                }}
+              >
+                <FileExcelOutlined style={{ color: "black" }} />
+                Download Excel
               </Button>
-            </Form>
-          </div>
-        </React.Fragment>
-      </Card>
-    </Space>
+            </div>
+
+            <Table
+              columns={columns_summary}
+              dataSource={summary_data}
+              pagination={false}
+            />
+            <Table
+              bordered
+              columns={columns}
+              dataSource={currentState}
+              pagination={false}
+            />
+            <div style={{ paddingLeft: "85%", paddingTop: 10 }}>
+              <Form layout="vertical" onFinish={postData}>
+                <Button type="primary" htmlType="submit" disabled={isDisabled}>
+                  Submit
+                </Button>
+              </Form>
+            </div>
+          </React.Fragment>
+        </Card>
+      </Space>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { Button, Card, Form, Modal, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./ETimesheetsummary.css";
-import { Buffer } from "buffer";
+import{Buffer} from "buffer"
 import Sider from "antd/es/layout/Sider";
 import { Link } from "react-router-dom";
 
@@ -157,7 +157,9 @@ const ETimeSummary = () => {
     showImgModal();
     axios
       .get(
-        `/api/Employee/ImagePath?imagePath=${encodeURIComponent(imagePath)}`,
+        `/api/Employee/ImagePath?imagePath=${encodeURIComponent(
+          imagePath
+        )}`,
         {
           responseType: "arraybuffer",
         }
