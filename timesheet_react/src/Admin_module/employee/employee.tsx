@@ -5,6 +5,7 @@ import moment from "moment";
 import { AddEmployee } from "./Add_emp";
 import { EditEmployee } from "./Edit_emp";
 import { AddEmpProject, ViewEmpProject } from "./AddEmpProject";
+import { EditFilled } from "@ant-design/icons";
 
 export const Employee: React.FC = () => {
   const [tableData, setData] = useState<Array<any>>([]);
@@ -51,7 +52,7 @@ export const Employee: React.FC = () => {
     })
       .then((r: any) => {
         setData(r.data);
-       // message.success("Value Loaded");
+        // message.success("Value Loaded");
       })
       .catch((error: any) => {
         message.error(error.message);
@@ -199,8 +200,17 @@ export const Employee: React.FC = () => {
               display: "flex",
             }}
           >
-            <Button type="primary" onClick={showEditModals}>
-              Edit
+            <Button
+              style={{
+                background:
+                  "-webkit-linear-gradient(45deg, rgba(9, 0, 159, 0.3), rgba(0, 255, 149, 0.3) 95%)",
+                color: "black",
+                fontWeight: "bold",
+              }}
+              type="primary"
+              onClick={showEditModals}
+            >
+              <EditFilled />
             </Button>
           </div>
         );

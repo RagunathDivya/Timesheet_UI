@@ -1,4 +1,13 @@
-import { Button, DatePicker, Form, Input, Modal, Table, message } from "antd";
+import {
+  Button,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Select,
+  Table,
+  message,
+} from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -18,6 +27,39 @@ export function AddEmpProject() {
       });
     window.location.reload();
   };
+  const [projectData, setProjectData] = useState<Projects[]>([]);
+  interface Projects {
+    project_Id: number;
+    project_Name: string;
+  }
+  const { Option } = Select;
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        "/api/Admin/GetProjectIsActive?isActive=true"
+      );
+      const data = await response.json();
+      setProjectData(data);
+    }
+    fetchData();
+  }, []);
+
+  const [employeeData, setEmployeeData] = useState<Employees[]>([]);
+  interface Employees {
+    employee_Id: number;
+    full_Name: string;
+  }
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        "/api/Admin/GetEmployeeIsActive?isActive=true"
+      );
+      const data = await response.json();
+      setEmployeeData(data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <>
       <Form
@@ -29,18 +71,30 @@ export function AddEmpProject() {
         autoComplete="off"
       >
         <Form.Item
-          label="Employee ID"
+          label="Employee"
           name="employee_Id"
           rules={[{ required: true, message: "Please input your Name!" }]}
         >
-          <Input />
+          <Select>
+            {employeeData.map((employee) => (
+              <Option key={employee.employee_Id} value={employee.employee_Id}>
+                {employee.full_Name}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item
-          label="Project ID"
+          label="Project"
           name="project_Id"
           rules={[{ required: true, message: "Please input your Name!" }]}
         >
-          <Input />
+          <Select>
+            {projectData.map((project) => (
+              <Option key={project.project_Id} value={project.project_Id}>
+                {project.project_Name}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
 
         <Form.Item
@@ -62,7 +116,10 @@ export function AddEmpProject() {
           name="location"
           rules={[{ required: true, message: "Please input your Name!" }]}
         >
-          <Input />
+          <Select>
+            <Option value="Banglore">Banglore</Option>
+            <Option value="Coimbatore">Coimbatore</Option>
+          </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
@@ -156,6 +213,39 @@ export function ViewEmpProject() {
         message.error(error.message);
       });
   };
+  const [projectData, setProjectData] = useState<Projects[]>([]);
+  interface Projects {
+    project_Id: number;
+    project_Name: string;
+  }
+  const { Option } = Select;
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        "/api/Admin/GetProjectIsActive?isActive=true"
+      );
+      const data = await response.json();
+      setProjectData(data);
+    }
+    fetchData();
+  }, []);
+
+  const [employeeData, setEmployeeData] = useState<Employees[]>([]);
+  interface Employees {
+    employee_Id: number;
+    full_Name: string;
+  }
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        "/api/Admin/GetEmployeeIsActive?isActive=true"
+      );
+      const data = await response.json();
+      setEmployeeData(data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <>
       <Table dataSource={empProjectData} columns={columns} />
@@ -188,18 +278,30 @@ export function ViewEmpProject() {
             <Input />
           </Form.Item>
           <Form.Item
-            label="Employee ID"
+            label="Employee"
             name="employee_Id"
-            rules={[{ required: true, message: "Please input Employee Id!" }]}
+            rules={[{ required: true, message: "Please input your Name!" }]}
           >
-            <Input />
+            <Select>
+              {employeeData.map((employee) => (
+                <Option key={employee.employee_Id} value={employee.employee_Id}>
+                  {employee.full_Name}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item
-            label="Project ID"
+            label="Project"
             name="project_Id"
-            rules={[{ required: true, message: "Please input project Id!" }]}
+            rules={[{ required: true, message: "Please input your Name!" }]}
           >
-            <Input />
+            <Select>
+              {projectData.map((project) => (
+                <Option key={project.project_Id} value={project.project_Id}>
+                  {project.project_Name}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
 
           <Form.Item
@@ -223,9 +325,12 @@ export function ViewEmpProject() {
           <Form.Item
             label="Location"
             name="location"
-            rules={[{ required: true, message: "Please input location!" }]}
+            rules={[{ required: true, message: "Please input your Name!" }]}
           >
-            <Input />
+            <Select>
+              <Option value="Banglore">Banglore</Option>
+              <Option value="Coimbatore">Coimbatore</Option>
+            </Select>
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">

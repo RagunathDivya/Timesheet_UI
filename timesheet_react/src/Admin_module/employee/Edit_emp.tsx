@@ -186,16 +186,6 @@ export function EditEmployee(props: any) {
             </Select>
           </Form.Item>
           <Form.Item
-            label="Role"
-            name="role"
-            rules={[{ required: true, message: "Please input your Role Id!" }]}
-          >
-            <Select style={{ width: 100 }}>
-              <Select.Option value="Admin">Admin</Select.Option>
-              <Select.Option value="Employee">Employee</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
             label="Designation"
             name="designation"
             rules={[

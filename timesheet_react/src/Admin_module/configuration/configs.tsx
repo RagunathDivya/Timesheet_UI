@@ -500,7 +500,7 @@ export function Config() {
 
         <Select
           value={selectedOption}
-          onChange={handleOptionChange}
+          onChange={handleSelectChange}
           style={{
             width: 110,
             borderRadius: 3,
@@ -616,12 +616,19 @@ export function Config() {
 
   //get active, Inactive and all employees
   function handleOptionChange(value: any) {
+    // setSelectedRowKeys([]);
     setSelectedOption(value);
     getData(value);
   }
+  const handleSelectChange = (value: any) => {
+    handleOptionChange(value);
+    setSelectedRowKeys([]);
+    handleActivateDeactivate(value);
+  };
 
   useEffect(() => {
     getData(selectedOption);
+    setSelectedRowKeys([]);
   }, [selectedTab]);
 
   //Deactivate employees
