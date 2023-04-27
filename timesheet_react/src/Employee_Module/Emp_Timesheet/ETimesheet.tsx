@@ -1,4 +1,4 @@
-import { Space, Table, Card, Form } from "antd";
+import { Space, Table, Card, Form, Modal } from "antd";
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import axios from "axios";
@@ -127,6 +127,7 @@ function AddTimesheet() {
   const [leavesTaken, setLeavesTaken] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
+  const [isFormVisible, setIsFormVisible] = useState(false);
 
   useEffect(() => {
     var count = 0;
@@ -604,21 +605,21 @@ function AddTimesheet() {
       .then(async (r: any) => {
         setMessage(r.request.status, " Timesheet Added Successfully");
         var toke = sessionStorage.token;
-        var data = await axios.get(
-          `https://timesheetjy.azurewebsites.net/api/Employee/GetProjects?month=${
-            month + 1
-          }&year=${year}&emp_id=${employee_Id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${toke}`,
-            },
-          }
-        );
-        var projectIds = data.data;
-        var index = projectIds.indexOf(project);
-        projectIds.splice(index, 1);
-        setSelectedOption(projectIds);
-        debugger;
+        // var data = await axios.get(
+        //   `https://timesheetjy.azurewebsites.net/api/Employee/GetProjects?month=${
+        //     month + 1
+        //   }&year=${year}&emp_id=${employee_Id}`,
+        //   {
+        //     headers: {
+        //       Authorization: `Bearer ${toke}`,
+        //     },
+        //   }
+        // );
+        // var projectIds = data.data;
+        // var index = projectIds.indexOf(project);
+        // projectIds.splice(index, 1);
+        // setSelectedOption(projectIds);
+        // debugger;
       })
       .catch((error) => {
         setMessage(error.response.status, "Employee Id Alredy Exists");
@@ -646,7 +647,6 @@ function AddTimesheet() {
               fontSize: 30,
               marginTop: -30,
               marginBottom: -10,
-              marginLeft: -10,
               background:
                 "-webkit-linear-gradient(45deg, #09009f, #00ff95 20%)",
               WebkitBackgroundClip: "text",
@@ -669,63 +669,85 @@ function AddTimesheet() {
             >
               <React.Fragment>
                 <Space>
-                  <Form layout="vertical" onFinish={handleFormSubmit}>
-                    <Form.Item
-                      style={{
-                        color: "blue",
-                        fontSize: 17,
-                        fontWeight: "bold",
-                      }}
-                      label="Timesheet Image"
-                      name="imagePathTimesheet"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your Upload Image!",
-                        },
-                      ]}
-                    >
-                      {/* <label style={{color:"blue",fontSize:17,fontWeight:"bold"}}>Timesheet Image</label> */}
-                      <Input
-                        placeholder="Timesheet Image"
+                  <Button
+                    type="primary"
+                    ghost
+                    style={{
+                      backgroundColor: "#69b1ff",
+                      color: "black",
+                      marginLeft: 120,
+                      marginBottom: 50,
+                    }}
+                    onClick={() => setIsFormVisible(true)}
+                  >
+                    <PlusCircleOutlined />
+                    Add Timesheet/Approval Image
+                  </Button>
+                  <Modal
+                    visible={isFormVisible}
+                    footer={null}
+                    onCancel={() => {
+                      setIsFormVisible(false);
+                    }}
+                  >
+                    <Form layout="vertical" onFinish={handleFormSubmit}>
+                      <Form.Item
+                        style={{
+                          color: "blue",
+                          fontSize: 17,
+                          fontWeight: "bold",
+                        }}
+                        label="Timesheet Image"
                         name="imagePathTimesheet"
-                        type="file"
-                        onChange={handleFileChange}
-                        accept="image/*"
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      style={{
-                        color: "blue",
-                        fontSize: 17,
-                        fontWeight: "bold",
-                      }}
-                      label="Approval Image"
-                      name="imagePathUpload"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your Approval Image!",
-                        },
-                      ]}
-                    >
-                      {/* <label >Approval Image</label> */}
-                      <Input
-                        placeholder="Approval Image"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Upload Image!",
+                          },
+                        ]}
+                      >
+                        {/* <label style={{color:"blue",fontSize:17,fontWeight:"bold"}}>Timesheet Image</label> */}
+                        <Input
+                          placeholder="Timesheet Image"
+                          name="imagePathTimesheet"
+                          type="file"
+                          onChange={handleFileChange}
+                          accept="image/*"
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        style={{
+                          color: "blue",
+                          fontSize: 17,
+                          fontWeight: "bold",
+                        }}
+                        label="Approval Image"
                         name="imagePathUpload"
-                        type="file"
-                        onChange={handleFileChange1}
-                        accept="image/*"
-                      />
-                    </Form.Item>
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      style={{ marginLeft: 100 }}
-                    >
-                      Submit
-                    </Button>
-                  </Form>
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your Approval Image!",
+                          },
+                        ]}
+                      >
+                        {/* <label >Approval Image</label> */}
+                        <Input
+                          placeholder="Approval Image"
+                          name="imagePathUpload"
+                          type="file"
+                          onChange={handleFileChange1}
+                          accept="image/*"
+                        />
+                      </Form.Item>
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        style={{ marginLeft: 200, backgroundColor: "green" }}
+                      >
+                        Submit
+                      </Button>
+                    </Form>
+                  </Modal>
                 </Space>
               </React.Fragment>
             </div>
