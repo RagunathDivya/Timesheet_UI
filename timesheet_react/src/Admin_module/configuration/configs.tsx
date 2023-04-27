@@ -500,7 +500,7 @@ export function Config() {
 
         <Select
           value={selectedOption}
-          onChange={handleSelectChange}
+          onChange={handleOptionChange}
           style={{
             width: 110,
             borderRadius: 3,
@@ -620,11 +620,6 @@ export function Config() {
     setSelectedOption(value);
     getData(value);
   }
-  const handleSelectChange = (value: any) => {
-    handleOptionChange(value);
-    setSelectedRowKeys([]);
-    handleActivateDeactivate(value);
-  };
 
   useEffect(() => {
     getData(selectedOption);
