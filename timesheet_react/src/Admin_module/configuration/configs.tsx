@@ -415,7 +415,7 @@ export function Config() {
   };
 
   //common table for 5 tabs
-  const renderTable = (tabName: any) => {
+  const renderTable = () => {
     return (
       <>
         <div style={{ display: "flex", float: "right" }}>
@@ -707,7 +707,7 @@ export function Config() {
             }
             key="GetClientIsActive"
           >
-            {selectedTab === "GetClientIsActive" && renderTable("tab1")}
+            {selectedTab === "GetClientIsActive" && renderTable()}
           </TabPane>
           <TabPane
             tab={
@@ -724,7 +724,7 @@ export function Config() {
             }
             key="GetProjectIsActive"
           >
-            {selectedTab === "GetProjectIsActive" && renderTable("tab2")}
+            {selectedTab === "GetProjectIsActive" && renderTable()}
           </TabPane>
           <TabPane
             tab={
@@ -741,7 +741,7 @@ export function Config() {
             }
             key="GetDesignationIsActive"
           >
-            {selectedTab === "GetDesignationIsActive" && renderTable("tab3")}
+            {selectedTab === "GetDesignationIsActive" && renderTable()}
           </TabPane>
           <TabPane
             tab={
@@ -758,7 +758,7 @@ export function Config() {
             }
             key="GetEmployeeTypeIsActive"
           >
-            {selectedTab === "GetEmployeeTypeIsActive" && renderTable("tab4")}
+            {selectedTab === "GetEmployeeTypeIsActive" && renderTable()}
           </TabPane>
           <TabPane
             tab={
@@ -775,7 +775,7 @@ export function Config() {
             }
             key="GetHrContactInfoIsActive"
           >
-            {selectedTab === "GetHrContactInfoIsActive" && renderTable("tab5")}
+            {selectedTab === "GetHrContactInfoIsActive" && renderTable()}
           </TabPane>
         </Tabs>
       </Card>

@@ -267,7 +267,7 @@ export function TS_Status() {
             onChange={(newStatus: any) =>
               updateTimesheetStatus(record.employee_Id, newStatus)
             }
-            disabled={status === "Approved"}
+            // disabled={status === "Approved"}
           >
             <Select.Option value="Pending">Pending</Select.Option>
             <Select.Option value="Approved">Approved</Select.Option>
