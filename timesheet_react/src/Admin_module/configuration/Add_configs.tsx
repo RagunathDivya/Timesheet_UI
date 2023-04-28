@@ -1,6 +1,6 @@
 import { Button, DatePicker, Form, Input, message, Modal, Select } from "antd";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const { Option } = Select;
 
 const onFinish = (values: any, url: any) => {
@@ -98,6 +98,24 @@ export function AddProject(props: any) {
     handleCancel();
     window.location.reload();
   };
+
+  const [clientDetail, setClientData] = useState<Clients[]>([]);
+  interface Clients {
+    client_Id: number;
+    client_Name: string;
+  }
+  const { Option } = Select;
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        "/api/Admin/GetClientIsActive?isActive=true"
+      );
+      const data = await response.json();
+      setClientData(data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <div
       style={{
@@ -158,9 +176,9 @@ export function AddProject(props: any) {
             ]}
           >
             <Select>
-              {clientData.map((client: any) => (
-                <Option key={client.key} value={client.key}>
-                  {client.name}
+              {clientDetail.map((client) => (
+                <Option key={client.client_Id} value={client.client_Id}>
+                  {client.client_Name}
                 </Option>
               ))}
             </Select>
