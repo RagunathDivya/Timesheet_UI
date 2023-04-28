@@ -59,6 +59,7 @@ export function AdminDashboard() {
 
   const handleMenuClick = (e: any) => {
     setSelectedKeys([e.key]);
+    localStorage.removeItem("selectedTab");
   };
 
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ export function AdminDashboard() {
     window.history.replaceState(null, "", "/");
     navigate("/", { replace: true });
     localStorage.removeItem("token");
+     localStorage.removeItem("selectedTab");
   }
   function UserDetails() {
     const userMenu = (

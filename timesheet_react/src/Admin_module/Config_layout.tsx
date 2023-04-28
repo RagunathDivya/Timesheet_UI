@@ -24,9 +24,11 @@ export function Configuration() {
     window.history.replaceState(null, "", "/");
     navigate("/", { replace: true });
     localStorage.removeItem("token");
+    localStorage.removeItem("selectedTab");
   }
   const handleMenuClick = (e: any) => {
     setSelectedKeys([e.key]);
+    localStorage.removeItem("selectedTab");
   };
   function UserDetails() {
     const userMenu = (

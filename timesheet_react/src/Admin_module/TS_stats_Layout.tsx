@@ -28,6 +28,7 @@ export function TimesheetStatus() {
 
   const handleMenuClick = (e: any) => {
     setSelectedKeys([e.key]);
+     localStorage.removeItem("selectedTab");
   };
 
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ export function TimesheetStatus() {
     window.history.replaceState(null, "", "/");
     navigate("/", { replace: true });
     localStorage.removeItem("token");
+     localStorage.removeItem("selectedTab");
   }
   function UserDetails() {
     const userMenu = (

@@ -21,7 +21,10 @@ import {
 
 export function Config() {
   const [tableData, setTableData] = useState(Array<any>);
-  const [selectedTab, setSelectedTab] = useState("GetClientIsActive");
+  //const [selectedTab, setSelectedTab] = useState("GetClientIsActive");
+  const [selectedTab, setSelectedTab] = useState(() => {
+    return localStorage.getItem("selectedTab") || "GetClientIsActive";
+  });
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [rowData, setRowData] = useState([]);
   const [page, setPage]: any = useState(1);
@@ -31,6 +34,11 @@ export function Config() {
   const [searchText, setSearchText] = useState("");
   const [selectedOption, setSelectedOption] = useState(true);
   const [clientData, setClientData] = useState();
+
+  useEffect(() => {
+    // Store the selected tab's key in localStorage when it changes
+    localStorage.setItem("selectedTab", selectedTab);
+  }, [selectedTab]);
 
   // Tabel columns
   const tableColumns: any = {
@@ -500,7 +508,7 @@ export function Config() {
 
         <Select
           value={selectedOption}
-          onChange={handleOptionChange}
+          onChange={handleSelectChange}
           style={{
             width: 110,
             borderRadius: 3,
@@ -620,7 +628,11 @@ export function Config() {
     setSelectedOption(value);
     getData(value);
   }
-
+  function handleSelectChange(value: any) {
+    handleOptionChange(value);
+    setSelectedRowKeys([]);
+    setRowData([]);
+  }
   useEffect(() => {
     getData(selectedOption);
     setSelectedRowKeys([]);

@@ -606,21 +606,6 @@ function AddTimesheet() {
       .then(async (r: any) => {
         setMessage(r.request.status, " Timesheet Added Successfully");
         var toke = sessionStorage.token;
-        // var data = await axios.get(
-        //   `https://timesheetjy.azurewebsites.net/api/Employee/GetProjects?month=${
-        //     month + 1
-        //   }&year=${year}&emp_id=${employee_Id}`,
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${toke}`,
-        //     },
-        //   }
-        // );
-        // var projectIds = data.data;
-        // var index = projectIds.indexOf(project);
-        // projectIds.splice(index, 1);
-        // setSelectedOption(projectIds);
-        // debugger;
       })
       .catch((error) => {
         setMessage(error.response.status, "Employee Id Alredy Exists");
@@ -707,7 +692,6 @@ function AddTimesheet() {
                           },
                         ]}
                       >
-                        {/* <label style={{color:"blue",fontSize:17,fontWeight:"bold"}}>Timesheet Image</label> */}
                         <Input
                           placeholder="Timesheet Image"
                           name="imagePathTimesheet"
