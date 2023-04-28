@@ -12,7 +12,7 @@ import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { Buffer } from "buffer";
-import { DownloadOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, DownloadOutlined } from "@ant-design/icons";
 
 export function TS_Status() {
   const [selectedYear, setSelectedYear] = useState("");
@@ -68,6 +68,7 @@ export function TS_Status() {
           onClick={() => {
             setSelectedYear(record.year);
             setYear(record.year);
+            setCurrentTable("selectedYear");
           }}
           style={{ fontWeight: 700 }}
         >
@@ -95,6 +96,7 @@ export function TS_Status() {
           onClick={() => {
             setSelectedMonth(record.month);
             setMonth(record.monthID);
+            setCurrentTable("selectedMonth");
           }}
           style={{ fontWeight: 700 }}
         >
@@ -256,6 +258,24 @@ export function TS_Status() {
     },
 
     {
+      title: "View Image",
+      dataIndex: "employee_Id",
+      key: "view_image",
+      align: "center" as AlignType,
+      render: (employeeId: any, record: any) => {
+        return (
+          <Button
+            disabled={employeeId !== selectedRowKeys[0] || rowData.length !== 1}
+            type="link"
+            onClick={() => handleViewImage(record.imagePathTimesheet)}
+            style={{ fontWeight: 800 }}
+          >
+            View Image
+          </Button>
+        );
+      },
+    },
+    {
       title: "Timesheet status",
       dataIndex: "status",
       key: "status",
@@ -275,24 +295,6 @@ export function TS_Status() {
           </Select>
         </>
       ),
-    },
-    {
-      title: "View Image",
-      dataIndex: "employee_Id",
-      key: "view_image",
-      align: "center" as AlignType,
-      render: (employeeId: any, record: any) => {
-        return (
-          <Button
-            disabled={employeeId !== selectedRowKeys[0] || rowData.length !== 1}
-            type="link"
-            onClick={() => handleViewImage(record.imagePathTimesheet)}
-            style={{ fontWeight: 800 }}
-          >
-            View Image
-          </Button>
-        );
-      },
     },
   ];
   const YearData = async () => {
@@ -541,6 +543,7 @@ export function TS_Status() {
     // const filteredMonthData = monthData.filter((month) =>
     //   month.month.includes(selectedYear)
     // );
+
     return (
       <Card
         style={{
@@ -682,22 +685,55 @@ export function TS_Status() {
     );
   };
 
-  return (
-    <>
-      <div>
-        <h2>Timesheet Status</h2>
-        {renderYearTable()}
-        {selectedYear && (
+  const [currentTable, setCurrentTable] = useState("");
+  function renderTable() {
+    switch (currentTable) {
+      case "defaults":
+        return (
+          <>
+            <h2>Timesheet Status</h2>
+            {renderYearTable()}
+          </>
+        );
+      case "selectedYear":
+        return (
           <>
             <h2>Timesheet Status ({selectedYear})</h2>
+            <Button
+              onClick={() => {
+                setCurrentTable("defaults");
+              }}
+              style={{
+                background:
+                  "-webkit-linear-gradient(45deg, rgba(9, 0, 159, 0.3), rgba(0, 255, 149, 0.3) 49%)",
+                color: "black",
+                fontWeight: "bold",
+              }}
+            >
+              <ArrowLeftOutlined style={{ color: "navy" }} />
+            </Button>
             {renderMonthTable()}
           </>
-        )}
-        {selectedMonth && (
+        );
+      case "selectedMonth":
+        return (
           <>
             <h2>
               Timesheet Status ({selectedMonth} -{selectedYear} )
             </h2>
+            <Button
+              onClick={() => {
+                setCurrentTable("selectedYear");
+              }}
+              style={{
+                background:
+                  "-webkit-linear-gradient(45deg, rgba(9, 0, 159, 0.3), rgba(0, 255, 149, 0.3) 49%)",
+                color: "black",
+                fontWeight: "bold",
+              }}
+            >
+              <ArrowLeftOutlined />
+            </Button>
             {renderEmployeeTable()}
 
             <Modal
@@ -748,8 +784,15 @@ export function TS_Status() {
               </div>
             </Modal>
           </>
-        )}
-      </div>
-    </>
-  );
+        );
+      default:
+        return (
+          <>
+            <h2>Timesheet Status</h2>
+            {renderYearTable()}
+          </>
+        );
+    }
+  }
+  return <>{renderTable()}</>;
 }
