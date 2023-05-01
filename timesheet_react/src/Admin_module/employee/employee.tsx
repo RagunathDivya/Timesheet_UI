@@ -52,7 +52,7 @@ export const Employee: React.FC = () => {
     })
       .then((r: any) => {
         setData(r.data);
-        // message.success("Value Loaded");
+        message.success("Data fetched successfully");
       })
       .catch((error: any) => {
         message.error(error.message);
@@ -94,6 +94,7 @@ export const Employee: React.FC = () => {
     })
       .then((response) => {
         message.success("Record's status updated");
+        window.location.reload();
       })
       .catch((error) => {
         message.error(error.message);
@@ -226,7 +227,7 @@ export const Employee: React.FC = () => {
     })
       .then((r: any) => {
         setDatas(r.data);
-        //message.success("Data fetched successfully ");
+        message.success("Data fetched successfully ");
       })
       .catch((error: any) => {
         message.error(error.message);

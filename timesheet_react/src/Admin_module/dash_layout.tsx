@@ -15,8 +15,11 @@ import {
   useNavigate,
 } from "react-router-dom";
 import joy from "../Main_module/joy.png";
-import { Dashboards } from "./dashboard/dash";
+
 import axios from "axios";
+import { Dashboards } from "./dashboard/dash";
+
+
 
 const { Header, Content, Sider } = Layout;
 
@@ -44,9 +47,9 @@ export function AdminDashboard() {
         url: `/api/Employee/UserProfile?mail_id=${encodeURIComponent(mailId)}`,
       })
         .then((response: any) => {
-          console.log(response);
+         
           setUserProfile(response.data[0]);
-          console.log(response.data);
+        
         })
         .catch((error: any) => {
           message.error(error.message);
@@ -67,7 +70,7 @@ export function AdminDashboard() {
     window.history.replaceState(null, "", "/");
     navigate("/", { replace: true });
     localStorage.removeItem("token");
-     localStorage.removeItem("selectedTab");
+    localStorage.removeItem("selectedTab");
   }
   function UserDetails() {
     const userMenu = (

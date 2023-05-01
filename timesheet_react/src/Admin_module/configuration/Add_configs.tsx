@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 const { Option } = Select;
 
 const onFinish = (values: any, url: any) => {
-  console.log(values);
   axios({
     method: "post",
     headers: {
