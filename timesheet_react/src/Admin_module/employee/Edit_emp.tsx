@@ -20,7 +20,8 @@ export function EditEmployee(props: any) {
     })
       .then((response) => {
         message.success("Record have been updated successfully");
-        window.location.reload();
+        //  window.location.reload();
+        console.log(values);
       })
       .catch((error) => {
         message.error(error.message);
@@ -176,10 +177,7 @@ export function EditEmployee(props: any) {
           >
             <Select style={{ width: 185 }}>
               {employeeTypes.map((employeeType) => (
-                <Select.Option
-                  key={employeeType.employee_Type}
-                  value={employeeType.employee_Type}
-                >
+                <Select.Option value={employeeType.employee_Type}>
                   {employeeType.employee_Type}
                 </Select.Option>
               ))}
@@ -194,10 +192,7 @@ export function EditEmployee(props: any) {
           >
             <Select style={{ width: 200 }}>
               {designations.map((designation) => (
-                <Select.Option
-                  key={designation.designation_Id}
-                  value={designation.designation}
-                >
+                <Select.Option value={designation.designation}>
                   {designation.designation}
                 </Select.Option>
               ))}
@@ -249,7 +244,7 @@ export function EditEmployee(props: any) {
           </Form.Item>
           <Form.Item
             label="Alternate Mail"
-            name="official_Email"
+            name="alternate_Email"
             rules={[
               {
                 required: false,
