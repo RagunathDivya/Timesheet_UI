@@ -374,7 +374,7 @@ export function TS_Status() {
   const updateTimesheetStatus = (employeeId: number, newStatus: any) => {
     const ids = selectedRowKeys;
     if (!ids || ids.length === 0) {
-      message.error("First select the rows you wish to undo");
+      message.error("First select the timesheet you wish to update");
       return;
     }
     const editTimeSheetModelById = [

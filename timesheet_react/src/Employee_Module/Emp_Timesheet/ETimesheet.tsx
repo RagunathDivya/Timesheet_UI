@@ -32,14 +32,18 @@ interface Project {
 }
 const dummyProject: Project[] = [];
 function AddTimesheet() {
+  const employee_Id = localStorage.getItem("Employee_Id");
   const [selectedOption, setSelectedOption] = useState<Project[]>([]);
   const projectOption = async (): Promise<void> => {
     const toke = sessionStorage.token;
-    const response = await axios.get("/api/Admin/GetAllProjects", {
-      headers: {
-        Authorization: `Bearer ${toke}`,
-      },
-    });
+    const response = await axios.get(
+      `/api/Admin/GetEmployeeProjectsById?Id=${employee_Id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${toke}`,
+        },
+      }
+    );
     response.data.forEach((element: any) => {
       dummyProject.push({
         value: element.project_Id,
@@ -48,7 +52,6 @@ function AddTimesheet() {
       setSelectedOption(dummyProject);
     });
   };
-  const employee_Id = localStorage.getItem("Employee_Id");
   const month_name = [
     "January",
     "February",
