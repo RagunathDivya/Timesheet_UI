@@ -196,7 +196,7 @@ export function EditEmployee(props: any) {
               {designations.map((designation) => (
                 <Select.Option
                   key={designation.designation_Id}
-                  value={designation.designation_Id}
+                  value={designation.designation}
                 >
                   {designation.designation}
                 </Select.Option>
