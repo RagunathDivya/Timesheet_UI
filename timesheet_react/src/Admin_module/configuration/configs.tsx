@@ -41,7 +41,6 @@ export function Config() {
 
   // Tabel columns
   const tableColumns: any = {
-
     GetClientIsActive: [
       {
         title: "Sl.No",
@@ -360,7 +359,6 @@ export function Config() {
   };
 
   const columns = selectedTab ? tableColumns[selectedTab] : [];
-  var clientTableData: any = [];
 
   const getData = (select: any) => {
     let urlT = `/api/Admin/${selectedTab}`;
@@ -380,21 +378,8 @@ export function Config() {
       url: urlT,
     })
       .then((r: any) => {
-        // message.success("Data fetched successfully");
+        message.success("Data fetched successfully");
         setTableData(r.data);
-
-        // if (selectedTab === "GetClientIsActive") {
-        //   clientTableData = r.data.map((item: any) => {
-        //     return {
-        //       key: item.client_Id,
-        //       name: item.client_Name,
-        //       isActive: item.is_Active,
-        //     };
-        //   });
-        //   setClientData(clientTableData);
-        // } else {
-        //   clientTableData = r.data;
-        // }
       })
       .catch((error: any) => {
         message.error(error.message);

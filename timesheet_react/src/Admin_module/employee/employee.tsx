@@ -14,7 +14,7 @@ export const Employee: React.FC = () => {
   const [prevChangesModal, setPrevChangesModal] = useState(false);
   const [addProjectModal, setAddProjectModal] = useState(false);
   const [viewProjectModal, setViewProjectModal] = useState(false);
-  const [page, setPage] = useState(1);
+  const [page, setPage]: any = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const pageSizeOptions = [3, 5, 10, 20];
   const [selectedOption, setSelectedOption] = useState(true);
@@ -263,13 +263,13 @@ export const Employee: React.FC = () => {
     },
     {
       title: "Reporting Manager1",
-      dataIndex: "reporting_Manager",
-      key: "reporting_Manager",
+      dataIndex: "reporting_Manager1",
+      key: "reporting_Manager1",
     },
     {
       title: "Mail Id",
-      dataIndex: "official_Email",
-      key: "official_Email",
+      dataIndex: "emailId",
+      key: "emailId",
     },
     {
       title: "Contact No",
@@ -277,7 +277,10 @@ export const Employee: React.FC = () => {
       key: "contact_No",
     },
   ];
-
+  const handlePagination = (pagination: any) => {
+    setPage(pagination.current);
+    setPageSize(pagination.pageSize);
+  };
   return (
     <div>
       <h1
@@ -438,6 +441,7 @@ export const Employee: React.FC = () => {
             showSizeChanger: true,
             pageSizeOptions,
           }}
+          onChange={handlePagination}
           style={{ width: 4500, fontWeight: 600, marginTop: 8 }}
           scroll={{ x: "max-content" }}
         />

@@ -20,7 +20,7 @@ export function EditEmployee(props: any) {
     })
       .then((response) => {
         message.success("Record have been updated successfully");
-        //  window.location.reload();
+        window.location.reload();
         console.log(values);
       })
       .catch((error) => {
@@ -208,14 +208,13 @@ export function EditEmployee(props: any) {
           }}
         >
           <Form.Item
-            name="joining Date"
+            name="joining_Date"
             label="Joining Date"
             rules={[
               { required: false, message: "Please provide Joining Date!" },
             ]}
-            hasFeedback
           >
-            <DatePicker placeholder="Select Date" />
+            <Input disabled />
           </Form.Item>
           <Form.Item
             name="end Date"

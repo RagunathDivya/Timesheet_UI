@@ -235,7 +235,7 @@ export function AddEmployee() {
             }}
           >
             <Form.Item
-              name="Joining Date"
+              name="joining_Date"
               label="Joining Date"
               rules={[
                 { required: true, message: "Please provide Joining Date!" },
@@ -245,7 +245,7 @@ export function AddEmployee() {
               <DatePicker placeholder="Select Date" />
             </Form.Item>
             <Form.Item
-              name="End Date"
+              name="end_Date"
               label="End Date"
               rules={[{ required: false, message: "Please provide End Date!" }]}
               hasFeedback

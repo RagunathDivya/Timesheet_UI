@@ -33,22 +33,7 @@ export function TS_Status() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imgVisible, setImgVisible] = useState(false);
   const [imageData, setImageData] = useState("");
-  const allMonths = [
-    { month: "January", monthID: 1, timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "February", monthID: 2 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "March", monthID: 3 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "April", monthID: 4 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "May", monthID: 5, timeSheet_Count:"",approved:"",rejected:"",pending:"" },
-    { month: "June", monthID: 6 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "July", monthID: 7 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "August", monthID: 8 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "September", monthID: 9, timeSheet_Count:"",approved:"",rejected:"",pending:"" },
-    { month: "October", monthID: 10, timeSheet_Count:"",approved:"",rejected:"",pending:"" },
-    { month: "November", monthID: 11 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "December", monthID: 12 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-  ];
 
-  
   const rowSelection = {
     onChange: (selectedRowKeys: any, selectedRows: any) => {
       setSelectedRowKeys(selectedRowKeys);
@@ -92,59 +77,59 @@ export function TS_Status() {
       ),
     },
   ];
- const monthCols = [
-  {
-    title: "Sl.No",
-    dataIndex: "id",
-    key: "ids",
-    render: (value: any, item: any, index: any) =>
-      (page - 1) * pageSize + index + 1,
-    align: "center" as AlignType,
-  },
-  {
-    title: "Timesheet",
-    dataIndex: "month",
-    key: "month",
-    align: "center" as AlignType,
-    render: (text: string, record: any) => (
-      <a
-        onClick={() => {
-          setSelectedMonth(record.month);
-          setMonth(record.monthID);
-          setCurrentTable("selectedMonth");
-        }}
-        style={{ fontWeight: 700 }}
-      >
-        {text}
-      </a>
-    ),
-  },
-  {
-    title: "Total Timesheets",
-    dataIndex: "timeSheet_Count",
-    key: "timeSheet_Count",
-    align: "center" as AlignType,
-  },
-  {
-    title: "Approved Timesheets",
-    dataIndex: "approved",
-    key: "approved",
-    align: "center" as AlignType,
-  },
-  {
-    title: "Rejected Timesheets",
-    dataIndex: "rejected",
-    key: "rejected",
-    align: "center" as AlignType,
-  },
-  {
-    title: "Pending Timesheets",
-    dataIndex: "pending",
-    key: "pending",
-    align: "center" as AlignType,
-  },
-];
-  
+  const monthCols = [
+    {
+      title: "Sl.No",
+      dataIndex: "id",
+      key: "ids",
+      render: (value: any, item: any, index: any) =>
+        (page - 1) * pageSize + index + 1,
+      align: "center" as AlignType,
+    },
+    {
+      title: "Timesheet",
+      dataIndex: "month",
+      key: "month",
+      align: "center" as AlignType,
+      render: (text: string, record: any) => (
+        <a
+          onClick={() => {
+            setSelectedMonth(record.month);
+            setMonth(record.monthID);
+            setCurrentTable("selectedMonth");
+          }}
+          style={{ fontWeight: 700 }}
+        >
+          {text}
+        </a>
+      ),
+    },
+    {
+      title: "Total Timesheets",
+      dataIndex: "timeSheet_Count",
+      key: "timeSheet_Count",
+      align: "center" as AlignType,
+    },
+    {
+      title: "Approved Timesheets",
+      dataIndex: "approved",
+      key: "approved",
+      align: "center" as AlignType,
+    },
+    {
+      title: "Rejected Timesheets",
+      dataIndex: "rejected",
+      key: "rejected",
+      align: "center" as AlignType,
+    },
+    {
+      title: "Pending Timesheets",
+      dataIndex: "pending",
+      key: "pending",
+      align: "center" as AlignType,
+    },
+  ];
+
   const statscols = [
     {
       title: "Sl.No",
@@ -158,7 +143,7 @@ export function TS_Status() {
       title: "Date",
       dataIndex: "date",
       key: "date",
-      render: (date: any) => moment(date).format("DD-MM-YYYY"),
+      // render: (date: any) => moment(date).format("DD-MM-YYYY"),
       align: "center" as AlignType,
     },
     {
@@ -171,6 +156,7 @@ export function TS_Status() {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      render: (status: any) => (status ? "Present" : "Leave"),
       align: "center" as AlignType,
     },
     {
@@ -477,7 +463,7 @@ export function TS_Status() {
     const values = Object.values(record).join(" ").toLowerCase();
     return values.includes(searchTextYear.toLowerCase());
   });
-  const filteredMonthData = allMonths.filter((record: any) => {
+  const filteredMonthData = monthData.filter((record: any) => {
     const values = Object.values(record).join(" ").toLowerCase();
     return values.includes(searchTextMonth.toLowerCase());
   });
@@ -585,12 +571,12 @@ export function TS_Status() {
             fontWeight: "bold",
           }}
         />
-       <Table
-  bordered
-  dataSource={filteredMonthData}
-  columns={monthCols}
-  pagination={false}
-/>
+        <Table
+          bordered
+          dataSource={filteredMonthData}
+          columns={monthCols}
+          pagination={false}
+        />
       </Card>
     );
   };
