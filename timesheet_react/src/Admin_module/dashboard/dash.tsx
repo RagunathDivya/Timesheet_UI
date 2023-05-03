@@ -99,7 +99,7 @@ export function Dashboards() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          width: "auto",
+          // width: "auto",
         }}
       >
         <div style={{ display: "flex" }}>
@@ -153,13 +153,13 @@ export function Dashboards() {
                   ]}
                   style={{
                     data: { fill: "#72b4eb" },
-                    labels: { fill: "black", fontSize: 16 },
+                    labels: { fill: "black", fontSize: 20, fontWeight: 700 },
                   }}
                   labels={({ datum }) => `${datum.x}\n${datum.y}`}
-                  barWidth={40}
+                  barWidth={50}
                   animate={{
                     duration: 5000,
-                    easing:"bounce",
+                    easing: "bounce",
                   }}
                 />
               </>
