@@ -9,7 +9,6 @@ import {
   message,
 } from "antd";
 import axios from "axios";
-import moment from "moment";
 import { useEffect, useState } from "react";
 import { Buffer } from "buffer";
 import { ArrowLeftOutlined, DownloadOutlined } from "@ant-design/icons";
@@ -33,20 +32,7 @@ export function TS_Status() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imgVisible, setImgVisible] = useState(false);
   const [imageData, setImageData] = useState("");
-  const [allMonths, setAllMonths] = useState([
-    { month: "January", monthID: 1, timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "February", monthID: 2 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "March", monthID: 3 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "April", monthID: 4 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "May", monthID: 5, timeSheet_Count:"",approved:"",rejected:"",pending:"" },
-    { month: "June", monthID: 6 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "July", monthID: 7 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "August", monthID: 8 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "September", monthID: 9, timeSheet_Count:"",approved:"",rejected:"",pending:"" },
-    { month: "October", monthID: 10, timeSheet_Count:"",approved:"",rejected:"",pending:"" },
-    { month: "November", monthID: 11 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-    { month: "December", monthID: 12 , timeSheet_Count:"",approved:"",rejected:"",pending:""},
-  ]);
+
   const rowSelection = {
     onChange: (selectedRowKeys: any, selectedRows: any) => {
       setSelectedRowKeys(selectedRowKeys);
@@ -156,7 +142,6 @@ export function TS_Status() {
       title: "Date",
       dataIndex: "date",
       key: "date",
-      // render: (date: any) => moment(date).format("DD-MM-YYYY"),
       align: "center" as AlignType,
     },
     {
@@ -333,70 +318,130 @@ export function TS_Status() {
   useEffect(() => {
     YearData();
   }, []);
+
   const MonthData = async () => {
-    try {
-      // Fetch data for the selected month
-      const response = await axios.get(`/api/Admin/GetTimeSheetStatusStatusByMonth?year=${year}&month=${month}`);
-      const monthData = response.data;
-  
-      if (monthData.timeSheet_count >= 1) {
-        setTotalTS(monthData.timeSheet_Count ?? 0);
-        setApprovedTS(monthData.approved ?? 0);
-        setPendingTS(monthData.pending ?? 0);
-        setRejectedTS(monthData.rejected ?? 0);
-      } else if (monthData.timeSheet_count === 0) {
-        setTotalTS(0);
-        setApprovedTS(0);
-        setPendingTS(0);
-        setRejectedTS(0);
-      }
-  
-      // Fetch data for all months in the selected year
-      const allMonthsResponse = await axios.get(`/api/Admin/GetTimeSheetStatusStatusByYear?year=${year}`);
-      const allMonthsData = allMonthsResponse.data;
-  
-      // Merge the data for the selected month with the data for all months in the selected year
-      const updatedMonths = allMonths.map((month) => {
-        const monthData = allMonthsData.find((d: { monthID: number; }) => d.monthID === month.monthID);
-        const updatedMonthData = monthData
-          ? {
-              ...month,
-              timeSheet_Count: monthData.timeSheet_Count,
-              approved: monthData.approved,
-              pending: monthData.pending,
-              rejected: monthData.rejected
-            }
-          : {
-              ...month,
-              timeSheet_Count: 0,
-              approved: 0,
-              pending: 0,
-              rejected: 0
-            };
-        return updatedMonthData;
+    const allMonths = [
+      {
+        monthID: 1,
+        month: "January",
+        timeSheet_Count: 0,
+        pending: 0,
+        rejected: 0,
+        approved: 0,
+      },
+      {
+        monthID: 2,
+        month: "February",
+        timeSheet_Count: 0,
+        pending: 0,
+        rejected: 0,
+        approved: 0,
+      },
+      {
+        monthID: 3,
+        month: "March",
+        timeSheet_Count: 0,
+        pending: 0,
+        rejected: 0,
+        approved: 0,
+      },
+      {
+        monthID: 4,
+        month: "April",
+        timeSheet_Count: 0,
+        pending: 0,
+        rejected: 0,
+        approved: 0,
+      },
+      {
+        monthID: 5,
+        month: "May",
+        timeSheet_Count: 0,
+        pending: 0,
+        rejected: 0,
+        approved: 0,
+      },
+      {
+        monthID: 6,
+        month: "June",
+        timeSheet_Count: 0,
+        pending: 0,
+        rejected: 0,
+        approved: 0,
+      },
+      {
+        monthID: 7,
+        month: "July",
+        timeSheet_Count: 0,
+        pending: 0,
+        rejected: 0,
+        approved: 0,
+      },
+      {
+        monthID: 8,
+        month: "August",
+        timeSheet_Count: 0,
+        pending: 0,
+        rejected: 0,
+        approved: 0,
+      },
+      {
+        monthID: 9,
+        month: "September",
+        timeSheet_Count: 0,
+        pending: 0,
+        rejected: 0,
+        approved: 0,
+      },
+      {
+        monthID: 10,
+        month: "October",
+        timeSheet_Count: 0,
+        pending: 0,
+        rejected: 0,
+        approved: 0,
+      },
+      {
+        monthID: 11,
+        month: "November",
+        timeSheet_Count: 0,
+        pending: 0,
+        rejected: 0,
+        approved: 0,
+      },
+      {
+        monthID: 12,
+        month: "December",
+        timeSheet_Count: 0,
+        pending: 0,
+        rejected: 0,
+        approved: 0,
+      },
+    ];
+
+    axios({
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+      url: `/api/Admin/GetTimeSheetStatusStatusByYear?year=${year}`,
+    })
+      .then((r: any) => {
+        const mergedData = allMonths.map((month) => {
+          const matchingMonth = r.data.find(
+            (m: any) => m.month === month.month
+          );
+          return matchingMonth ? matchingMonth : month;
+        });
+        setMonthData(mergedData);
+      })
+      .catch((error: any) => {
+        // message.error(error.message);
       });
-  
-      // Calculate total, approved, pending, and rejected time sheets
-      const totalTS = allMonthsData.reduce((acc: number, d: { timeSheet_Count: number }) => acc + d.timeSheet_Count, 0);
-      const approvedTS = allMonthsData.reduce((acc: number, d: { approved: number }) => acc + d.approved, 0);
-      const pendingTS = allMonthsData.reduce((acc: number, d: { pending: number }) => acc + d.pending, 0);
-      const rejectedTS = allMonthsData.reduce((acc: number, d: { rejected: number }) => acc + d.rejected, 0);
-  
-      setAllMonths(updatedMonths);
-      setTotalTS(totalTS);
-      setApprovedTS(approvedTS);
-      setPendingTS(pendingTS);
-      setRejectedTS(rejectedTS);
-    } catch (error) {
-      // handle error
-    }
   };
-  
-  
-  const [totalTS, setTotalTS] = useState(0);
-  const [approvedTS, setApprovedTS] = useState(0);
-  const [pendingTS, setPendingTS] = useState(0);
-  const [rejectedTS, setRejectedTS] = useState(0);
+
   useEffect(() => {
     MonthData();
   }, [year]);
@@ -454,6 +499,7 @@ export function TS_Status() {
         //message.error(error.message);
       });
   };
+
   // For ViewTimesheet
   const [timesheetData, setTimesheetData] = useState([]);
   const showModal = () => {
@@ -516,7 +562,7 @@ export function TS_Status() {
     const values = Object.values(record).join(" ").toLowerCase();
     return values.includes(searchTextYear.toLowerCase());
   });
-  const filteredMonthData = allMonths.filter((record: any) => {
+  const filteredMonthData = monthData.filter((record: any) => {
     const values = Object.values(record).join(" ").toLowerCase();
     return values.includes(searchTextMonth.toLowerCase());
   });
@@ -594,10 +640,6 @@ export function TS_Status() {
   };
 
   const renderMonthTable = () => {
-    // const filteredMonthData = monthData.filter((month) =>
-    //   month.month.includes(selectedYear)
-    // );
-
     return (
       <Card
         style={{
@@ -635,9 +677,11 @@ export function TS_Status() {
   };
 
   const renderEmployeeTable = () => {
-    // const filteredEmployeeData = empData.filter(
-    //   (employee) => employee.timesheetStatus === selectedMonth
-    // );
+    const selectedMonthObject = monthData.find(
+      (monthObject) => monthObject.month === selectedMonth
+    );
+    const { timeSheet_Count, pending, rejected, approved } =
+      selectedMonthObject;
     return (
       <Card
         style={{
@@ -652,13 +696,15 @@ export function TS_Status() {
             style={{
               display: "flex",
               justifyContent: "space-between",
-              fontWeight: 1000,
+              fontWeight: 900,
+              marginLeft: 40,
+              marginRight: 40,
             }}
           >
-            <div>Total Timesheets: {totalTS}</div>
-            <div>Approved Timesheets: {approvedTS}</div>
-            <div>Rejected Timesheets: {rejectedTS}</div>
-            <div>Pending Timesheets: {pendingTS}</div>
+            <div>{`Total: ${timeSheet_Count}`}</div>
+            <div>{`Pending: ${pending}`}</div>
+            <div>{`Rejected: ${rejected}`}</div>
+            <div>{`Approved: ${approved}`}</div>
           </div>
         }
       >
