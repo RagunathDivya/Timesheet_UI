@@ -133,7 +133,12 @@ export function Dashboards() {
           </Select>
         </div>
         <div style={{ marginTop: 5, width: 400 }}>
-          <>
+          <Card
+            style={{
+              background:
+                "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.2), rgba(0, 255, 149, 0.2) 55%)",
+            }}
+          >
             <h2>
               Timesheet Status ({year} -{monthName} )
             </h2>
@@ -154,9 +159,19 @@ export function Dashboards() {
                 />
               </>
             ) : (
-              <div style={{ width: "100%", height: 300 }} />
+              <div
+                style={{
+                  width: "100%",
+                  height: 300,
+                  fontWeight: 400,
+                  marginTop: 80,
+                  marginLeft: 90,
+                }}
+              >
+                No Timesheets found
+              </div>
             )}
-          </>
+          </Card>
         </div>
       </div>
     </>
