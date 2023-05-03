@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  VictoryBar,
   VictoryChart,
   VictoryLabel,
   VictoryLine,
@@ -144,7 +145,7 @@ export function Dashboards() {
             </h2>
             {Object.values(progressData).some((value) => value > 0) ? (
               <>
-                <VictoryPie
+                {/* <VictoryPie
                   data={[
                     { x: "Pending", y: progressData.pending },
                     { x: "Approved", y: progressData.approved },
@@ -155,6 +156,23 @@ export function Dashboards() {
                   labelComponent={<CustomLabel />}
                   style={{
                     data: { stroke: "white", strokeWidth: 2 },
+                  }}
+                /> */}
+                <VictoryBar
+                  data={[
+                    { x: "Pending", y: progressData.pending },
+                    { x: "Approved", y: progressData.approved },
+                    { x: "Rejected", y: progressData.rejected },
+                  ]}
+                  style={{
+                    data: { fill: "#72b4eb" },
+                    labels: { fill: "black", fontSize: 16 },
+                  }}
+                  labels={({ datum }) => `${datum.x}\n${datum.y}`}
+                  barWidth={40}
+                  animate={{
+                    duration: 2000,
+                    easing: "bounce",
                   }}
                 />
               </>
