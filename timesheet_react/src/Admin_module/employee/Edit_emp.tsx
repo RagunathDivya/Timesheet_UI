@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Button, DatePicker, Form, Input, message, Select } from "antd";
 
 import axios from "axios";
+import dayjs from "dayjs";
+import "dayjs/locale/en";
 
 export function EditEmployee(props: any) {
   const [form] = Form.useForm();
@@ -21,10 +23,9 @@ export function EditEmployee(props: any) {
       .then((response) => {
         message.success("Record have been updated successfully");
         window.location.reload();
-        console.log(values);
       })
       .catch((error) => {
-        message.error(error.message);
+        message.error(error.response.data);
       });
   };
   const [designations, setDesignations] = useState<Designation[]>([]);
@@ -60,7 +61,7 @@ export function EditEmployee(props: any) {
     };
     fetchEmployeeTypes();
   }, []);
-
+  const dateFormat = "DD/MM/YYYY";
   return (
     <>
       <Form
@@ -71,7 +72,7 @@ export function EditEmployee(props: any) {
         autoComplete="off"
         onFinish={onupdate}
         form={form}
-        style={{paddingTop:30}}
+        style={{ paddingTop: 30 }}
       >
         <div
           style={{
@@ -167,7 +168,7 @@ export function EditEmployee(props: any) {
                 </Select.Option>
               ))}
             </Select>
-          </Form.Item>{" "}
+          </Form.Item>
           <Form.Item
             label="Reporting Manager"
             name="reporting_Manager1"
@@ -194,13 +195,17 @@ export function EditEmployee(props: any) {
           }}
         >
           <Form.Item
-            name="joining_Date"
+            name="joining Date"
             label="Joining Date"
             rules={[
               { required: false, message: "Please provide Joining Date!" },
             ]}
           >
-            <Input disabled />
+            <DatePicker
+              defaultValue={dayjs(props.selectedRows[0].joining_Date)}
+              format={dateFormat}
+              disabled
+            />
           </Form.Item>
         </div>
 

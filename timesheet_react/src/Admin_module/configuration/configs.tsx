@@ -572,7 +572,7 @@ export function Config() {
           {selectedTab === "GetClientIsActive" ? (
             <EditClient rowData={rowData} />
           ) : selectedTab === "GetProjectIsActive" ? (
-            <EditProject rowData={rowData} clientData={clientData} />
+            <EditProject rowData={rowData} />
           ) : selectedTab === "GetDesignationIsActive" ? (
             <EditDesignation rowData={rowData} />
           ) : selectedTab === "GetEmployeeTypeIsActive" ? (
@@ -593,6 +593,7 @@ export function Config() {
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+    window.location.reload();
   };
   var editActive: any =
     selectedTab === "GetClientIsActive"
@@ -644,9 +645,10 @@ export function Config() {
     })
       .then((response) => {
         message.success("Record's status updated");
+        window.location.reload();
       })
       .catch((error) => {
-        message.error(error.message);
+        message.error(error.response.data);
       });
   };
 

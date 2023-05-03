@@ -1,5 +1,10 @@
-import { Button, Form, Input, Select, message } from "antd";
+import { Button, DatePicker, Form, Input, Select, message } from "antd";
 import axios from "axios";
+import format from "date-fns/format";
+
+import dayjs from "dayjs";
+import "dayjs/locale/en";
+
 import { useEffect, useState } from "react";
 const { Option } = Select;
 
@@ -53,7 +58,9 @@ export function EditClient(props: any) {
 export function EditProject(props: any) {
   const { rowData } = props;
   const [form] = Form.useForm();
-  form.setFieldsValue(rowData[0]); // pass checked row values from props to fields
+
+  form.setFieldsValue(rowData[0]);
+
   const onFinishAdd = (values: any) => {
     onFinish(values, "/api/Admin/EditProject");
     window.location.reload();
@@ -64,6 +71,7 @@ export function EditProject(props: any) {
     client_Name: string;
   }
   const { Option } = Select;
+
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(
@@ -74,6 +82,7 @@ export function EditProject(props: any) {
     }
     fetchData();
   }, []);
+  const dateFormat = "DD/MM/YYYY";
 
   return (
     <>
@@ -110,21 +119,28 @@ export function EditProject(props: any) {
         </Form.Item>
         <Form.Item
           label="Start Date"
-          name="project_Start_Date"
+          name="start_Date"
           rules={[
-            { required: true, message: "Please input project start date!" },
+            { required: false, message: "Please input project start date!" },
           ]}
         >
-          <Input />
+          <DatePicker
+            defaultValue={dayjs(props.rowData[0].project_Start_Date)}
+            format={dateFormat}
+            disabled
+          />
         </Form.Item>
         <Form.Item
           label="End Date"
-          name="project_End_Date"
+          name="end_Date"
           rules={[
             { required: true, message: "Please input project end date!" },
           ]}
         >
-          <Input />
+          <DatePicker
+            defaultValue={dayjs(props.rowData[0].project_End_Date)}
+            format={dateFormat}
+          />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">

@@ -25,6 +25,10 @@ export const Employee: React.FC = () => {
   const showEditModals = () => {
     setEditModalOpen(true);
   };
+  const hideEditModals = () => {
+    setEditModalOpen(false);
+    window.location.reload();
+  };
   const showPrevChangesModal = () => {
     setPrevChangesModal(true);
     getPrevChangesData(selectedRowKeys);
@@ -160,14 +164,14 @@ export const Employee: React.FC = () => {
       render: (joining_Date: any) => moment(joining_Date).format("DD-MM-YYYY"),
       align: "center",
     },
-    {
-      title: "End Date",
-      dataIndex: "end_Date",
-      key: "end_Date",
-      align: "center",
-      render: (End_Date: any) => "",
-      //moment(End_Date).format("DD-MM-YYYY"),
-    },
+    // {
+    //   title: "End Date",
+    //   dataIndex: "end_Date",
+    //   key: "end_Date",
+    //   align: "center",
+    //   render: (End_Date: any) => "",
+    //   //moment(End_Date).format("DD-MM-YYYY"),
+    // },
     {
       title: "Mail Id",
       dataIndex: "official_Email",
@@ -222,7 +226,10 @@ export const Employee: React.FC = () => {
       .then((r: any) => {
         // Sort the data by date in descending order
         const sortedData = r.data.sort((a: any, b: any) => {
-          return new Date(b.date_Edited).getTime() - new Date(a.date_Edited).getTime();
+          return (
+            new Date(b.date_Edited).getTime() -
+            new Date(a.date_Edited).getTime()
+          );
         });
         setDatas(sortedData);
         message.success("Data fetched successfully");
@@ -231,85 +238,108 @@ export const Employee: React.FC = () => {
         message.error(error.message);
       });
   };
-  
-  
 
   const columns1: any = [
     {
       title: "Employee ID",
       dataIndex: "employee_Id",
       key: "employee_Id",
-      
+      align: "center",
     },
     {
       title: "Employee Name",
       dataIndex: "full_Name",
       key: "full_Name",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1]; 
-        const edited = record.full_Name !== previousData?.full_Name; 
-        return <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>;
+        const previousData = tableDatas[index + 1];
+        const edited = record.full_Name !== previousData?.full_Name;
+        return (
+          <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>
+        );
       },
+      align: "center",
     },
     {
       title: "Employee Type",
       dataIndex: "employee_Type",
       key: "employee_Type",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1]; 
-        const edited = record.employee_Type !== previousData?.employee_Type; 
-        return <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>;
+        const previousData = tableDatas[index + 1];
+        const edited = record.employee_Type !== previousData?.employee_Type;
+        return (
+          <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>
+        );
       },
+      align: "center",
     },
     {
       title: "Joining Date",
       dataIndex: "joining_Date",
       key: "joining_Date",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1]; 
-        const edited = record.joining_Date !== previousData?.joining_Date; 
-        return <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>;
+        const formattedDate = moment(text).format("DD/MM/YYYY");
+        const previousData = tableDatas[index + 1];
+        const edited = text !== previousData?.joining_Date;
+        return (
+          <span style={{ color: edited ? "red" : "inherit" }}>
+            {formattedDate}
+          </span>
+        );
       },
+      align: "center",
     },
     {
       title: "Designation",
       dataIndex: "designation",
       key: "designation",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1]; 
-        const edited = record.designation !== previousData?.designation; 
-        return <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>;
+        const previousData = tableDatas[index + 1];
+        const edited = record.designation !== previousData?.designation;
+        return (
+          <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>
+        );
       },
+      align: "center",
     },
     {
-      title: "Reporting Manager1",
+      title: "Reporting Manager",
       dataIndex: "reporting_Manager1",
       key: "reporting_Manager1",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1]; 
-        const edited = record.reporting_Manager1 !== previousData?.reporting_Manager1; 
-        return <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>;
+        const previousData = tableDatas[index + 1];
+        const edited =
+          record.reporting_Manager1 !== previousData?.reporting_Manager1;
+        return (
+          <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>
+        );
       },
+      align: "center",
     },
     {
       title: "Mail Id",
       dataIndex: "emailId",
       key: "emailId",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1]; 
+        const previousData = tableDatas[index + 1];
         const edited = record.emailId !== previousData?.emailId;
-        return <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>;
+        return (
+          <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>
+        );
       },
+      align: "center",
     },
     {
       title: "Contact No",
       dataIndex: "contact_No",
       key: "contact_No",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index = 1];
-        const edited = record.contact_No !== previousData?.contact_No; 
-        return <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>;
+        const previousData = tableDatas[(index = 1)];
+        const edited = record.contact_No !== previousData?.contact_No;
+        return (
+          <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>
+        );
       },
+      align: "center",
     },
   ];
   const handlePagination = (pagination: any) => {
@@ -484,7 +514,7 @@ export const Employee: React.FC = () => {
       <Modal
         title="Update Employee"
         open={editModalOpen}
-        onCancel={() => setEditModalOpen(false)}
+        onCancel={hideEditModals}
         footer={[]}
         width={1000}
         style={{
@@ -505,7 +535,7 @@ export const Employee: React.FC = () => {
         open={prevChangesModal}
         onCancel={() => setPrevChangesModal(false)}
         footer={null}
-        width={1000}
+        width={2000}
         centered
       >
         <Table dataSource={tableDatas} columns={columns1} />
