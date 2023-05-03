@@ -224,22 +224,18 @@ export const Employee: React.FC = () => {
       url: `/api/Admin/GetViewPreviousChangesById?Id=${val}`,
     })
       .then((r: any) => {
-        // Sort the data by date in descending order
         const sortedData = r.data.sort((a: any, b: any) => {
-          return (
-            new Date(b.date_Edited).getTime() -
-            new Date(a.date_Edited).getTime()
-          );
+        return new Date(b.date_Edited).getTime() - new Date(a.date_Edited).getTime();
         });
-        setDatas(sortedData);
-        message.success("Data fetched successfully");
+        const reversedData = sortedData.reverse();
+        setDatas(reversedData);
+        message.success("Data fetched successfully ");
       })
       .catch((error: any) => {
         message.error(error.message);
       });
   };
-
-  const columns1: any = [
+    const columns1: any = [
     {
       title: "Employee ID",
       dataIndex: "employee_Id",
@@ -251,11 +247,9 @@ export const Employee: React.FC = () => {
       dataIndex: "full_Name",
       key: "full_Name",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1];
-        const edited = record.full_Name !== previousData?.full_Name;
-        return (
-          <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>
-        );
+        const previousData = tableDatas[index + 1]; 
+        const edited = record.full_Name !== previousData?.full_Name  ; 
+        return <span style={{ color: edited ? tableDatas[index].max==tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{text}</span>;
       },
       align: "center",
     },
@@ -264,11 +258,9 @@ export const Employee: React.FC = () => {
       dataIndex: "employee_Type",
       key: "employee_Type",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1];
-        const edited = record.employee_Type !== previousData?.employee_Type;
-        return (
-          <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>
-        );
+        const previousData = tableDatas[index + 1]; 
+        const edited = record.employee_Type !== previousData?.employee_Type; 
+        return <span style={{ color: edited ? tableDatas[index].max==tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{text}</span>;
       },
       align: "center",
     },
@@ -277,14 +269,9 @@ export const Employee: React.FC = () => {
       dataIndex: "joining_Date",
       key: "joining_Date",
       render: (text: any, record: any, index: number) => {
-        const formattedDate = moment(text).format("DD/MM/YYYY");
-        const previousData = tableDatas[index + 1];
-        const edited = text !== previousData?.joining_Date;
-        return (
-          <span style={{ color: edited ? "red" : "inherit" }}>
-            {formattedDate}
-          </span>
-        );
+        const previousData = tableDatas[index + 1]; 
+        const edited = record.joining_Date !== previousData?.joining_Date; 
+        return <span style={{ color: edited ? tableDatas[index].max==tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{text}</span>;
       },
       align: "center",
     },
@@ -293,11 +280,9 @@ export const Employee: React.FC = () => {
       dataIndex: "designation",
       key: "designation",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1];
-        const edited = record.designation !== previousData?.designation;
-        return (
-          <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>
-        );
+        const previousData = tableDatas[index + 1]; 
+        const edited = record.designation !== previousData?.designation; 
+        return <span style={{ color: edited ? tableDatas[index].max==tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{text}</span>;
       },
       align: "center",
     },
@@ -306,12 +291,9 @@ export const Employee: React.FC = () => {
       dataIndex: "reporting_Manager1",
       key: "reporting_Manager1",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1];
-        const edited =
-          record.reporting_Manager1 !== previousData?.reporting_Manager1;
-        return (
-          <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>
-        );
+        const previousData = tableDatas[index + 1]; 
+        const edited = record.reporting_Manager1 !== previousData?.reporting_Manager1; 
+        return <span style={{ color: edited ? tableDatas[index].max==tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{text}</span>;
       },
       align: "center",
     },
@@ -320,11 +302,9 @@ export const Employee: React.FC = () => {
       dataIndex: "emailId",
       key: "emailId",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1];
+        const previousData = tableDatas[index + 1]; 
         const edited = record.emailId !== previousData?.emailId;
-        return (
-          <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>
-        );
+        return <span style={{ color: edited ? tableDatas[index].max==tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{text}</span>;
       },
       align: "center",
     },
@@ -333,11 +313,9 @@ export const Employee: React.FC = () => {
       dataIndex: "contact_No",
       key: "contact_No",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[(index = 1)];
-        const edited = record.contact_No !== previousData?.contact_No;
-        return (
-          <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>
-        );
+        const previousData = tableDatas[index + 1];
+        const edited = record.contact_No !== previousData?.contact_No; 
+        return <span style={{ color: edited ? tableDatas[index].max==tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{text}</span>;
       },
       align: "center",
     },
