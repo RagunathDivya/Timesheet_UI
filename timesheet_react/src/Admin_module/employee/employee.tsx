@@ -220,55 +220,96 @@ export const Employee: React.FC = () => {
       url: `/api/Admin/GetViewPreviousChangesById?Id=${val}`,
     })
       .then((r: any) => {
-        setDatas(r.data);
-        message.success("Data fetched successfully ");
+        // Sort the data by date in descending order
+        const sortedData = r.data.sort((a: any, b: any) => {
+          return new Date(b.date_Edited).getTime() - new Date(a.date_Edited).getTime();
+        });
+        setDatas(sortedData);
+        message.success("Data fetched successfully");
       })
       .catch((error: any) => {
         message.error(error.message);
       });
   };
+  
+  
 
   const columns1: any = [
     {
       title: "Employee ID",
       dataIndex: "employee_Id",
       key: "employee_Id",
+      
     },
     {
       title: "Employee Name",
       dataIndex: "full_Name",
       key: "full_Name",
+      render: (text: any, record: any, index: number) => {
+        const previousData = tableDatas[index + 1]; 
+        const edited = record.full_Name !== previousData?.full_Name; 
+        return <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>;
+      },
     },
     {
       title: "Employee Type",
       dataIndex: "employee_Type",
       key: "employee_Type",
+      render: (text: any, record: any, index: number) => {
+        const previousData = tableDatas[index + 1]; 
+        const edited = record.employee_Type !== previousData?.employee_Type; 
+        return <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>;
+      },
     },
     {
       title: "Joining Date",
       dataIndex: "joining_Date",
       key: "joining_Date",
+      render: (text: any, record: any, index: number) => {
+        const previousData = tableDatas[index + 1]; 
+        const edited = record.joining_Date !== previousData?.joining_Date; 
+        return <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>;
+      },
     },
-
     {
       title: "Designation",
       dataIndex: "designation",
       key: "designation",
+      render: (text: any, record: any, index: number) => {
+        const previousData = tableDatas[index + 1]; 
+        const edited = record.designation !== previousData?.designation; 
+        return <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>;
+      },
     },
     {
       title: "Reporting Manager1",
       dataIndex: "reporting_Manager1",
       key: "reporting_Manager1",
+      render: (text: any, record: any, index: number) => {
+        const previousData = tableDatas[index + 1]; 
+        const edited = record.reporting_Manager1 !== previousData?.reporting_Manager1; 
+        return <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>;
+      },
     },
     {
       title: "Mail Id",
       dataIndex: "emailId",
       key: "emailId",
+      render: (text: any, record: any, index: number) => {
+        const previousData = tableDatas[index + 1]; 
+        const edited = record.emailId !== previousData?.emailId;
+        return <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>;
+      },
     },
     {
       title: "Contact No",
       dataIndex: "contact_No",
       key: "contact_No",
+      render: (text: any, record: any, index: number) => {
+        const previousData = tableDatas[index = 1];
+        const edited = record.contact_No !== previousData?.contact_No; 
+        return <span style={{ color: edited ? "red" : "inherit" }}>{text}</span>;
+      },
     },
   ];
   const handlePagination = (pagination: any) => {
