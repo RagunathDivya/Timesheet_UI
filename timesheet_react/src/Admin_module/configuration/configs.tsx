@@ -308,7 +308,7 @@ export function Config() {
       },
       {
         key: "hr_Name",
-        title: "First Name",
+        title: "Full Name",
         dataIndex: "hr_Name",
         align: "center",
       },

@@ -71,11 +71,14 @@ export function EditEmployee(props: any) {
         autoComplete="off"
         onFinish={onupdate}
         form={form}
+        style={{paddingTop:30}}
       >
         <div
           style={{
             display: "flex",
             flexDirection: "row",
+            justifyContent: "space-between",
+            marginRight: 300,
           }}
         >
           <Form.Item
@@ -84,10 +87,27 @@ export function EditEmployee(props: any) {
             rules={[
               { required: false, message: "Please input your Employee Id!" },
             ]}
-            hidden
+          >
+            <Input disabled />
+          </Form.Item>
+          <Form.Item
+            label="Employee Code"
+            name="employee_code"
+            rules={[
+              { required: true, message: "Please input your Employee Code!" },
+            ]}
           >
             <Input />
           </Form.Item>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginRight: 300,
+          }}
+        >
           <Form.Item
             label="First Name"
             name="first_Name"
@@ -106,63 +126,13 @@ export function EditEmployee(props: any) {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Employee Code"
-            name="employee_code"
-            rules={[
-              { required: true, message: "Please input your Employee Code!" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
         </div>
         <div
           style={{
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
-            marginRight: 450,
-          }}
-        >
-          <Form.Item
-            label="Reporting Manager1"
-            name="reporting_Manager1"
-            rules={[
-              {
-                required: true,
-                message: "Please input your Reporting Manager1!",
-              },
-            ]}
-          >
-            <Select style={{ width: 100 }}>
-              <Select.Option value="Manuj Kumar B">Manuj Kumar B</Select.Option>
-              <Select.Option value="Appusamy S">Appusamy S</Select.Option>
-              <Select.Option value="Rabik S">Rabik S</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
-            label="Reporting Manager2"
-            name="reportinng_Manager2"
-            rules={[
-              {
-                required: true,
-                message: "Please input your Reporting Manager2!",
-              },
-            ]}
-          >
-            <Select>
-              <Select.Option value="Sweta P">Sweta P</Select.Option>
-              <Select.Option value="Sadiq S">Sadiq S</Select.Option>
-              <Select.Option value="Anjana G">Anjana G</Select.Option>
-            </Select>
-          </Form.Item>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginRight: 75,
+            marginRight: 45,
           }}
         >
           <Form.Item
@@ -175,7 +145,7 @@ export function EditEmployee(props: any) {
               },
             ]}
           >
-            <Select style={{ width: 185 }}>
+            <Select style={{ width: 135 }}>
               {employeeTypes.map((employeeType) => (
                 <Select.Option value={employeeType.employee_Type}>
                   {employeeType.employee_Type}
@@ -190,12 +160,28 @@ export function EditEmployee(props: any) {
               { required: true, message: "Please input your Designation !" },
             ]}
           >
-            <Select style={{ width: 200 }}>
+            <Select style={{ width: 240 }}>
               {designations.map((designation) => (
                 <Select.Option value={designation.designation}>
                   {designation.designation}
                 </Select.Option>
               ))}
+            </Select>
+          </Form.Item>{" "}
+          <Form.Item
+            label="Reporting Manager"
+            name="reporting_Manager1"
+            rules={[
+              {
+                required: true,
+                message: "Please input your Reporting Manager1!",
+              },
+            ]}
+          >
+            <Select style={{ width: 155 }}>
+              <Select.Option value="Manuj Kumar B">Manuj Kumar B</Select.Option>
+              <Select.Option value="Appusamy S">Appusamy S</Select.Option>
+              <Select.Option value="Rabik S">Rabik S</Select.Option>
             </Select>
           </Form.Item>
         </div>
@@ -216,17 +202,9 @@ export function EditEmployee(props: any) {
           >
             <Input disabled />
           </Form.Item>
-          <Form.Item
-            name="end Date"
-            label="End Date"
-            rules={[{ required: false, message: "Please provide End Date!" }]}
-            hasFeedback
-          >
-            <DatePicker placeholder="Select Date" />
-          </Form.Item>
         </div>
 
-        <h1>Contact Info</h1>
+        <h4>Contact Info</h4>
         <div
           style={{
             display: "flex",

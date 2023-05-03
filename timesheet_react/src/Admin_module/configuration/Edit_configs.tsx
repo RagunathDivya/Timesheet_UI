@@ -31,8 +31,8 @@ export function EditClient(props: any) {
   return (
     <>
       <Form name="basic" form={form} onFinish={onFinishAdd} autoComplete="off">
-        <Form.Item label="Client ID" name="client_Id" hidden>
-          <Input />
+        <Form.Item label="Client ID" name="client_Id">
+          <Input disabled />
         </Form.Item>
         <Form.Item
           label="Client Name"
@@ -51,7 +51,7 @@ export function EditClient(props: any) {
   );
 }
 export function EditProject(props: any) {
-  const { rowData, clientData } = props;
+  const { rowData } = props;
   const [form] = Form.useForm();
   form.setFieldsValue(rowData[0]); // pass checked row values from props to fields
   const onFinishAdd = (values: any) => {
@@ -78,8 +78,8 @@ export function EditProject(props: any) {
   return (
     <>
       <Form name="basic" form={form} onFinish={onFinishAdd} autoComplete="off">
-        <Form.Item label="Project ID" name="project_Id" hidden>
-          <Input />
+        <Form.Item label="Project ID" name="project_Id">
+          <Input disabled />
         </Form.Item>
         <Form.Item
           label="Project code"
@@ -145,8 +145,8 @@ export function EditDesignation(props: any) {
   return (
     <>
       <Form name="basic" form={form} onFinish={onFinishAdd} autoComplete="off">
-        <Form.Item label="Designation ID" name="designation_Id" hidden>
-          <Input readOnly />
+        <Form.Item label="Designation ID" name="designation_Id">
+          <Input disabled />
         </Form.Item>
         <Form.Item
           label="Designation Name"
@@ -175,8 +175,8 @@ export function EditEmpType(props: any) {
   return (
     <>
       <Form name="basic" form={form} onFinish={onFinishAdd} autoComplete="off">
-        <Form.Item label="Employee Type ID" name="employee_Type_Id" hidden>
-          <Input readOnly />
+        <Form.Item label="Employee Type ID" name="employee_Type_Id">
+          <Input disabled />
         </Form.Item>{" "}
         <Form.Item
           label="Name"
@@ -204,24 +204,16 @@ export function EditHrInfo(props: any) {
   return (
     <>
       <Form name="basic" form={form} onFinish={onFinishAdd} autoComplete="off">
-        <Form.Item label="HR contact ID" name="hr_Contact_Id" hidden>
-          <Input readOnly />
+        <Form.Item label="HR contact ID" name="hr_Contact_Id">
+          <Input disabled />
         </Form.Item>
+
         <Form.Item
-          label="First Name"
-          name="first_Name"
-          rules={[
-            { required: true, message: "Please input Admin first Name!" },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Last Name"
-          name="last_Name"
+          label="Name"
+          name="hr_Name"
           rules={[{ required: true, message: "Please input Admin Last Name!" }]}
         >
-          <Input />
+          <Input readOnly />
         </Form.Item>
         <Form.Item
           label="Email"

@@ -148,15 +148,9 @@ export const Employee: React.FC = () => {
       align: "center",
     },
     {
-      title: "Reporting Manager1",
+      title: "Reporting Manager",
       dataIndex: "reporting_Manager1",
       key: "reporting_Manager1",
-      align: "center",
-    },
-    {
-      title: "Reporting Manager2",
-      dataIndex: "reportinng_Manager2",
-      key: "reportinng_Manager2",
       align: "center",
     },
     {

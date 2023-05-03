@@ -229,35 +229,27 @@ export function TS_Status() {
       align: "center" as AlignType,
     },
     {
-      title: "View Timesheet",
+      title: "Approved Image ",
       dataIndex: "employee_Id",
-      key: "view_timesheet",
+      key: "view_image",
       align: "center" as AlignType,
-      render: (employeeId: any) => {
+      render: (employeeId: any, record: any) => {
+        console.log(record);
         return (
-          <>
-            <Button
-              disabled={
-                employeeId === selectedRowKeys[0] && rowData.length === 1
-                  ? false
-                  : true
-              }
-              type="link"
-              onClick={() => {
-                handleViewTimesheet(employeeId);
-                showModal();
-              }}
-              style={{ fontWeight: 800 }}
-            >
-              View Timesheet
-            </Button>
-          </>
+          <Button
+            disabled={employeeId !== selectedRowKeys[0] || rowData.length !== 1}
+            type="link"
+            onClick={() => handleViewImage(record.imagePathUpload)}
+            style={{ fontWeight: 800 }}
+          >
+            Approved Image
+          </Button>
         );
       },
     },
 
     {
-      title: "View Image",
+      title: "View Timesheet",
       dataIndex: "employee_Id",
       key: "view_image",
       align: "center" as AlignType,
@@ -269,7 +261,7 @@ export function TS_Status() {
             onClick={() => handleViewImage(record.imagePathTimesheet)}
             style={{ fontWeight: 800 }}
           >
-            View Image
+            View Timesheet
           </Button>
         );
       },

@@ -90,11 +90,14 @@ export function AddEmployee() {
           initialValues={{ remember: true }}
           autoComplete="off"
           onFinish={onFinish}
+          style={{marginTop:30}}
         >
           <div
             style={{
               display: "flex",
               flexDirection: "row",
+              justifyContent: "space-between",
+              // marginRight: 300,
             }}
           >
             <Form.Item
@@ -130,7 +133,7 @@ export function AddEmployee() {
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
-              marginRight: 290,
+              //marginRight: 45,
             }}
           >
             <Form.Item
@@ -143,7 +146,7 @@ export function AddEmployee() {
                 },
               ]}
             >
-              <Select style={{ width: 185 }}>
+              <Select style={{ width: 135 }}>
                 {employeeTypes.map((employeeType) => (
                   <Select.Option
                     key={employeeType.employee_Type_Id}
@@ -161,7 +164,7 @@ export function AddEmployee() {
                 { required: true, message: "Please input your Designation !" },
               ]}
             >
-              <Select style={{ width: 200 }}>
+              <Select style={{ width: 240 }}>
                 {designations.map((designation) => (
                   <Select.Option
                     key={designation.designation_Id}
@@ -172,17 +175,8 @@ export function AddEmployee() {
                 ))}
               </Select>
             </Form.Item>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginRight: 230,
-            }}
-          >
             <Form.Item
-              label="Reporting Manager1"
+              label="Reporting Manager"
               name="reporting_Manager1"
               rules={[
                 {
@@ -191,25 +185,7 @@ export function AddEmployee() {
                 },
               ]}
             >
-              <Select style={{ width: 180 }}>
-                <Select.Option value="Manuj Kumar B">
-                  Manuj Kumar B
-                </Select.Option>
-                <Select.Option value="Appusamy S">Appusamy S</Select.Option>
-                <Select.Option value="Rabik S">Rabik S</Select.Option>
-              </Select>
-            </Form.Item>
-            <Form.Item
-              label="Reporting Manager2"
-              name="reportinng_Manager2"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input Reporting Manager2!",
-                },
-              ]}
-            >
-              <Select style={{ width: 200 }}>
+              <Select style={{ width: 155 }}>
                 <Select.Option value="Manuj Kumar B">
                   Manuj Kumar B
                 </Select.Option>
@@ -218,14 +194,7 @@ export function AddEmployee() {
               </Select>
             </Form.Item>
           </div>
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: "Please set a password!" }]}
-            style={{ width: 300 }}
-          >
-            <Input.Password />
-          </Form.Item>
+
           <div
             style={{
               display: "flex",
@@ -244,16 +213,8 @@ export function AddEmployee() {
             >
               <DatePicker placeholder="Select Date" />
             </Form.Item>
-            <Form.Item
-              name="end_Date"
-              label="End Date"
-              rules={[{ required: false, message: "Please provide End Date!" }]}
-              hasFeedback
-            >
-              <DatePicker placeholder="Select Date" />
-            </Form.Item>
           </div>
-          <h1>Contact Info</h1>
+          <h4>Contact Info</h4>
           <div
             style={{
               display: "flex",

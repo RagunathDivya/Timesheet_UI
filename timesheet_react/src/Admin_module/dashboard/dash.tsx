@@ -145,19 +145,6 @@ export function Dashboards() {
             </h2>
             {Object.values(progressData).some((value) => value > 0) ? (
               <>
-                {/* <VictoryPie
-                  data={[
-                    { x: "Pending", y: progressData.pending },
-                    { x: "Approved", y: progressData.approved },
-                    { x: "Rejected", y: progressData.rejected },
-                  ]}
-                  colorScale={["#0a417a", "#72b4eb", "#2085ec"]}
-                  innerRadius={50}
-                  labelComponent={<CustomLabel />}
-                  style={{
-                    data: { stroke: "white", strokeWidth: 2 },
-                  }}
-                /> */}
                 <VictoryBar
                   data={[
                     { x: "Pending", y: progressData.pending },
@@ -171,8 +158,8 @@ export function Dashboards() {
                   labels={({ datum }) => `${datum.x}\n${datum.y}`}
                   barWidth={40}
                   animate={{
-                    duration: 2000,
-                    easing: "bounce",
+                    duration: 5000,
+                    easing:"bounce",
                   }}
                 />
               </>
