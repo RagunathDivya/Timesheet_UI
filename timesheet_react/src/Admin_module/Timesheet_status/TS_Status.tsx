@@ -24,7 +24,7 @@ export function TS_Status() {
   const [page, setPage]: any = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [rowData, setRowData] = useState([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectedRowKeys, setSelectedRowKeys1] = useState([]);
   const [leavesTaken, setLeavesTaken] = useState(0);
   const [totalHours, setTotalHours] = useState(0);
   const [daysWorked, setDaysWorked] = useState(0);
@@ -35,7 +35,7 @@ export function TS_Status() {
 
   const rowSelection = {
     onChange: (selectedRowKeys: any, selectedRows: any) => {
-      setSelectedRowKeys(selectedRowKeys);
+      setSelectedRowKeys1(selectedRowKeys);
       setRowData(selectedRows);
       if (selectedRowKeys[0]) {
         setLeavesTaken(selectedRows[0].noOfLeaveTaken);
@@ -232,22 +232,6 @@ export function TS_Status() {
       title: "View Timesheet",
       dataIndex: "employee_Id",
       key: "view_timesheet",
-      // align: "center" as AlignType,
-      // render: (employeeId: any) => {
-      //   return (
-      //     <>
-      //       <Button
-      //         disabled={
-      //           employeeId === selectedRowKeys[0] && rowData.length === 1
-      //             ? false
-      //             : true
-      //         }
-      //         type="link"
-      //         onClick={() => {
-      //           handleViewTimesheet(employeeId);
-      //           showModal();
-      //         }}
-      //         style={{ fontWeight: 800 }}
       align: "center" as AlignType,
       render: (employeeId: any, record: any) => {
         return (
@@ -257,11 +241,11 @@ export function TS_Status() {
             onClick={() => handleViewImage(record.imagePathTimesheet)}
             style={{ fontWeight: 800 }}
           >
-              View Timesheet
-            </Button>
+            View Timesheet
+          </Button>
         );
+      },
     },
-  },
 
     {
       title: "View Image",
@@ -809,6 +793,8 @@ export function TS_Status() {
             <Button
               onClick={() => {
                 setCurrentTable("defaults");
+                setSelectedRowKeys1([]);
+                setRowData([]);
               }}
               style={{
                 background:
@@ -831,6 +817,8 @@ export function TS_Status() {
             <Button
               onClick={() => {
                 setCurrentTable("selectedYear");
+                setSelectedRowKeys1([]);
+                setRowData([]);
               }}
               style={{
                 background:
