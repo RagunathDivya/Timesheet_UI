@@ -11,7 +11,7 @@ import { Select, Input, Button, message, Layout } from "antd";
 import Duration from "./Duration";
 import Status from "./Status";
 import Project from "./Project";
-import "./ETimesheet.css";
+// import "./ETimesheet.css";
 
 const setMessage = (statusCode: number, responseMessage: string) => {
   if (statusCode == 200) {
@@ -425,36 +425,19 @@ function AddTimesheet() {
   const downloadXL1 = async () => {
     await axios({
       url: `/api/Employee/ExportExcel?id=${employee_Id}&monthid=${
-        month + 1
+        month + 2
       }&year=${year}&project_id=${excelNumber}`,
-      //method: "GET",
+      method: "GET",
       responseType: "blob", // important
     }).then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "Timeheet.xlsx"); //or any other extension
+      // link.setAttribute("download", "Timeheet.xlsx"); //or any other extension
       document.body.appendChild(link);
       link.click();
-      link.remove();
     });
   };
-  // const handleYes = async () => {
-  //   try {
-  //     const url = `/api/Admin/ExportTimesheetByMonthToExcel?year=${year}&Fiscial_Year_Id=${month}`;
-  //     const response = await axios.get(url, {
-  //       responseType: "blob", // important: we're expecting a binary response
-  //     });
-  //     const downloadUrl = window.URL.createObjectURL(new Blob([response.data]));
-  //     const link = document.createElement("a");
-  //     link.href = downloadUrl;
-  //     link.setAttribute("download", "filename.xlsx");
-  //     document.body.appendChild(link);
-  //     link.click();
-  //     link.remove();
-  //     setModalVisible(false);
-  //   } catch (error) {}
-  // };
 
   interface TimesheetSummary {
     project_Id: number;
@@ -803,6 +786,17 @@ function AddTimesheet() {
                   Submit
                 </Button>
               </Form>
+            </div>
+            <div
+              style={{ fontFamily: "Ariel", textAlign: "center", fontSize: 20 }}
+            >
+              <span style={{ color: "green", fontSize: 20 }}>(P=Present</span>,{" "}
+              <span style={{ color: "red", fontSize: 20 }}>L=Leave</span>,{" "}
+              <span style={{ color: "blue", fontSize: 20 }}>
+                WFH=Work From Home
+              </span>
+              ,{" "}
+              <span style={{ color: "purple", fontSize: 20 }}>H=Holiday)</span>
             </div>
           </React.Fragment>
         </Card>
