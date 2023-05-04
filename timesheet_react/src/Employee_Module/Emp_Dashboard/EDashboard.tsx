@@ -85,43 +85,21 @@ const EDashboard = () => {
         <br />
         <br />
         <br />
-        <div>
+        
         <div>
             <FrownOutlined
-              // <CheckOutlined
               style={{
                 marginTop: -90,
                 marginLeft: 598,
                 fontSize: 70,
                 marginBottom: 6,
                 color: "skyblue",
-                //position: "fixed",
               }}
             />
           </div>
-          {/* <CheckOutlined
-             style={{
-               marginTop: -90,
-               marginLeft: 408,
-               fontSize: 90,
-               color: "green",
-               marginBottom: -6,
-               //position: "fixed",
-             }}
-           /> */}
-        </div>
         <div style={{ marginLeft: 350 }}>
           <Space direction="horizontal">
-            <Input
-              //  style={{
-              //    backgroundColor: "green",
-              //    border: "2px solid black",
-              //    height: "50px",
-              //    textAlign: "center",
-              //  }}
-              value="Approved"
-              readOnly
-            />
+            <Input value="Approved" readOnly />
             
             <Input
                 style={{
@@ -138,8 +116,8 @@ const EDashboard = () => {
         </div>
       </div>
     );
-  } else {
-    if (data.status == "Approved") {
+  } else if (data.status == "Approved") {
+     
       return (
         <div style={{ marginLeft: -140 }}>
           <div style={{ marginTop: 130 }}>
@@ -168,7 +146,6 @@ const EDashboard = () => {
                 fontSize: 90,
                 color: "green",
                 marginBottom: -6,
-                //position: "fixed",
               }}
             />
           </div>
@@ -219,7 +196,6 @@ const EDashboard = () => {
                 fontSize: 60,
                 marginBottom: 3,
                 color: "red",
-                //position: "fixed",
               }}
             />
           </div>
@@ -265,14 +241,12 @@ const EDashboard = () => {
           <br />
           <div>
             <FrownOutlined
-              // <CheckOutlined
               style={{
                 marginTop: -90,
                 marginLeft: 598,
                 fontSize: 70,
                 marginBottom: 6,
                 color: "skyblue",
-                //position: "fixed",
               }}
             />
           </div>
@@ -294,57 +268,6 @@ const EDashboard = () => {
           </div>
         </div>
       );
-    // } else if (data.status == undefined) {
-    //   return (
-    //     <div style={{ marginLeft: -140 }}>
-    //       <div style={{ marginTop: 130 }}>
-    //         {/* <h1 id="xy" style={{ color: 'lightskyblue', marginLeft: -65 }}><center>Timesheet {data.month} {data.year} status</center></h1> */}
-    //         <h1
-    //           id="xy"
-    //           style={{
-    //             color: "blue",
-    //             fontSize: 40,
-    //             marginLeft: 135,
-    //             textShadow: "2px 2px pink",
-    //           }}
-    //         >
-    //           <center>
-    //           Timesheet {`${month_name[month]}`} - {year} status
-    //           </center>
-    //         </h1>
-    //       </div>
-    //       <br />
-    //       <br />
-    //       <br />
-    //       <div>
-    //         <FrownOutlined
-    //           style={{
-    //             marginTop: -90,
-    //             marginLeft: 588,
-    //             fontSize: 90,
-    //             color: "skyblue",
-    //             //position: "fixed",
-    //           }}
-    //         />
-    //       </div>
-    //       <div style={{ marginLeft: 350 }}>
-    //         <Space direction="horizontal">
-    //           <Input value="Approved" readOnly />
-    //           <Input
-    //             style={{
-    //               backgroundColor: "skyblue",
-    //               border: "2px solid black",
-    //               height: "50px",
-    //               textAlign: "center",
-    //             }}
-    //             value="Pending"
-    //             readOnly
-    //           />
-    //           <Input value="Rejected" readOnly />
-    //         </Space>
-    //       </div>
-    //     </div>
-    //   );
     } else {
       return (
         <div style={{ marginLeft: -140 }}>
@@ -370,10 +293,10 @@ const EDashboard = () => {
             <FrownOutlined
               style={{
                 marginTop: -90,
-                marginLeft: 588,
-                fontSize: 90,
+                marginLeft: 598,
+                fontSize: 70,
+                marginBottom: 6,
                 color: "skyblue",
-                //position: "fixed",
               }}
             />
           </div>
@@ -381,12 +304,12 @@ const EDashboard = () => {
             <Space direction="horizontal">
               <Input value="Approved" readOnly />
               <Input
-                // style={{
-                //   backgroundColor: "skyblue",
-                //   border: "2px solid black",
-                //   height: "50px",
-                //   textAlign: "center",
-                // }}
+                style={{
+                  backgroundColor: "skyblue",
+                  border: "2px solid black",
+                  height: "50px",
+                  textAlign: "center",
+                }}
                 value="Pending"
                 readOnly
               />
@@ -396,7 +319,6 @@ const EDashboard = () => {
         </div>
       );
     }
-  }
-};
+  };
 
 export default EDashboard;
