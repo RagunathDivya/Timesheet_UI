@@ -472,7 +472,7 @@ function AddTimesheet() {
       };
       // Call your API with the form data
       await axios.put("/api/Employee/ImageUpdate", dataToSave);
-      message.success("Row added successfully");
+      message.success("Image added successfully");
     } catch (error: any) {
       message.error(error.message);
     }

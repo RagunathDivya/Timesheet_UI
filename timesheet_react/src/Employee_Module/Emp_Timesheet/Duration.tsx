@@ -56,7 +56,7 @@ function Duration(props: Props) {
         evt.key === "e" && evt.preventDefault();
         evt.key === "-" && evt.preventDefault();
       }}
-      max={"24"}
+      max={"8"}
       min={0}
       disabled={
         props.row.status.toLowerCase() === "leave" ||
