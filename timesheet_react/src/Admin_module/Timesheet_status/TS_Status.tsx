@@ -311,104 +311,104 @@ export function TS_Status() {
   }, []);
 
   const MonthData = async () => {
-    const allMonths = [
-      {
-        monthID: 1,
-        month: "January",
-        timeSheet_Count: 0,
-        pending: 0,
-        rejected: 0,
-        approved: 0,
-      },
-      {
-        monthID: 2,
-        month: "February",
-        timeSheet_Count: 0,
-        pending: 0,
-        rejected: 0,
-        approved: 0,
-      },
-      {
-        monthID: 3,
-        month: "March",
-        timeSheet_Count: 0,
-        pending: 0,
-        rejected: 0,
-        approved: 0,
-      },
-      {
-        monthID: 4,
-        month: "April",
-        timeSheet_Count: 0,
-        pending: 0,
-        rejected: 0,
-        approved: 0,
-      },
-      {
-        monthID: 5,
-        month: "May",
-        timeSheet_Count: 0,
-        pending: 0,
-        rejected: 0,
-        approved: 0,
-      },
-      {
-        monthID: 6,
-        month: "June",
-        timeSheet_Count: 0,
-        pending: 0,
-        rejected: 0,
-        approved: 0,
-      },
-      {
-        monthID: 7,
-        month: "July",
-        timeSheet_Count: 0,
-        pending: 0,
-        rejected: 0,
-        approved: 0,
-      },
-      {
-        monthID: 8,
-        month: "August",
-        timeSheet_Count: 0,
-        pending: 0,
-        rejected: 0,
-        approved: 0,
-      },
-      {
-        monthID: 9,
-        month: "September",
-        timeSheet_Count: 0,
-        pending: 0,
-        rejected: 0,
-        approved: 0,
-      },
-      {
-        monthID: 10,
-        month: "October",
-        timeSheet_Count: 0,
-        pending: 0,
-        rejected: 0,
-        approved: 0,
-      },
-      {
-        monthID: 11,
-        month: "November",
-        timeSheet_Count: 0,
-        pending: 0,
-        rejected: 0,
-        approved: 0,
-      },
-      {
-        monthID: 12,
-        month: "December",
-        timeSheet_Count: 0,
-        pending: 0,
-        rejected: 0,
-        approved: 0,
-      },
-    ];
+    // const allMonths = [
+    //   {
+    //     monthID: 1,
+    //     month: "January",
+    //     timeSheet_Count: 0,
+    //     pending: 0,
+    //     rejected: 0,
+    //     approved: 0,
+    //   },
+    //   {
+    //     monthID: 2,
+    //     month: "February",
+    //     timeSheet_Count: 0,
+    //     pending: 0,
+    //     rejected: 0,
+    //     approved: 0,
+    //   },
+    //   {
+    //     monthID: 3,
+    //     month: "March",
+    //     timeSheet_Count: 0,
+    //     pending: 0,
+    //     rejected: 0,
+    //     approved: 0,
+    //   },
+    //   {
+    //     monthID: 4,
+    //     month: "April",
+    //     timeSheet_Count: 0,
+    //     pending: 0,
+    //     rejected: 0,
+    //     approved: 0,
+    //   },
+    //   {
+    //     monthID: 5,
+    //     month: "May",
+    //     timeSheet_Count: 0,
+    //     pending: 0,
+    //     rejected: 0,
+    //     approved: 0,
+    //   },
+    //   {
+    //     monthID: 6,
+    //     month: "June",
+    //     timeSheet_Count: 0,
+    //     pending: 0,
+    //     rejected: 0,
+    //     approved: 0,
+    //   },
+    //   {
+    //     monthID: 7,
+    //     month: "July",
+    //     timeSheet_Count: 0,
+    //     pending: 0,
+    //     rejected: 0,
+    //     approved: 0,
+    //   },
+    //   {
+    //     monthID: 8,
+    //     month: "August",
+    //     timeSheet_Count: 0,
+    //     pending: 0,
+    //     rejected: 0,
+    //     approved: 0,
+    //   },
+    //   {
+    //     monthID: 9,
+    //     month: "September",
+    //     timeSheet_Count: 0,
+    //     pending: 0,
+    //     rejected: 0,
+    //     approved: 0,
+    //   },
+    //   {
+    //     monthID: 10,
+    //     month: "October",
+    //     timeSheet_Count: 0,
+    //     pending: 0,
+    //     rejected: 0,
+    //     approved: 0,
+    //   },
+    //   {
+    //     monthID: 11,
+    //     month: "November",
+    //     timeSheet_Count: 0,
+    //     pending: 0,
+    //     rejected: 0,
+    //     approved: 0,
+    //   },
+    //   {
+    //     monthID: 12,
+    //     month: "December",
+    //     timeSheet_Count: 0,
+    //     pending: 0,
+    //     rejected: 0,
+    //     approved: 0,
+    //   },
+    // ];
 
     axios({
       method: "get",
@@ -420,13 +420,13 @@ export function TS_Status() {
       url: `/api/Admin/GetTimeSheetStatusStatusByYear?year=${year}`,
     })
       .then((r: any) => {
-        const mergedData = allMonths.map((month) => {
-          const matchingMonth = r.data.find(
-            (m: any) => m.month === month.month
-          );
-          return matchingMonth ? matchingMonth : month;
-        });
-        setMonthData(mergedData);
+        // const mergedData = allMonths.map((month) => {
+        //   const matchingMonth = r.data.find(
+        //     (m: any) => m.month === month.month
+        //   );
+        //   return matchingMonth ? matchingMonth : month;
+        // });
+        setMonthData(r.data);
       })
       .catch((error: any) => {
         // message.error(error.message);

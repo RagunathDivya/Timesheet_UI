@@ -3,7 +3,7 @@ import { Button, Form, Input, Modal, message } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ForgotPassword } from "./ForgotPasw";
+import { ChangePassword, ForgotPassword } from "./ForgotPasw";
 
 const LoginPage: React.FC = () => {
   const [AddProjectForm] = Form.useForm();
@@ -82,8 +82,18 @@ const LoginPage: React.FC = () => {
     setShowForgotPasswordModal(true);
   };
 
-  const handleCancel = () => {
+  const handleFPCancel = () => {
     setShowForgotPasswordModal(false);
+  };
+
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+
+  const handleChangePasswordClick = () => {
+    setShowChangePasswordModal(true);
+  };
+
+  const handleCPCancel = () => {
+    setShowChangePasswordModal(false);
   };
   return (
     <div
@@ -182,28 +192,52 @@ const LoginPage: React.FC = () => {
                 Login
               </Button>
             </Form.Item>
-            <Form.Item>
-              <Button
-                type="link"
-                style={{
-                  fontWeight: 700,
-                  textDecoration: "underline",
-                  display: "flex",
-                  marginLeft: 65,
-                }}
-                onClick={handleForgotPasswordClick}
-              >
-                Forgot Password
-              </Button>
-            </Form.Item>
+            <div style={{display:"flex", justifyContent:"space-between"}}>
+              <Form.Item>
+                <Button
+                  type="link"
+                  style={{
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    display: "flex",
+                    //marginLeft: 65,
+                  }}
+                  onClick={handleForgotPasswordClick}
+                >
+                  Forgot Password
+                </Button>
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  type="link"
+                  style={{
+                    fontWeight: 700,
+                    textDecoration: "underline",
+                    display: "flex",
+                   // marginLeft: 65,
+                  }}
+                  onClick={handleChangePasswordClick}
+                >
+                  Change Password
+                </Button>
+              </Form.Item>
+            </div>
           </Form>
           <Modal
             title="Forgot Password"
             open={showForgotPasswordModal}
-            onCancel={handleCancel}
+            onCancel={handleFPCancel}
             footer={null}
           >
             <ForgotPassword />
+          </Modal>
+          <Modal
+            title="Change Password"
+            open={showChangePasswordModal}
+            onCancel={handleCPCancel}
+            footer={null}
+          >
+            <ChangePassword />
           </Modal>
         </div>
       </div>
