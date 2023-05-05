@@ -51,7 +51,7 @@ export function EuserPro() {
       <Card
         style={{
           fontWeight: 500,
-          width: 400,
+          width: "50%",
           background:
             "-webkit-linear-gradient(45deg,rgba(9, 0, 159, 0.4), rgba(0, 255, 149, 0.4) 55%)",
           boxShadow: "0px 4px 6px 0px rgba(0, 0, 0, 0.9)",
