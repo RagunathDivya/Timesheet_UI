@@ -229,7 +229,7 @@ export function TS_Status() {
       align: "center" as AlignType,
     },
     {
-      title: "View Timesheet",
+      title: " Timesheet",
       dataIndex: "employee_Id",
       key: "view_timesheet",
       align: "center" as AlignType,
@@ -241,14 +241,14 @@ export function TS_Status() {
             onClick={() => handleViewImage(record.imagePathTimesheet)}
             style={{ fontWeight: 800 }}
           >
-            View Timesheet
+            View image
           </Button>
         );
       },
     },
 
     {
-      title: "View Image",
+      title: "Approved Mail ",
       dataIndex: "employee_Id",
       key: "view_image",
       align: "center" as AlignType,
@@ -260,7 +260,7 @@ export function TS_Status() {
             onClick={() => handleViewImage(record.imagePathUpload)}
             style={{ fontWeight: 800 }}
           >
-            View Image
+            View image
           </Button>
         );
       },
