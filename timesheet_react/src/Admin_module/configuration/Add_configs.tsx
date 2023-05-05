@@ -141,6 +141,7 @@ export function AddProject(props: any) {
         open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
+        style={{marginTop: '7%'}}
       >
         <Form
           labelCol={{ span: 8 }}
