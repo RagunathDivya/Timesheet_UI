@@ -422,34 +422,17 @@ function AddTimesheet() {
     setTotalDuration(Number(totalHrs));
   };
 
-  // const downloadXL1 = async () => {
-  //   await axios({
-  //     url: `/api/Employee/ExportExcel?id=${employee_Id}&monthid=${
-  //       month + 2
-  //     }&year=${year}&project_id=${excelNumber}`,
-  //     method: "GET",
-  //     responseType: "blob", // important
-  //   }).then((response) => {
-  //     const url = window.URL.createObjectURL(new Blob([response.data]));
-  //     const link = document.createElement("a");
-  //     link.href = url;
-  //     // link.setAttribute("download", "Timeheet.xlsx"); //or any other extension
-  //     document.body.appendChild(link);
-  //     link.click();
-  //   });
-  // };
   const downloadXL1 = async () => {
     await axios({
       url: `/api/Employee/ExportExcel?id=${employee_Id}&monthid=${
         month + 1
       }&year=${year}&project_id=${excelNumber}`,
-      //method: "GET",
-      responseType: "blob", // important
+      responseType: "blob",
     }).then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "Timeheet.xlsx"); //or any other extension
+      link.setAttribute("download", "Timeheet.xlsx");
       document.body.appendChild(link);
       link.click();
       link.remove();

@@ -3,7 +3,8 @@ import { Button, Form, Input, Modal, message } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChangePassword, ForgotPassword } from "./ForgotPasw";
+import { ForgotPassword } from "./ForgotPasw";
+import joy from "../Main_module/bg.png";
 
 const LoginPage: React.FC = () => {
   const [AddProjectForm] = Form.useForm();
@@ -86,15 +87,6 @@ const LoginPage: React.FC = () => {
     setShowForgotPasswordModal(false);
   };
 
-  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
-
-  const handleChangePasswordClick = () => {
-    setShowChangePasswordModal(true);
-  };
-
-  const handleCPCancel = () => {
-    setShowChangePasswordModal(false);
-  };
   return (
     <div
       style={{
@@ -106,16 +98,29 @@ const LoginPage: React.FC = () => {
         minHeight: "100vh",
         fontFamily: "'Jost', sans-serif",
         background: "linear-gradient(to bottom, #0f0c29, #302b63, #24243e)",
+        // backgroundImage: `url(${joy})`,
+        // backgroundSize: "cover",
+        // backgroundRepeat: "no-repeat",
+         position: "fixed",
+        // height: "500px",
+        // width: "100%",
       }}
     >
+      <img
+        src={joy}
+        alt="img"
+        style={{ height: 700, width: 600 }}
+      ></img>
       <div
         style={{
-          width: "350px",
+          width: "450px",
           height: "500px",
           background: "linear-gradient(to bottom, #0f0c29, #302b63, #24243e)",
           overflow: "hidden",
           borderRadius: "10px",
           boxShadow: "5px 20px 50px #000",
+          marginLeft: 120,
+         marginBottom: 50,
         }}
       >
         <div>
@@ -192,7 +197,13 @@ const LoginPage: React.FC = () => {
                 Login
               </Button>
             </Form.Item>
-            <div style={{display:"flex", justifyContent:"space-between"}}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginLeft: 65,
+              }}
+            >
               <Form.Item>
                 <Button
                   type="link"
@@ -207,20 +218,7 @@ const LoginPage: React.FC = () => {
                   Forgot Password
                 </Button>
               </Form.Item>
-              <Form.Item>
-                <Button
-                  type="link"
-                  style={{
-                    fontWeight: 700,
-                    textDecoration: "underline",
-                    display: "flex",
-                   // marginLeft: 65,
-                  }}
-                  onClick={handleChangePasswordClick}
-                >
-                  Change Password
-                </Button>
-              </Form.Item>
+              <Form.Item></Form.Item>
             </div>
           </Form>
           <Modal
@@ -230,14 +228,6 @@ const LoginPage: React.FC = () => {
             footer={null}
           >
             <ForgotPassword />
-          </Modal>
-          <Modal
-            title="Change Password"
-            open={showChangePasswordModal}
-            onCancel={handleCPCancel}
-            footer={null}
-          >
-            <ChangePassword />
           </Modal>
         </div>
       </div>

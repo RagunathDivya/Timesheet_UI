@@ -1,15 +1,23 @@
-import { useEffect, useState } from "react";
-import { Avatar, Dropdown, Layout, Menu } from "antd";
+import { useState } from "react";
+import {
+  Avatar,
+  Button,
+  Dropdown,
+  Form,
+  Input,
+  Layout,
+  Menu,
+  Modal,
+  message,
+} from "antd";
 import {
   DesktopOutlined,
-  SettingFilled,
   FieldTimeOutlined,
   UserOutlined,
   ProfileOutlined,
   PhoneOutlined,
+  LockOutlined,
 } from "@ant-design/icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faIdCard, faPeopleGroup } from "@fortawesome/free-solid-svg-icons";
 import {
   BrowserRouter as Router,
   Route,
@@ -18,8 +26,8 @@ import {
   useNavigate,
 } from "react-router-dom";
 import joy from "../Main_module/joy.png";
-import EDashboard from "./Emp_Dashboard/EDashboard";
 import AddTimesheet from "./Emp_Timesheet/ETimesheet";
+import axios from "axios";
 
 const { Header, Content, Sider } = Layout;
 
@@ -38,13 +46,117 @@ export function EmpTimesheet() {
   function handleLogout() {
     window.history.replaceState(null, "", "/");
     navigate("/", { replace: true });
-    localStorage.removeItem("token");
+    localStorage.clear();
+  }
+
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+  const handleChangePasswordClick = () => {
+    setShowChangePasswordModal(true);
+  };
+
+  const handleCPCancel = () => {
+    setShowChangePasswordModal(false);
+  };
+  const mailId = localStorage.getItem("mailId");
+  function ChangePassword() {
+    const onFinish = (values: any) => {
+      axios({
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        },
+        url: "/api/Login/Change-password",
+        data: values,
+      })
+        .then((response) => {
+          message.success("Password updated successfully");
+        })
+        .catch((error) => {
+          message.error(error.response.data);
+        });
+    };
+
+    return (
+      <>
+        <Form onFinish={onFinish} initialValues={{ email: mailId || "" }}>
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Please input your email!",
+              },
+              {
+                type: "email",
+                message: "Please enter a valid email address!",
+              },
+            ]}
+          >
+            <Input prefix={<UserOutlined />} placeholder="Email" />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please input old password!",
+              },
+            ]}
+          >
+            <Input.Password
+              prefix={<LockOutlined />}
+              placeholder="Old password"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="newPassword"
+            rules={[
+              {
+                required: true,
+                message: "Please input New password!",
+              },
+            ]}
+          >
+            <Input.Password
+              prefix={<LockOutlined />}
+              placeholder="New password"
+            />
+          </Form.Item>
+          <Form.Item
+            name="confrimNewPassword"
+            rules={[
+              {
+                required: true,
+                message: "Please re-enter your new password!",
+              },
+            ]}
+          >
+            <Input.Password
+              prefix={<LockOutlined />}
+              placeholder="Confirm new password"
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Update password
+            </Button>
+          </Form.Item>
+        </Form>
+      </>
+    );
   }
   function UserDetails() {
     const userMenu = (
       <Menu>
         <Menu.Item key="logout" onClick={handleLogout}>
           Logout
+        </Menu.Item>
+        <Menu.Item key="logout" onClick={handleChangePasswordClick}>
+          Change Password
         </Menu.Item>
       </Menu>
     );
@@ -143,13 +255,21 @@ export function EmpTimesheet() {
               height: "calc(100vh )",
               overflow: "scroll",
               padding: "0% 3% 30% 2% ",
-              paddingLeft:50,
+              paddingLeft: 50,
               background:
                 "-webkit-linear-gradient(45deg,rgba(255, 192, 203, 0.7), rgba(135, 206, 235, 0.4) 100%)",
             }}
           >
             <AddTimesheet />
           </Content>
+          <Modal
+            title="Change Password"
+            open={showChangePasswordModal}
+            onCancel={handleCPCancel}
+            footer={null}
+          >
+            <ChangePassword />
+          </Modal>
         </Layout>
       </Layout>
     </>
