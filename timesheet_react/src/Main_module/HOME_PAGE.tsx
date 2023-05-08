@@ -14,7 +14,6 @@ import { AdminDashboard } from "../Admin_module/dash_layout";
 import { Configuration } from "../Admin_module/Config_layout";
 import { EmployeeA } from "../Admin_module/Emp_layout";
 import LoginPage from "./LOGIN";
-import { ForgotPassword } from "./ForgotPasw";
 import { UserProfile } from "../Admin_module/User_prof_layout";
 import { TimesheetStatus } from "../Admin_module/TS_stats_Layout";
 import { EmpDashboard } from "../Employee_Module/EmpDash_layout";
@@ -58,8 +57,6 @@ const Home = () => {
               )
             }
           />
-          <Route path="/forgotpassword" element={<ForgotPassword />} />
-
           <Route
             path="/employee"
             element={

@@ -117,7 +117,17 @@ export function TimeSheetSummary() {
             rules={[
               {
                 required: true,
-                message: "Please input New password!",
+                message: "Please enter a new password",
+              },
+              {
+                min: 8,
+                message: "Password must be at least 8 characters long",
+              },
+              {
+                pattern:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])[A-Za-z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/,
+                message:
+                  "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
               },
             ]}
           >
@@ -128,11 +138,21 @@ export function TimeSheetSummary() {
           </Form.Item>
           <Form.Item
             name="confrimNewPassword"
+            dependencies={["newPassword"]}
             rules={[
-              {
-                required: true,
-                message: "Please re-enter your new password!",
-              },
+              { required: true, message: "Please re-enter your new password!" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("newPassword") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "The two passwords that you entered do not match."
+                    )
+                  );
+                },
+              }),
             ]}
           >
             <Input.Password

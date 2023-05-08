@@ -11,20 +11,6 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const [token, settoken] = useState("");
 
-  const setMessage = (statusCode: any, responseMessage: any) => {
-    if (statusCode == 200) {
-      message.success(responseMessage, 5);
-    } else if (statusCode == 404) {
-      message.error("You are not Registered");
-    } else if (statusCode == 400) {
-      message.error("Invalid password", 5);
-    } else if (statusCode == 401) {
-      message.error("You are not Registered", 5);
-    } else {
-      message.error(responseMessage);
-    }
-  };
-
   const onFinish = (values: any) => {
     axios({
       method: "post",
@@ -41,8 +27,16 @@ const LoginPage: React.FC = () => {
         localStorage.setItem("Employee_Id", r.data.employee_Id);
         if (r.data.role_Id === 1) {
           navigate("/admin");
+          Modal.success({
+            title: "Welcome",
+            content: "Login successfull",
+          });
         } else if (r.data.role_Id === 2) {
           navigate("/employee");
+          Modal.success({
+            title: "Welcome",
+            content: "Login successfull",
+          });
         } else {
           message.error("You are not a registered user");
           navigate("/");
@@ -64,15 +58,13 @@ const LoginPage: React.FC = () => {
             console.log(response.data[0].official_Email);
             const employeeEmail = response.data[0].official_Email;
             localStorage.setItem("mailId", employeeEmail);
-            console.log(employeeId);
-            console.log(employeeEmail);
           })
           .catch((error: any) => {
             message.error(error.message);
           });
       })
       .catch((error: any) => {
-        setMessage(error.response.status, error.response.message);
+        message.error(error.response.data);
         AddProjectForm.resetFields();
       });
   };
@@ -113,13 +105,14 @@ const LoginPage: React.FC = () => {
         content: "Your password has been reset successfully",
       });
       handleFPCancel();
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      message.error(error.response.data);
       Modal.error({
         title: "Error",
         content:
-          "An error occurred while resetting your password. Please try again later",
+          "An error occurred while resetting your password. Please try again",
       });
+      handleFPCancel();
     }
   };
 
@@ -261,50 +254,114 @@ const LoginPage: React.FC = () => {
               <Form.Item></Form.Item>
             </div>
           </Form>
-          <Modal
-            title="Forgot Password"
-            open={showForgotPasswordModal}
-            onCancel={handleFPCancel}
-            footer={[
-              <Button key="cancel" onClick={handleFPCancel}>
-                Cancel
-              </Button>,
-              otpSent ? (
-                <Button
-                  key="set-password"
-                  type="primary"
-                  onClick={handleSetNewPassword}
-                >
-                  Set New Password
-                </Button>
-              ) : (
-                <Button key="get-otp" type="primary" onClick={handleGetOTP}>
-                  Get OTP
-                </Button>
-              ),
-            ]}
-          >
-            {otpSent ? (
-              <>
-                <Form.Item label="OTP">
-                  <Input value={otp} onChange={(e) => setOtp(e.target.value)} />
-                </Form.Item>
-                <Form.Item label="New Password">
-                  <Input.Password
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                  />
-                </Form.Item>
-              </>
-            ) : (
-              <Form.Item label="Email">
-                <Input
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Form.Item>
-            )}
-          </Modal>
+          <Form onFinish={handleSetNewPassword}>
+            <Form.Item
+              name="forgotPassword"
+              rules={[{ required: true, message: "Please enter your email" }]}
+            >
+              <Modal
+                title="Forgot Password"
+                visible={showForgotPasswordModal}
+                onCancel={handleFPCancel}
+                footer={[
+                  <Button key="cancel" onClick={handleFPCancel}>
+                    Cancel
+                  </Button>,
+                  otpSent ? (
+                    <Button
+                      key="set-password"
+                      type="primary"
+                      onClick={handleSetNewPassword}
+                    >
+                      Set New Password
+                    </Button>
+                  ) : (
+                    <Button key="get-otp" type="primary" onClick={handleGetOTP}>
+                      Get OTP
+                    </Button>
+                  ),
+                ]}
+              >
+                {otpSent ? (
+                  <>
+                    <Form.Item
+                      label="OTP"
+                      name="otp"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please enter the OTP you received",
+                        },
+                        {
+                          pattern: /^\d{4}$/,
+                          message: "Please enter a 4-digit OTP",
+                        },
+                      ]}
+                    >
+                      <Input
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                      />
+                    </Form.Item>
+                    <Form.Item
+                      label="New Password"
+                      name="newPassword"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please enter a new password",
+                        },
+                        {
+                          min: 8,
+                          message:
+                            "Password must be at least 8 characters long",
+                        },
+                        {
+                          pattern:
+                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])[A-Za-z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/,
+                          message:
+                            "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+                        },
+                      ]}
+                    >
+                      <Input.Password
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                      />
+                    </Form.Item>
+                  </>
+                ) : (
+                  <Form.Item
+                    label="Email"
+                    name="email"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your email!",
+                      },
+                      {
+                        type: "email",
+                        message: "Please enter a valid email address!",
+                      },
+                    ]}
+                  >
+                    <Input
+                      prefix={<UserOutlined className="site-form-item-icon" />}
+                      placeholder="Email"
+                      style={{
+                        height: 40,
+                        justifyContent: "center",
+                        display: "flex",
+                        borderRadius: "5px",
+                      }}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </Form.Item>
+                )}
+              </Modal>
+            </Form.Item>
+          </Form>
         </div>
       </div>
     </div>
