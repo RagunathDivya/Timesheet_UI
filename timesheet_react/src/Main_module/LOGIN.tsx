@@ -3,8 +3,8 @@ import { Button, Form, Input, Modal, message } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ForgotPassword } from "./ForgotPasw";
-import joy from "../Main_module/bg.png";
+import joy from "../Main_module/TSBG.jpg";
+import joy1 from "../Main_module/logo.png";
 
 const LoginPage: React.FC = () => {
   const [AddProjectForm] = Form.useForm();
@@ -78,6 +78,10 @@ const LoginPage: React.FC = () => {
   };
 
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   const handleForgotPasswordClick = () => {
     setShowForgotPasswordModal(true);
@@ -85,6 +89,38 @@ const LoginPage: React.FC = () => {
 
   const handleFPCancel = () => {
     setShowForgotPasswordModal(false);
+    setOtpSent(false);
+    setEmail("");
+    setOtp("");
+    setNewPassword("");
+  };
+  const handleGetOTP = async () => {
+    try {
+      await axios.post(`/api/Login/GenerateOTP?email=${email}`);
+      setOtpSent(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSetNewPassword = async () => {
+    try {
+      await axios.post(
+        `/api/Login/VerifyOTP?email=${email}&otp=${otp}&newPassword=${newPassword}`
+      );
+      Modal.success({
+        title: "Success",
+        content: "Your password has been reset successfully",
+      });
+      handleFPCancel();
+    } catch (error) {
+      console.error(error);
+      Modal.error({
+        title: "Error",
+        content:
+          "An error occurred while resetting your password. Please try again later",
+      });
+    }
   };
 
   return (
@@ -97,30 +133,30 @@ const LoginPage: React.FC = () => {
         alignItems: "center",
         minHeight: "100vh",
         fontFamily: "'Jost', sans-serif",
-        background: "linear-gradient(to bottom, #0f0c29, #302b63, #24243e)",
-        // backgroundImage: `url(${joy})`,
-        // backgroundSize: "cover",
-        // backgroundRepeat: "no-repeat",
-         position: "fixed",
-        // height: "500px",
-        // width: "100%",
+        position: "fixed",
       }}
     >
       <img
-        src={joy}
+        src={joy1}
         alt="img"
-        style={{ height: 700, width: 600 }}
-      ></img>
+        style={{
+          width: "10%",
+          position: "absolute",
+          top: 0,
+          left: 0,
+        }}
+      />
+      <img src={joy} alt="img" style={{ width: "60%" }} />
       <div
         style={{
-          width: "450px",
+          width: "350px",
           height: "500px",
-          background: "linear-gradient(to bottom, #0f0c29, #302b63, #24243e)",
+          //background: "linear-gradient(to bottom, #0f0c29, #302b63, #24243e)",
+          background: "linear-gradient(to bottom, #87CEEB, #ADD8E6, #00BFFF)",
           overflow: "hidden",
           borderRadius: "10px",
           boxShadow: "5px 20px 50px #000",
-          marginLeft: 120,
-         marginBottom: 50,
+          marginBottom: 50,
         }}
       >
         <div>
@@ -133,14 +169,13 @@ const LoginPage: React.FC = () => {
               <label
                 htmlFor="chk"
                 style={{
-                  color: "#eee",
+                  color: "black",
                   fontSize: "2.3em",
                   justifyContent: "center",
                   display: "flex",
-                  margin: "60px",
+                  marginBottom: 30,
+                  marginTop: 90,
                   fontWeight: "bold",
-                  cursor: "pointer",
-                  transition: ".5s ease-in-out",
                 }}
               >
                 Login
@@ -192,7 +227,12 @@ const LoginPage: React.FC = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                style={{ marginLeft: "36%" }}
+                style={{
+                  marginLeft: "36%",
+                  background: "#ff66d9",
+                  color: "black",
+                  marginTop: 20,
+                }}
               >
                 Login
               </Button>
@@ -211,7 +251,7 @@ const LoginPage: React.FC = () => {
                     fontWeight: 700,
                     textDecoration: "underline",
                     display: "flex",
-                    //marginLeft: 65,
+                    color: "#000099",
                   }}
                   onClick={handleForgotPasswordClick}
                 >
@@ -225,9 +265,45 @@ const LoginPage: React.FC = () => {
             title="Forgot Password"
             open={showForgotPasswordModal}
             onCancel={handleFPCancel}
-            footer={null}
+            footer={[
+              <Button key="cancel" onClick={handleFPCancel}>
+                Cancel
+              </Button>,
+              otpSent ? (
+                <Button
+                  key="set-password"
+                  type="primary"
+                  onClick={handleSetNewPassword}
+                >
+                  Set New Password
+                </Button>
+              ) : (
+                <Button key="get-otp" type="primary" onClick={handleGetOTP}>
+                  Get OTP
+                </Button>
+              ),
+            ]}
           >
-            <ForgotPassword />
+            {otpSent ? (
+              <>
+                <Form.Item label="OTP">
+                  <Input value={otp} onChange={(e) => setOtp(e.target.value)} />
+                </Form.Item>
+                <Form.Item label="New Password">
+                  <Input.Password
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                </Form.Item>
+              </>
+            ) : (
+              <Form.Item label="Email">
+                <Input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Form.Item>
+            )}
           </Modal>
         </div>
       </div>
