@@ -73,7 +73,7 @@ export function AddEmpProject() {
         <Form.Item
           label="Employee"
           name="employee_Id"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[{ required: true, message: "Please input your employee ID!" }]}
         >
           <Select>
             {employeeData.map((employee) => (
@@ -86,7 +86,7 @@ export function AddEmpProject() {
         <Form.Item
           label="Project"
           name="project_Id"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[{ required: true, message: "Please input your Project ID!" }]}
         >
           <Select>
             {projectData.map((project) => (
@@ -100,24 +100,24 @@ export function AddEmpProject() {
         <Form.Item
           label="Project Start Date"
           name="start_Date"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[{ required: true, message: "Please input your Start Date!" }]}
         >
           <DatePicker />
         </Form.Item>
         <Form.Item
           label="Project Completion Deadline"
           name="end_Date"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[{ required: true, message: "Please input your End Date!" }]}
         >
           <DatePicker />
         </Form.Item>
         <Form.Item
           label="Location"
           name="location"
-          rules={[{ required: true, message: "Please input your Name!" }]}
+          rules={[{ required: true, message: "Please input your Location!" }]}
         >
           <Select>
-            <Option value="Banglore">Banglore</Option>
+            <Option value="Banglore">Bengaluru</Option>
             <Option value="Coimbatore">Coimbatore</Option>
           </Select>
         </Form.Item>
