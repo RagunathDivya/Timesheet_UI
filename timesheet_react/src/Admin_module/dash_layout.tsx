@@ -42,7 +42,7 @@ export function AdminDashboard() {
     email: string;
     mobile_No: string;
   }
-  //useEffect(() => {
+  useEffect(() => {
     if (mailId) {
       axios({
         method: "get",
@@ -60,7 +60,7 @@ export function AdminDashboard() {
           message.error(error.message);
         });
     }
- // }, [mailId]);
+  }, [mailId]);
   const onCollapse = (collapsed: any) => {
     setCollapsed(collapsed);
   };

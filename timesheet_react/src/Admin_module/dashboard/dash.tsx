@@ -158,7 +158,7 @@ export function Dashboards() {
                   labels={({ datum }) => `${datum.x}\n${datum.y}`}
                   barWidth={50}
                   animate={{
-                    duration: 5000,
+                    duration: 6000,
                     easing: "bounce",
                   }}
                 />
