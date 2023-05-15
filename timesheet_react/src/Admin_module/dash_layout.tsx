@@ -250,7 +250,11 @@ export function AdminDashboard() {
           <h1
             style={{
               color: "black",
+<<<<<<< Updated upstream
               fontSize: 24,
+=======
+              fontSize: "175%",
+>>>>>>> Stashed changes
               textAlign: "center",
               marginBottom: 10,
               marginTop: 2,

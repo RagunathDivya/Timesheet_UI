@@ -169,7 +169,7 @@ export function Configuration() {
         <Menu.Item key="logout" onClick={handleLogout}>
           Logout
         </Menu.Item>
-        <Menu.Item key="logout" onClick={handleChangePasswordClick}>
+        <Menu.Item key="changePasw" onClick={handleChangePasswordClick}>
           Change Password
         </Menu.Item>
       </Menu>

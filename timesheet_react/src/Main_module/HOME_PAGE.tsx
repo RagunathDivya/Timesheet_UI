@@ -50,13 +50,7 @@ const Home = () => {
           <Route
             path="/admin"
             element={
-              "isAuthenticated" ? (
-                <AdminDashboard />
-              ) : (
-                <Navigate to="/" replace />
-              )
-            }
-          />
+              "isAuthenticated" ? ( <AdminDashboard />) : (  <Navigate to="/" replace />) } />
           <Route
             path="/employee"
             element={

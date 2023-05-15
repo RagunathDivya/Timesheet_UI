@@ -90,8 +90,8 @@ const LoginPage: React.FC = () => {
     try {
       await axios.post(`/api/Login/GenerateOTP?email=${email}`);
       setOtpSent(true);
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      message.error(error.response.data);
     }
   };
 

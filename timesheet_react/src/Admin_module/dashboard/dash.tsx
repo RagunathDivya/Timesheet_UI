@@ -1,20 +1,13 @@
 import React from "react";
-import {
-  VictoryBar,
-  VictoryChart,
-  VictoryLabel,
-  VictoryLine,
-  VictoryPie,
-  VictoryTheme,
-} from "victory";
+import { VictoryBar, VictoryLabel } from "victory";
 import { useState, useEffect } from "react";
 import { Card, Select, message } from "antd";
 import axios from "axios";
 const { Option } = Select;
 
 export function Dashboards() {
-  const [year, setYear] = useState("2023");
-  const [month, setMonth] = useState((new Date().getMonth()).toString());
+  const [year, setYear] = useState(new Date().getFullYear().toString());
+  const [month, setMonth] = useState(new Date().getMonth().toString());
   const [tableData, setTableData] = useState<{ x: any; y: any }[]>([]);
 
   const [progressData, setProgressData] = useState({
@@ -92,6 +85,7 @@ export function Dashboards() {
   ];
 
   const monthName = months[parseInt(month) - 1];
+
   return (
     <>
       <div
