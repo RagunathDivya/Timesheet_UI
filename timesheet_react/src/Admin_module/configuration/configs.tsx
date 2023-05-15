@@ -72,6 +72,7 @@ export function Config() {
         title: "",
         key: "edit",
         render: (c: any) => {
+          console.log(c.client_Id);
           return (
             <div
               hidden={
@@ -360,32 +361,6 @@ export function Config() {
 
   const columns = selectedTab ? tableColumns[selectedTab] : [];
 
-  const getData = (select: any) => {
-    let urlT = `/api/Admin/${selectedTab}`;
-
-    if (select == true || select === false) {
-      urlT = `/api/Admin/${selectedTab}?isActive=${select}`;
-    } else {
-      urlT = `/api/Admin/${selectedTab}`;
-    }
-    axios({
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-      },
-      url: urlT,
-    })
-      .then((r: any) => {
-        message.success("Data fetched successfully");
-        setTableData(r.data);
-      })
-      .catch((error: any) => {
-        message.error(error.message);
-      });
-  };
-
   //search
   const filteredData = tableData.filter((record: any) => {
     const values = Object.values(record).join(" ").toLowerCase();
@@ -415,7 +390,7 @@ export function Config() {
           {selectedTab === "GetClientIsActive" ? (
             <AddClient />
           ) : selectedTab === "GetProjectIsActive" ? (
-            <AddProject clientData={clientData} />
+            <AddProject />
           ) : selectedTab === "GetDesignationIsActive" ? (
             <AddDesignation />
           ) : selectedTab === "GetEmployeeTypeIsActive" ? (
@@ -595,22 +570,35 @@ export function Config() {
     setIsModalOpen(false);
     window.location.reload();
   };
-  var editActive: any =
-    selectedTab === "GetClientIsActive"
-      ? (editActive = "EditClientIsActive")
-      : selectedTab === "GetProjectIsActive"
-      ? (editActive = "EditProjectIsActive")
-      : selectedTab === "GetDesignationIsActive"
-      ? (editActive = "EditDesignationIsActive")
-      : selectedTab === "GetEmployeeTypeIsActive"
-      ? (editActive = "EditEmployeeTypeIsActive")
-      : selectedTab === "GetHrContactInfoIsActive"
-      ? (editActive = "EditHrContactInfoIsActive")
-      : (editActive = "");
+
+  const getData = (select: any) => {
+    let urlT = `/api/Admin/${selectedTab}`;
+
+    if (select == true || select === false) {
+      urlT = `/api/Admin/${selectedTab}?isActive=${select}`;
+    } else {
+      urlT = `/api/Admin/${selectedTab}`;
+    }
+    axios({
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+      url: urlT,
+    })
+      .then((r: any) => {
+        message.success("Data fetched successfully");
+        setTableData(r.data);
+      })
+      .catch((error: any) => {
+        message.error(error.message);
+      });
+  };
 
   //get active, Inactive and all employees
   function handleOptionChange(value: any) {
-    // setSelectedRowKeys([]);
     setSelectedOption(value);
     getData(value);
   }
@@ -630,10 +618,7 @@ export function Config() {
       id: selectedRowKeys,
       is_Active: isActive,
     };
-    if (selectedRowKeys == null) {
-      message.error("No selected row");
-      return;
-    }
+
     axios({
       method: "put",
       headers: {
@@ -651,6 +636,18 @@ export function Config() {
         message.error(error.response.data);
       });
   };
+  var editActive: any =
+    selectedTab === "GetClientIsActive"
+      ? (editActive = "EditClientIsActive")
+      : selectedTab === "GetProjectIsActive"
+      ? (editActive = "EditProjectIsActive")
+      : selectedTab === "GetDesignationIsActive"
+      ? (editActive = "EditDesignationIsActive")
+      : selectedTab === "GetEmployeeTypeIsActive"
+      ? (editActive = "EditEmployeeTypeIsActive")
+      : selectedTab === "GetHrContactInfoIsActive"
+      ? (editActive = "EditHrContactInfoIsActive")
+      : (editActive = "");
 
   return (
     <div>
@@ -662,7 +659,7 @@ export function Config() {
           WebkitTextFillColor: "transparent",
         }}
       >
-        Configuration{" "}
+        Configuration
         {selectedTab === "GetClientIsActive"
           ? "/Clients"
           : selectedTab === "GetProjectIsActive"

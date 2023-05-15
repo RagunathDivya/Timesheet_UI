@@ -29,6 +29,7 @@ const onFinish = (values: any, url: any) => {
 export function EditClient(props: any) {
   const [form] = Form.useForm();
   form.setFieldsValue(props.rowData[0]);
+
   const onFinishAdd = (values: any) => {
     onFinish(values, "/api/Admin/EditClient");
     window.location.reload();

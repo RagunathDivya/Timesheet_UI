@@ -34,7 +34,6 @@ export function AddClient() {
     onFinish(values, "/api/Admin/AddClient");
     handleCancel();
     window.location.reload();
-    window.location.reload();
   };
   return (
     <div>
@@ -98,11 +97,11 @@ export function AddProject(props: any) {
     window.location.reload();
   };
 
-  const [clientDetail, setClientData] = useState<Clients[]>([]);
-  interface Clients {
-    client_Id: number;
-    client_Name: string;
-  }
+  const [clientDetail, setClientData] = useState<Array<any>>([]);
+  // interface Clients {
+  //   client_Id: number;
+  //   client_Name: string;
+  // }
   const { Option } = Select;
   useEffect(() => {
     async function fetchData() {
@@ -141,7 +140,7 @@ export function AddProject(props: any) {
         open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
-        style={{marginTop: '7%'}}
+        style={{ marginTop: "7%" }}
       >
         <Form
           labelCol={{ span: 8 }}
