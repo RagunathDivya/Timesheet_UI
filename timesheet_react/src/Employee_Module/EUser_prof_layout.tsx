@@ -220,7 +220,7 @@ export function EUserProfile() {
           <h1
             style={{
               color: "black",
-              fontSize: 28,
+              fontSize: 24,
               textAlign: "center",
               marginBottom: 10,
               marginTop: 2,

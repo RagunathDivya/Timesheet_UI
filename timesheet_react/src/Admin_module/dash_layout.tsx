@@ -250,7 +250,7 @@ export function AdminDashboard() {
           <h1
             style={{
               color: "black",
-              fontSize: 28,
+              fontSize: 24,
               textAlign: "center",
               marginBottom: 10,
               marginTop: 2,
@@ -259,6 +259,7 @@ export function AdminDashboard() {
               marginRight: 390, // Add margin to separate the image and text
             }}
           >
+            {/* Joy IT Solutions */}
             𝐉𝐨𝐲 𝐈𝐓 𝐒𝐨𝐥𝐮𝐭𝐢𝐨𝐧𝐬
           </h1>
           <UserDetails />
