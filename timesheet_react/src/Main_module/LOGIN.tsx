@@ -70,25 +70,32 @@ const LoginPage: React.FC = () => {
   };
 
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+  const [showForgotPasswordModalPhone, setShowForgotPasswordModalPhone] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [email, setEmail] = useState("");
+  const [PhoneNumber, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
   const handleForgotPasswordClick = () => {
     setShowForgotPasswordModal(true);
+ 
   };
-
+  const handleForgotPasswordClickPhone = () => {
+    setShowForgotPasswordModalPhone(true);
+  };
   const handleFPCancel = () => {
     setShowForgotPasswordModal(false);
+    setShowForgotPasswordModalPhone(false);
     setOtpSent(false);
     setEmail("");
     setOtp("");
     setNewPassword("");
   };
+
   const handleGetOTP = async () => {
     try {
-      await axios.post(`/api/Login/GenerateOTP?email=${email}`);
+      await axios.post(`/api/Login/GenerateOTP?email=${email}&PhoneNumber=${PhoneNumber}`);
       setOtpSent(true);
     } catch (error: any) {
       message.error(error.response.data);
@@ -97,8 +104,9 @@ const LoginPage: React.FC = () => {
 
   const handleSetNewPassword = async () => {
     try {
+      
       await axios.post(
-        `/api/Login/VerifyOTP?email=${email}&otp=${otp}&newPassword=${newPassword}`
+        `/api/Login/VerifyOTP?email=${email}&PhoneNumber=${PhoneNumber}&otp=${otp}&newPassword=${newPassword}`
       );
       Modal.success({
         title: "Success",
@@ -115,6 +123,8 @@ const LoginPage: React.FC = () => {
       handleFPCancel();
     }
   };
+ 
+
 
   return (
     <div
@@ -264,10 +274,11 @@ const LoginPage: React.FC = () => {
                 visible={showForgotPasswordModal}
                 onCancel={handleFPCancel}
                 footer={[
-                  <Button key="cancel" onClick={handleFPCancel}>
-                    Cancel
-                  </Button>,
                   otpSent ? (
+                  <>
+                    <Button key="cancel" onClick={handleFPCancel}>
+                    Cancel
+                  </Button>
                     <Button
                       key="set-password"
                       type="primary"
@@ -275,12 +286,24 @@ const LoginPage: React.FC = () => {
                     >
                       Set New Password
                     </Button>
+                    </>
                   ) : (
-                    <Button key="get-otp" type="primary" onClick={handleGetOTP}>
-                      Get OTP
-                    </Button>
+                    <>
+                    
+                     <Button type="link" style={{ marginRight: '20%' }} onClick={handleForgotPasswordClickPhone}>
+                        Try with another way
+                      </Button>
+                      <Button key="cancel" onClick={handleFPCancel}>
+                        Cancel
+                      </Button>
+                      <Button key="get-otp" type="primary" onClick={handleGetOTP}>
+                        Get OTP
+                      </Button>
+                     
+                    </>
                   ),
                 ]}
+                
               >
                 {otpSent ? (
                   <>
@@ -359,7 +382,125 @@ const LoginPage: React.FC = () => {
                     />
                   </Form.Item>
                 )}
+                
               </Modal>
+              
+            </Form.Item>
+          </Form>
+          <Form onFinish={handleSetNewPassword}>
+            <Form.Item
+              name="forgotPassword"
+              rules={[{ required: true, message: "Please enter your PhoneNumber" }]}
+            >
+              <Modal
+                title="Forgot Password"
+                visible={showForgotPasswordModalPhone}
+                onCancel={handleFPCancel}
+                footer={[
+                  otpSent ? (
+                  <>
+                    <Button key="cancel" onClick={handleFPCancel}>
+                    Cancel
+                  </Button>
+                    <Button
+                      key="set-password"
+                      type="primary"
+                      onClick={handleSetNewPassword}
+                    >
+                      Set New Password
+                    </Button>
+                    </>
+                  ) : (
+                    <>
+                    <Button key="cancel" onClick={handleFPCancel}>
+                        Cancel
+                      </Button>
+                      <Button key="get-otp" type="primary" onClick={handleGetOTP}>
+                        Get OTP
+                      </Button>
+                     
+                    </>
+                  ),
+                ]}
+                
+              >
+                {otpSent ? (
+                  <>
+                    <Form.Item
+                      label="OTP"
+                      name="otp"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please enter the OTP you received",
+                        },
+                        {
+                          pattern: /^\d{4}$/,
+                          message: "Please enter a 4-digit OTP",
+                        },
+                      ]}
+                    >
+                      <Input
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                      />
+                    </Form.Item>
+                    <Form.Item
+                      label="New Password"
+                      name="newPassword"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please enter a new password",
+                        },
+                        {
+                          min: 8,
+                          message:
+                            "Password must be at least 8 characters long",
+                        },
+                        {
+                          pattern:
+                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])[A-Za-z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/,
+                          message:
+                            "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+                        },
+                      ]}
+                    >
+                      <Input.Password
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                      />
+                    </Form.Item>
+                  </>
+                ) : (
+                  <Form.Item
+                    label="Contact No"
+                    name="contact_No"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter your Contact No!",
+                      },
+                     
+                    ]}
+                  >
+                    <Input
+                      prefix={<UserOutlined className="site-form-item-icon" />}
+                      placeholder="Contact No"
+                      style={{
+                        height: 40,
+                        justifyContent: "center",
+                        display: "flex",
+                        borderRadius: "5px",
+                      }}
+                      value={PhoneNumber}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+                  </Form.Item>
+                )}
+                
+              </Modal>
+              
             </Form.Item>
           </Form>
         </div>
