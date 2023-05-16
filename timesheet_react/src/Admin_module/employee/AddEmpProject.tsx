@@ -73,7 +73,9 @@ export function AddEmpProject() {
         <Form.Item
           label="Employee"
           name="employee_Id"
-          rules={[{ required: true, message: "Please input your employee ID!" }]}
+          rules={[
+            { required: true, message: "Please input your employee ID!" },
+          ]}
         >
           <Select>
             {employeeData.map((employee) => (

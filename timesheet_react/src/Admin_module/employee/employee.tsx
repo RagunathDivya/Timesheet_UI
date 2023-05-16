@@ -74,7 +74,6 @@ export const Employee: React.FC = () => {
 
   const filteredData = tableData.filter((record: any) => {
     const values = Object.values(record).join(" ").toLowerCase();
-
     return values.includes(searchText.toLowerCase());
   });
 
@@ -164,14 +163,7 @@ export const Employee: React.FC = () => {
       render: (joining_Date: any) => moment(joining_Date).format("DD-MM-YYYY"),
       align: "center",
     },
-    // {
-    //   title: "End Date",
-    //   dataIndex: "end_Date",
-    //   key: "end_Date",
-    //   align: "center",
-    //   render: (End_Date: any) => "",
-    //   //moment(End_Date).format("DD-MM-YYYY"),
-    // },
+
     {
       title: "Mail Id",
       dataIndex: "official_Email",
@@ -224,10 +216,7 @@ export const Employee: React.FC = () => {
       url: `/api/Admin/GetViewPreviousChangesById?Id=${val}`,
     })
       .then((r: any) => {
-        const sortedData = r.data.sort((a: any, b: any) => {
-        return new Date(b.date_Edited).getTime() - new Date(a.date_Edited).getTime();
-        });
-        const reversedData = sortedData.reverse();
+        const reversedData = r.data.reverse();
         setDatas(reversedData);
         message.success("Data fetched successfully ");
       })
@@ -235,7 +224,7 @@ export const Employee: React.FC = () => {
         message.error(error.message);
       });
   };
-    const columns1: any = [
+  const columns1: any = [
     {
       title: "Employee ID",
       dataIndex: "employee_Id",
@@ -247,9 +236,21 @@ export const Employee: React.FC = () => {
       dataIndex: "full_Name",
       key: "full_Name",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1]; 
-        const edited = record.full_Name !== previousData?.full_Name  ; 
-        return <span style={{ color: edited ? tableDatas[index].max==tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{text}</span>;
+        const previousData = tableDatas[index + 1];
+        const edited = record.full_Name !== previousData?.full_Name;
+        return (
+          <span
+            style={{
+              color: edited
+                ? tableDatas[index].max == previousData
+                  ? "inherit"
+                  : "red"
+                : "inherit",
+            }}
+          >
+            {text}
+          </span>
+        );
       },
       align: "center",
     },
@@ -258,9 +259,21 @@ export const Employee: React.FC = () => {
       dataIndex: "employee_Type",
       key: "employee_Type",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1]; 
-        const edited = record.employee_Type !== previousData?.employee_Type; 
-        return <span style={{ color: edited ? tableDatas[index].max==tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{text}</span>;
+        const previousData = tableDatas[index + 1];
+        const edited = record.employee_Type !== previousData?.employee_Type;
+        return (
+          <span
+            style={{
+              color: edited
+                ? tableDatas[index].max == previousData
+                  ? "inherit"
+                  : "red"
+                : "inherit",
+            }}
+          >
+            {text}
+          </span>
+        );
       },
       align: "center",
     },
@@ -268,16 +281,24 @@ export const Employee: React.FC = () => {
       title: "Joining Date",
       dataIndex: "joining_Date",
       key: "joining_Date",
-      // render: (text: any, record: any, index: number) => {
-      //   const previousData = tableDatas[index + 1]; 
-      //   const edited = record.joining_Date !== previousData?.joining_Date; 
-      //   return <span style={{ color: edited ? tableDatas[index].max===tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{text}</span>;
-      // },
+
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1]; 
+        const previousData = tableDatas[index + 1];
         const edited = record.joining_Date !== previousData?.joining_Date;
-        const date = moment(text).format('DD/MM/YYYY'); 
-        return <span style={{ color: edited ? tableDatas[index].max===tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{date}</span>;
+        const date = moment(text).format("DD/MM/YYYY");
+        return (
+          <span
+            style={{
+              color: edited
+                ? tableDatas[index].max === previousData
+                  ? "inherit"
+                  : "red"
+                : "inherit",
+            }}
+          >
+            {date}
+          </span>
+        );
       },
       align: "center",
     },
@@ -286,9 +307,21 @@ export const Employee: React.FC = () => {
       dataIndex: "designation",
       key: "designation",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1]; 
-        const edited = record.designation !== previousData?.designation; 
-        return <span style={{ color: edited ? tableDatas[index].max==tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{text}</span>;
+        const previousData = tableDatas[index + 1];
+        const edited = record.designation !== previousData?.designation;
+        return (
+          <span
+            style={{
+              color: edited
+                ? tableDatas[index].max == previousData
+                  ? "inherit"
+                  : "red"
+                : "inherit",
+            }}
+          >
+            {text}
+          </span>
+        );
       },
       align: "center",
     },
@@ -297,9 +330,22 @@ export const Employee: React.FC = () => {
       dataIndex: "reporting_Manager1",
       key: "reporting_Manager1",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1]; 
-        const edited = record.reporting_Manager1 !== previousData?.reporting_Manager1; 
-        return <span style={{ color: edited ? tableDatas[index].max==tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{text}</span>;
+        const previousData = tableDatas[index + 1];
+        const edited =
+          record.reporting_Manager1 !== previousData?.reporting_Manager1;
+        return (
+          <span
+            style={{
+              color: edited
+                ? tableDatas[index].max == previousData
+                  ? "inherit"
+                  : "red"
+                : "inherit",
+            }}
+          >
+            {text}
+          </span>
+        );
       },
       align: "center",
     },
@@ -308,9 +354,21 @@ export const Employee: React.FC = () => {
       dataIndex: "emailId",
       key: "emailId",
       render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1]; 
+        const previousData = tableDatas[index + 1];
         const edited = record.emailId !== previousData?.emailId;
-        return <span style={{ color: edited ? tableDatas[index].max==tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{text}</span>;
+        return (
+          <span
+            style={{
+              color: edited
+                ? tableDatas[index].max == previousData
+                  ? "inherit"
+                  : "red"
+                : "inherit",
+            }}
+          >
+            {text}
+          </span>
+        );
       },
       align: "center",
     },
@@ -320,8 +378,20 @@ export const Employee: React.FC = () => {
       key: "contact_No",
       render: (text: any, record: any, index: number) => {
         const previousData = tableDatas[index + 1];
-        const edited = record.contact_No !== previousData?.contact_No; 
-        return <span style={{ color: edited ? tableDatas[index].max==tableDatas[index + 1] ? "inherit" : "red" : "inherit" }}>{text}</span>;
+        const edited = record.contact_No !== previousData?.contact_No;
+        return (
+          <span
+            style={{
+              color: edited
+                ? tableDatas[index].max == previousData
+                  ? "inherit"
+                  : "red"
+                : "inherit",
+            }}
+          >
+            {text}
+          </span>
+        );
       },
       align: "center",
     },

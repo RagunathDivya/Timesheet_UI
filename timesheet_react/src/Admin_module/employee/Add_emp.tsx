@@ -90,7 +90,7 @@ export function AddEmployee() {
           initialValues={{ remember: true }}
           autoComplete="off"
           onFinish={onFinish}
-          style={{marginTop:30}}
+          style={{ marginTop: 30 }}
         >
           <div
             style={{

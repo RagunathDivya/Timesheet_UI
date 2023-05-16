@@ -129,48 +129,6 @@ export function TS_Status() {
     },
   ];
 
-  const statscols = [
-    {
-      title: "Sl.No",
-      dataIndex: "id",
-      key: "ids",
-      render: (value: any, item: any, index: any) =>
-        (page - 1) * pageSize + index + 1,
-      align: "center" as AlignType,
-    },
-    {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
-      align: "center" as AlignType,
-    },
-    {
-      title: "Days",
-      dataIndex: "day",
-      key: "day",
-      align: "center" as AlignType,
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status: any) => (status ? "Present" : "Leave"),
-      align: "center" as AlignType,
-    },
-    {
-      title: "Project",
-      dataIndex: "project",
-      key: "project",
-      align: "center" as AlignType,
-    },
-    {
-      title: "Hours worked",
-      dataIndex: "duration",
-      key: "duration",
-      align: "center" as AlignType,
-    },
-  ];
-
   const empCols = [
     {
       title: "Sl.No",
@@ -311,105 +269,6 @@ export function TS_Status() {
   }, []);
 
   const MonthData = async () => {
-    // const allMonths = [
-    //   {
-    //     monthID: 1,
-    //     month: "January",
-    //     timeSheet_Count: 0,
-    //     pending: 0,
-    //     rejected: 0,
-    //     approved: 0,
-    //   },
-    //   {
-    //     monthID: 2,
-    //     month: "February",
-    //     timeSheet_Count: 0,
-    //     pending: 0,
-    //     rejected: 0,
-    //     approved: 0,
-    //   },
-    //   {
-    //     monthID: 3,
-    //     month: "March",
-    //     timeSheet_Count: 0,
-    //     pending: 0,
-    //     rejected: 0,
-    //     approved: 0,
-    //   },
-    //   {
-    //     monthID: 4,
-    //     month: "April",
-    //     timeSheet_Count: 0,
-    //     pending: 0,
-    //     rejected: 0,
-    //     approved: 0,
-    //   },
-    //   {
-    //     monthID: 5,
-    //     month: "May",
-    //     timeSheet_Count: 0,
-    //     pending: 0,
-    //     rejected: 0,
-    //     approved: 0,
-    //   },
-    //   {
-    //     monthID: 6,
-    //     month: "June",
-    //     timeSheet_Count: 0,
-    //     pending: 0,
-    //     rejected: 0,
-    //     approved: 0,
-    //   },
-    //   {
-    //     monthID: 7,
-    //     month: "July",
-    //     timeSheet_Count: 0,
-    //     pending: 0,
-    //     rejected: 0,
-    //     approved: 0,
-    //   },
-    //   {
-    //     monthID: 8,
-    //     month: "August",
-    //     timeSheet_Count: 0,
-    //     pending: 0,
-    //     rejected: 0,
-    //     approved: 0,
-    //   },
-    //   {
-    //     monthID: 9,
-    //     month: "September",
-    //     timeSheet_Count: 0,
-    //     pending: 0,
-    //     rejected: 0,
-    //     approved: 0,
-    //   },
-    //   {
-    //     monthID: 10,
-    //     month: "October",
-    //     timeSheet_Count: 0,
-    //     pending: 0,
-    //     rejected: 0,
-    //     approved: 0,
-    //   },
-    //   {
-    //     monthID: 11,
-    //     month: "November",
-    //     timeSheet_Count: 0,
-    //     pending: 0,
-    //     rejected: 0,
-    //     approved: 0,
-    //   },
-    //   {
-    //     monthID: 12,
-    //     month: "December",
-    //     timeSheet_Count: 0,
-    //     pending: 0,
-    //     rejected: 0,
-    //     approved: 0,
-    //   },
-    // ];
-
     axios({
       method: "get",
       headers: {
@@ -420,12 +279,6 @@ export function TS_Status() {
       url: `/api/Admin/GetTimeSheetStatusStatusByYear?year=${year}`,
     })
       .then((r: any) => {
-        // const mergedData = allMonths.map((month) => {
-        //   const matchingMonth = r.data.find(
-        //     (m: any) => m.month === month.month
-        //   );
-        //   return matchingMonth ? matchingMonth : month;
-        // });
         setMonthData(r.data);
       })
       .catch((error: any) => {
@@ -492,29 +345,9 @@ export function TS_Status() {
   };
 
   // For ViewTimesheet
-  const [timesheetData, setTimesheetData] = useState([]);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
+
   const handleCancel = () => {
     setIsModalOpen(false);
-  };
-  const handleViewTimesheet = async (employeeId: any) => {
-    axios({
-      method: "get",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-      },
-      url: `/api/Admin/GetTimesheetSummaryMonthYearEmployee?Month_id=${month}&Year_id=${year}&Employee_Id=${employeeId}`,
-    })
-      .then((r: any) => {
-        setTimesheetData(r.data);
-      })
-      .catch((error: any) => {
-        // message.error(error.message);
-      });
   };
 
   //download Timesheets of that month
@@ -830,54 +663,6 @@ export function TS_Status() {
               <ArrowLeftOutlined />
             </Button>
             {renderEmployeeTable()}
-
-            <Modal
-              open={isModalOpen}
-              onCancel={handleCancel}
-              footer={
-                <div
-                  style={{
-                    display: "flex",
-                    fontWeight: 600,
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Badge color="green" text="P-Present" />
-                  <Badge color="red" text="L-Leave" />
-                  <Badge color="blue" text="H-Holiday" />
-                  <Badge color="#f50" text="WFH-Work From Home" />
-                  <Button onClick={handleCancel}>Cancel</Button>
-                </div>
-              }
-              width={700}
-            >
-              <div>
-                <h2>
-                  Timesheet Status ({selectedMonth} -{selectedYear}- {empName} )
-                </h2>
-                <Card
-                  title={
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <div>Leaves Taken: {leavesTaken}</div>
-                      <div>Total Hours Worked: {totalHours}</div>
-                      <div>No. of Days worked: {daysWorked}</div>
-                    </div>
-                  }
-                >
-                  <Table
-                    bordered
-                    dataSource={timesheetData}
-                    columns={statscols}
-                    pagination={false}
-                  />
-                </Card>
-              </div>
-            </Modal>
           </>
         );
       default:
