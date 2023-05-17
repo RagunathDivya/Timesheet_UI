@@ -277,31 +277,7 @@ export const Employee: React.FC = () => {
       },
       align: "center",
     },
-    {
-      title: "Joining Date",
-      dataIndex: "joining_Date",
-      key: "joining_Date",
-
-      render: (text: any, record: any, index: number) => {
-        const previousData = tableDatas[index + 1];
-        const edited = record.joining_Date !== previousData?.joining_Date;
-        const date = moment(text).format("DD/MM/YYYY");
-        return (
-          <span
-            style={{
-              color: edited
-                ? tableDatas[index].max === previousData
-                  ? "inherit"
-                  : "red"
-                : "inherit",
-            }}
-          >
-            {date}
-          </span>
-        );
-      },
-      align: "center",
-    },
+    
     {
       title: "Designation",
       dataIndex: "designation",

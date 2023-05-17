@@ -110,6 +110,7 @@ export function AddEmpProject() {
           label="Project Completion Deadline"
           name="end_Date"
           rules={[{ required: true, message: "Please input your End Date!" }]}
+          style={{ marginTop: '55px' }}
         >
           <DatePicker />
         </Form.Item>
