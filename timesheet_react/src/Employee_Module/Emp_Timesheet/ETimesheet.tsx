@@ -611,7 +611,7 @@ function AddTimesheet() {
         var toke = sessionStorage.token;
       })
       .catch((error) => {
-        setMessage(error.response.status, "Employee Id Alredy Exists");
+        setMessage(error.response.status, "Timesheet Alredy submitted");
       });
   };
 
